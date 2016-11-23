@@ -16,6 +16,8 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     private static ProductDBHelper productDBHelper;
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "product.db";
+
+
     public class Table{
         public static final String TABLE_NAME = "products";
         public static final String COLUMN_P_ID = "productID";
@@ -26,10 +28,16 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         public static final String COLUMN_DETAIL = "detail";
         public static final String COLUMN_TYPE = "type";
     }
-    public ProductDBHelper(Context context) {
+    private ProductDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    public static synchronized ProductDBHelper getInstance(Context context){
+        if(productDBHelper==null){
+            productDBHelper = new ProductDBHelper(context.getApplicationContext());
+        }
+        return productDBHelper;
+    }
 
 
     @Override
@@ -65,16 +73,15 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public static void LoadProduct(JSONArray jsonArray){
-        SQLiteDatabase db = this.getWritableDatabase();
+    public static void LoadProduct(Context context,JSONArray jsonArray){
+        SQLiteDatabase db = getInstance(context).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        
+        db.close();
 
     }
 
-    public static ProductDBHelper getProductDBHelper(Context context){
-        if(productDBHelper==null){
-            productDBHelper = new ProductDBHelper(context);
-        }
-    }
+  \
 
 
 }
