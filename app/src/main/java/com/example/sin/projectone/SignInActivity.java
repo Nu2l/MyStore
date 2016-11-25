@@ -74,7 +74,7 @@ public class SignInActivity extends AppCompatActivity {
         return email.contains("@");
     }
     private void navigateToMainActivity(){
-        Intent mainIntent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent mainIntent = new Intent(getApplicationContext(),MainNav.class);
         startActivity(mainIntent);
     }
 }
