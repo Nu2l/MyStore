@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         // set on click btn//
         btn_Pay = (Button) findViewById(R.id.btn_pay);
-        btn_Pay.setOnClickListener(createToggleFlashListener());
+        btn_Pay.setOnClickListener(startPayment());
         //
         init();
     }
@@ -115,16 +114,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void init(){
-        PaymentProduct pm = new PaymentProduct();
-        pm.test();
+        this.deleteDatabase(ProductDBHelper.DATABASE_NAME);
+        PaymentProduct.LoadProducts(this.getApplicationContext());
     }
 
-    private View.OnClickListener createToggleFlashListener() {
+    private View.OnClickListener startPayment() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), ScanPayment.class);
                 startActivity(i);
+
             }
         };
     }

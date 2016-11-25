@@ -12,7 +12,6 @@ public class WebService {
     private static AsyncHttpClient _Client = new AsyncHttpClient();
     public static void getABC(AsyncHttpResponseHandler handler, String url){
         _Client.get(url,handler);
-
     }
     public static void postABC(AsyncHttpResponseHandler handler,String url){
         _Client.post(url,handler);
