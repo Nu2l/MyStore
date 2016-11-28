@@ -1,15 +1,26 @@
 package com.example.sin.projectone;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -58,7 +69,7 @@ public class SignInActivity extends AppCompatActivity {
         }
         if(formValid){
             System.out.println("form is valid");
-            navigateToMainActivity();
+            signInProcess(email,pass);
         }
         else{
             System.out.println("form is invalid");
@@ -73,8 +84,82 @@ public class SignInActivity extends AppCompatActivity {
         System.out.println(email.contains("@"));
         return email.contains("@");
     }
-    private void navigateToMainActivity(){
+    private void signInProcess(final String user, String pass){
+        RequestParams params = new RequestParams();
+        params.put("user",user);
+        params.put("pass",pass);
+        final Context context = getApplicationContext();
+        final int duration = Toast.LENGTH_SHORT;
+        HttpUtilsAsync.post("http://188.166.239.218:3001/api/user/", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                try {
+                    String res = (String) response.get("Message");
+                    if(res.equals("Welcome new user !")){
+                        navigateToRegisterStore(user);
+
+                        CharSequence text = res;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
+                    else if(res.equals("Welcome Back !")){
+                        if(response.get("ShopName").equals("null")){
+                            navigateToRegisterStore(user);
+                            CharSequence text = "Please create your shop or join in !";
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                        else {
+                            navigateToMainActivity(user);
+                            CharSequence text = res;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }
+                    else{
+                        CharSequence text = res;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                System.out.println(errorResponse + " " + statusCode);
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                System.out.println("Failed: "+ ""+statusCode);
+                Log.d("Error : ", "" + throwable);
+            }
+        });
+//        HttpUtilsAsync.post("http://188.166.239.218:3001/api/user/", new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//
+//            }
+//        });
+
+    }
+    private void navigateToRegisterStore(String user){
+        Intent regisIntent = new Intent(getApplicationContext(),RegisterStoreActivity.class);
+        regisIntent.putExtra("username",user);
+        startActivity(regisIntent);
+    }
+    private void navigateToMainActivity(String user){
         Intent mainIntent = new Intent(getApplicationContext(),MainNav.class);
+        mainIntent.putExtra("username",user);
         startActivity(mainIntent);
     }
 }
