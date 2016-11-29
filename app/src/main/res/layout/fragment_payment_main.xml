@@ -4,8 +4,9 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:text="This is Main Payment"
+        android:text="this is payment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
+        android:id="@+id/textView6" />
+
 </LinearLayout>

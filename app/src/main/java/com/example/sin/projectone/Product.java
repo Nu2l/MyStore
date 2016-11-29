@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 public class Product implements Parcelable {
     public String id, name, bacode, price, type, imgName;
-    int qty;
+    public int qty;
 
     public Product(String id, String name, String bacode, String price, int qty, String type, String imgName){
         this.id = id;
