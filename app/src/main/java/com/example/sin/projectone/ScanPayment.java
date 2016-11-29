@@ -17,6 +17,7 @@ import com.google.zxing.Result;
 import com.welcu.android.zxingfragmentlib.BarCodeScannerFragment;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ import java.util.List;
 
 public class ScanPayment extends FragmentActivity {
 
-    private Activity _ScanPaymentActivity;
     private ListView _ProductList;
     private Button _BtnPayNext, _BtnPayBack;
     private ArrayList<Product> products = new ArrayList<Product>();
@@ -35,11 +35,9 @@ public class ScanPayment extends FragmentActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _ScanPaymentActivity = this;
         setContentView(R.layout.activity_scan_payment);
         // set listView
-//        adapter = new ArrayAdapter<String>(this, R.layout.list_item,R.id.text_list,listItems);
-//        _ProductList.setAdapter(adapter);
+
         _ProductList = (ListView)findViewById(R.id.product_list);
         adapter = new ProductAdapter(this,products);
         _ProductList.setAdapter(adapter);
@@ -66,16 +64,14 @@ public class ScanPayment extends FragmentActivity {
         return true;
     }
 
-//    private JSONArray makeTransaction(ArrayList[] products){
-//        JSONObject obj = new JSONObject();
-//        JSONArray transation = new JSONArray();
-//    }
-
     private View.OnClickListener nextPayment() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), ScanPayment.class);
+                Intent i = new Intent(v.getContext(), EndPayment.class);
+                Bundle b = new Bundle();
+                b.putParcelableArrayList("products",products);
+                i.putExtras(b);
                 startActivity(i);
 
             }
@@ -86,7 +82,7 @@ public class ScanPayment extends FragmentActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _ScanPaymentActivity.finish();
+                ScanPayment.super.finish();
             }
         };
     }

@@ -1,7 +1,12 @@
 package com.example.sin.projectone;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -14,17 +19,28 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Button btn_Pay;
+    private Button btn_Pay, btn_TakePic;
+    private ImageView imgMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +67,11 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         // set on click btn//
         btn_Pay = (Button) findViewById(R.id.btn_pay);
+        btn_TakePic = (Button)findViewById(R.id.btn_take_cam);
+        btn_TakePic.setOnClickListener(takePic());
         btn_Pay.setOnClickListener(startPayment());
         //
+        imgMain = (ImageView)findViewById(R.id.imgMain);
         init();
     }
 
@@ -114,8 +133,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void init(){
-        this.deleteDatabase(ProductDBHelper.DATABASE_NAME);
-        PaymentProduct.LoadProducts(this.getApplicationContext());
+        this.deleteDatabase(ProductDBHelper.DATABASE_NAME); // debug
+        WebService.getAllProduct(new JsonHttpResponseHandler(){
+              @Override
+              public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                  try {
+                      if(response.length()>0){
+                          System.out.println(response);
+                          //System.out.println(response.getJSONArray("Product"));
+                          ProductDBHelper.getInstance(MainActivity.this.getApplicationContext()).LoadProduct(response.getJSONArray("Products"));
+                      }
+                      else if(response.length()==0){
+                          System.out.println("Empty");
+                      }
+                      System.out.println("finish");
+
+                  } catch (Exception e) {
+                      e.printStackTrace();
+                  }
+              }
+          });
+
     }
 
     private View.OnClickListener startPayment() {
@@ -127,5 +165,74 @@ public class MainActivity extends AppCompatActivity
 
             }
         };
+    }
+
+    private View.OnClickListener takePic() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        };
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, Constant.REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constant.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //imgMain.setImageBitmap(imageBitmap);
+            String path = saveToInternalStorage(imageBitmap,"test.png");
+            System.out.println("Result :"+path);
+            imgMain.setImageBitmap(loadImageFromStorage("test.png"));
+        }
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage,String imgName){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir(Constant.FOLDER_PHOTO, Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,imgName);
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
+
+    private Bitmap loadImageFromStorage(String imgName)
+    {
+        String path = getApplicationInfo().dataDir+"/app_"+Constant.FOLDER_PHOTO;
+        try {
+            File f=new File(path, imgName);
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            return b;
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+
     }
 }

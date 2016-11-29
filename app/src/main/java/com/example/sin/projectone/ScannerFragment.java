@@ -35,7 +35,7 @@ public class ScannerFragment extends BarCodeScannerFragment {
                     }
                 }
                 else {
-                    Toast.makeText(getActivity(), "Scan: not found!"  , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Scan: not found! "+lastResult.toString()  , Toast.LENGTH_SHORT).show();
                 }
             }
         });
