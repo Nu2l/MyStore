@@ -1,6 +1,8 @@
 package com.example.sin.projectone;
 
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,22 +12,45 @@ import org.json.JSONObject;
  * Created by nanth on 11/25/2016.
  */
 
-public class Product {
-    public String id, name, bacode, price, type, detail;
+public class Product implements Parcelable {
+    public String id, name, bacode, price, type, imgName;
     int qty;
 
-    public Product(String id, String name, String bacode, String price, int qty, String type, String detail){
+    public Product(String id, String name, String bacode, String price, int qty, String type, String imgName){
         this.id = id;
         this.name = name;
         this.bacode = bacode;
         this.price = price;
         this.qty = qty;
         this.type = type;
-        this.detail = detail;
+        this.imgName = imgName;
     }
 
+    protected Product(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        bacode = in.readString();
+        price = in.readString();
+        type = in.readString();
+        imgName = in.readString();
+        qty = in.readInt();
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
+
     public static Product CursorToProduct(Cursor cursor){
-        if(cursor.moveToFirst()&&cursor.getCount()>0){
+        System.out.println(cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_P_ID)));
+        if(cursor.moveToFirst()){
             Product p =new Product(//id name bacode price
                     cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_P_ID)),
                     cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_NAME)),
@@ -33,25 +58,28 @@ public class Product {
                     cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_PRICE)),
                     cursor.getInt(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_QTY)),
                     cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_TYPE)),
-                    cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_DETAIL))
-                    );
+                    cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_IMG)
+                    ));
             return  p;
         }
         return null;
     }
 
-//    public static JSONArray productsToJSONProductKey(Product[] products){
-//        JSONObject obj = new JSONObject();
-//        JSONArray result = new JSONArray();
-//        for(Product p : products){
-//            try {
-//                obj.put(ProductDBHelper.Table.COLUMN_P_ID, p.id);
-//                obj.put(ProductDBHelper.Table.COLUMN_NAME, p.name);
-//                obj.put(ProductDBHelper.Table.COLUMN_BACODE, p.bacode);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(bacode);
+        dest.writeString(price);
+        dest.writeString(type);
+        dest.writeString(imgName);
+        dest.writeInt(qty);
+    }
+
 
 }
