@@ -21,12 +21,6 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".SignInActivity">
-
-        </activity>
-        <activity android:name=".RegisterStoreActivity">
-
-        </activity>
         <activity android:name=".RegisterStoreActivity">
 
         </activity>
