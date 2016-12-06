@@ -190,8 +190,7 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == Constant.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //imgMain.setImageBitmap(imageBitmap);
-            String path = saveToInternalStorage(imageBitmap,"test.png");
+            String path = saveToInternalStorage(imageBitmap,"1010.png");
             System.out.println("Result :"+path);
             imgMain.setImageBitmap(loadImageFromStorage("test.png"));
         }
