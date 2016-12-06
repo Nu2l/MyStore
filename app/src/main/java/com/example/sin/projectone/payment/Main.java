@@ -1,99 +1,103 @@
 package com.example.sin.projectone.payment;
 
+
+
+import android.app.Activity;
+
 import android.app.Fragment;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.view.Gravity;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.sin.projectone.ApplicationHelper;
+import com.example.sin.projectone.Constant;
+import com.example.sin.projectone.ImgManager;
 import com.example.sin.projectone.Product;
 import com.example.sin.projectone.ProductAdapter;
 import com.example.sin.projectone.R;
-import com.google.zxing.Result;
-import com.welcu.android.zxingfragmentlib.BarCodeScannerFragment;
 
 import java.util.ArrayList;
 
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import static com.example.sin.projectone.R.id.imgMain;
+
 
 /**
  * Created by naki_ on 11/25/2016.
  */
 
-public class Main extends Fragment implements ZXingScannerView.ResultHandler{
-    private static final String FLASH_STATE = "FLASH_STATE";
-    private static final String AUTO_FOCUS_STATE = "AUTO_FOCUS_STATE";
-    private static final String SELECTED_FORMATS = "SELECTED_FORMATS";
-    private static final String CAMERA_ID = "CAMERA_ID";
-    private ZXingScannerView mScannerView;
-    private boolean mFlash;
-    private boolean mAutoFocus;
-    private ArrayList<Integer> mSelectedIndices;
-    private int mCameraId = -1;
+public class Main extends Fragment {
 
+    private ListView _ProductList;
+    private Button _BtnPayNext, _BtnPayBack;
+    private ArrayList<Product> products = new ArrayList<Product>();
+    private ProductAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle state) {
-        View view  = inflater.inflate(R.layout.fragment_payment_main, container, false);
-        //return view;
-        mScannerView = new ZXingScannerView(getActivity());
-        if(state != null) {
-            mFlash = state.getBoolean(FLASH_STATE, false);
-            mAutoFocus = state.getBoolean(AUTO_FOCUS_STATE, true);
-            mSelectedIndices = state.getIntegerArrayList(SELECTED_FORMATS);
-            mCameraId = state.getInt(CAMERA_ID, -1);
-        } else {
-            mFlash = false;
-            mAutoFocus = true;
-            mSelectedIndices = null;
-            mCameraId = -1;
+        View view = inflater.inflate(R.layout.fragment_payment_main, container, false);
+        _BtnPayBack = (Button) view.findViewById(R.id.btn_pay_back);
+        _BtnPayNext = (Button) view.findViewById(R.id.btn_pay_next);
+        _BtnPayNext.setOnClickListener(nextPayment());
+        _BtnPayBack.setOnClickListener(backPayment());
+        _ProductList = (ListView) view.findViewById(R.id.product_list);
+        // set list view
+        _ProductList = (ListView)view.findViewById(R.id.product_list);
+        adapter = new ProductAdapter(ApplicationHelper.getAppContext(),products);
+        _ProductList.setAdapter(adapter);
+        return view;
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+
+
+    }
+
+    public boolean addProduct(Product product){
+        for (Product pd : products) {
+            if(product.id.length()>0 && product.id.equals(pd.id)){
+                return false;
+            }
         }
-        //setupFormats();
-        return mScannerView;
-        //return view;
+        adapter.add(product);
+        adapter.notifyDataSetChanged();
+        return true;
     }
 
-    @Override
-    public void onCreate(Bundle state) {
-        super.onCreate(state);
-        //setHasOptionsMenu(true);
+    private View.OnClickListener nextPayment() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent i = new Intent(v.getContext(), EndPayment.class);
+//                Bundle b = new Bundle();
+//                b.putParcelableArrayList("products",products);
+//                i.putExtras(b);
+//                startActivity(i);
+
+            }
+        };
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mScannerView.setResultHandler((ZXingScannerView.ResultHandler)this); // Register ourselves as a handler for scan results.
-        mScannerView.startCamera();          // Start camera on resume
+    private View.OnClickListener backPayment() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ScanPayment.super.finish();
+            }
+        };
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mScannerView.stopCamera();           // Stop camera on pause
-    }
 
-    @Override
-    public void handleResult(Result rawResult) {
 
-        // Do something with the result here
-        Log.v("log1", rawResult.getText()); // Prints scan results
-        Log.v("log2", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
-        System.out.println(rawResult.toString());
-        // If you would like to resume scanning, call this method below:
-        mScannerView.resumeCameraPreview(this);
-    }
+
 
 
 }

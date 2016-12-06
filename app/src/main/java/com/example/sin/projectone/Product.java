@@ -4,22 +4,18 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * Created by nanth on 11/25/2016.
  */
 
 public class Product implements Parcelable {
-    public String id, name, bacode, price, type, imgName;
+    public String id, name, barcode, price, type, imgName;
     public int qty;
 
-    public Product(String id, String name, String bacode, String price, int qty, String type, String imgName){
+    public Product(String id, String name, String barcode, String price, int qty, String type, String imgName){
         this.id = id;
         this.name = name;
-        this.bacode = bacode;
+        this.barcode = barcode;
         this.price = price;
         this.qty = qty;
         this.type = type;
@@ -29,7 +25,7 @@ public class Product implements Parcelable {
     protected Product(Parcel in) {
         id = in.readString();
         name = in.readString();
-        bacode = in.readString();
+        barcode = in.readString();
         price = in.readString();
         type = in.readString();
         imgName = in.readString();
@@ -54,7 +50,7 @@ public class Product implements Parcelable {
             Product p =new Product(//id name bacode price
                     cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_P_ID)),
                     cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_BACODE)),
+                    cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_BARCODE)),
                     cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_PRICE)),
                     cursor.getInt(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_QTY)),
                     cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_TYPE)),
@@ -74,7 +70,7 @@ public class Product implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
-        dest.writeString(bacode);
+        dest.writeString(barcode);
         dest.writeString(price);
         dest.writeString(type);
         dest.writeString(imgName);

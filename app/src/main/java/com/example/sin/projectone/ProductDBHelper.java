@@ -25,7 +25,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
 
         public static final String COLUMN_P_ID = "productID"; // primary key
         public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_BACODE = "bacode"; // unique key
+        public static final String COLUMN_BARCODE = "bacode"; // unique key
         public static final String COLUMN_PRICE = "price";
         public static final String COLUMN_TYPE = "type";
         public static final String COLUMN_QTY = "qty";
@@ -52,7 +52,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         String CREATE_TABLE_PRODUCT="CREATE TABLE "+Table.TABLE_PRODUCT +" ( " +
                 Table.COLUMN_P_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 //Table.COLUMN_S_ID+" INTEGER, " +
-                Table.COLUMN_BACODE +" TEXT UNIQUE, " +
+                Table.COLUMN_BARCODE +" TEXT UNIQUE, " +
                 Table.COLUMN_NAME+" TEXT, " +
                 //Table.COLUMN_BRAND+" TEXT, " +
                 Table.COLUMN_PRICE+" TEXT,"+
@@ -69,7 +69,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
 
     public Product searchProduct(String bacode){
         String sql = "SELECT * FROM "+Table.TABLE_PRODUCT +
-                " WHERE "+Table.COLUMN_BACODE +" = '"+bacode+"'";
+                " WHERE "+Table.COLUMN_BARCODE +" = '"+bacode+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
         Cursor cursor = db.rawQuery(sql, null);
@@ -92,7 +92,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 ContentValues values = new ContentValues();
                 JSONObject jsonObj = jsonArray.getJSONObject(i);
                 values.put(Table.COLUMN_P_ID, jsonObj.getInt(Constant.KEY_JSON_PRODUCT_ID));
-                values.put(Table.COLUMN_BACODE, jsonObj.getString(Constant.KEY_JSON_PRODUCT_BACODE));
+                values.put(Table.COLUMN_BARCODE, jsonObj.getString(Constant.KEY_JSON_PRODUCT_BARCODE));
                 values.put(Table.COLUMN_QTY,jsonObj.getInt(Constant.KEY_JSON_PRODUCT_QTY));
                 values.put(Table.COLUMN_NAME, jsonObj.getString(Constant.KEY_JSON_PRODUCT_NAME));
                 values.put(Table.COLUMN_TYPE, jsonObj.getString(Constant.KEY_JSON_PRODUCT_type));
