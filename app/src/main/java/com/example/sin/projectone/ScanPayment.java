@@ -30,7 +30,7 @@ public class ScanPayment extends FragmentActivity {
     private Button _BtnPayNext, _BtnPayBack;
     private ArrayList<Product> products = new ArrayList<Product>();
     private ProductAdapter adapter;
-    BarCodeScannerFragment mScannerFragment;
+    private BarCodeScannerFragment mScannerFragment;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class ScanPayment extends FragmentActivity {
         _BtnPayNext.setOnClickListener(nextPayment());
         //
         FragmentManager fm = getSupportFragmentManager();
+
         mScannerFragment = (BarCodeScannerFragment) fm.findFragmentById(R.id.scanner_fragment);
     }
 

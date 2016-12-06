@@ -3,6 +3,7 @@
     package="com.example.sin.projectone">
 
     <application
+        android:name=".ApplicationHelper"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,23 +16,19 @@
 
         </activity>
         <activity android:name=".SignInActivity">
+
+
+        </activity>
+
+        <activity android:name=".RegisterStoreActivity">
+
+        </activity>
+>
+        <activity android:name=".MainNav">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-        </activity>
-        <activity android:name=".SignInActivity">
-
-        </activity>
-        <activity android:name=".RegisterStoreActivity">
-
-        </activity>
-        <activity android:name=".RegisterStoreActivity">
-
-        </activity>
-        <activity android:name=".MainNav">
-
 
         </activity>
         <activity android:name=".ScanPayment" />

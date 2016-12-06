@@ -15,7 +15,7 @@ public class Constant {
     //Key json
     public final static String KEY_JSON_PRODUCTLIST = "productList";
     public final static String KEY_JSON_PRODUCT_ID = "productID";
-    public final static String KEY_JSON_PRODUCT_BACODE = "bacode";
+    public final static String KEY_JSON_PRODUCT_BARCODE = "barcode";
     public final static String KEY_JSON_PRODUCT_QTY = "qty";
     public final static String KEY_JSON_PRODUCT_NAME = "name";
     public final static String KEY_JSON_PRODUCT_type = "type";
@@ -28,8 +28,8 @@ public class Constant {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     //
     //url web Service
-    public final static String URL_SERVER = "http://188.166.239.218:3000";
-    public final static String URL_GET_ALL_PRODUCT = URL_SERVER+"/api/products/"+SHOP_ID;
+    public final static String URL_SERVER = "http://188.166.239.218:3001";
+    public final static String URL_GET_ALL_PRODUCT = URL_SERVER+"/api/product/"+SHOP_ID;
 
     // other
     // path to /data/data/com.example.sin.projectone/app_productImg

@@ -257,3 +257,8 @@ build/
 
 #NDK
 obj/
+
+#############
+## Other
+#############
+zxingfragmentlib-master
