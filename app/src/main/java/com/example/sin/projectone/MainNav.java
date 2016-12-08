@@ -1,9 +1,9 @@
 package com.example.sin.projectone;
 
-import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.sin.projectone.payment.Main;
+
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
@@ -20,8 +20,8 @@ public class MainNav extends MaterialNavigationDrawer {
     @Override
     public void init(Bundle savedInstanceState) {
         loadProducts();
-        this.addSection(newSection("Payment", new com.example.sin.projectone.payment.Main()));
-        this.addSection(newSection("Receipt", new com.example.sin.projectone.item.Main()));
+        this.addSection(newSection("Payment", new com.example.sin.projectone.payment.Container()));
+        this.addSection(newSection("Receipt", new com.example.sin.projectone.receipt.Main()));
         this.addSection(newSection("Item", new com.example.sin.projectone.item.Main()));
         this.addSection(newSection("Report", new com.example.sin.projectone.report.Main()));
         this.addSubheader("Account");
@@ -29,7 +29,10 @@ public class MainNav extends MaterialNavigationDrawer {
         this.addDivisor();
         this.addSection(newSection("Help & Feedback", new com.example.sin.projectone.help.Main()));
         this.addSection(newSection("Credit", new com.example.sin.projectone.credit.Main()));
+
     }
+
+
 
     private boolean loadProducts(){
         this.deleteDatabase(ProductDBHelper.DATABASE_NAME); // debug
@@ -54,5 +57,7 @@ public class MainNav extends MaterialNavigationDrawer {
         });
         return true;
     }
+
+
 
 }
