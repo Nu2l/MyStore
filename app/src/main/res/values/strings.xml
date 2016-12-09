@@ -23,4 +23,7 @@
     <string name="register_store_radio_emp">Employee</string>
     <string name="register_store_button_register_store">Register store</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

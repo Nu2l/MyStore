@@ -49,7 +49,7 @@ public class Main extends Fragment {
         _ProductList = (ListView) view.findViewById(R.id.product_list);
         // set list view
         _ProductList = (ListView)view.findViewById(R.id.product_list);
-        adapter = new ProductAdapter(ApplicationHelper.getAppContext(),products);
+//        adapter = new ProductAdapter(ApplicationHelper.getAppContext(),products);
         _ProductList.setAdapter(adapter);
         return view;
     }
