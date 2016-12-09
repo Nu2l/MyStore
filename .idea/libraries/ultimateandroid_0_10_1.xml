@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="ultimateandroid-0.10.1">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.marshalchen.ultimateandroid/ultimateandroid/0.10.1/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.marshalchen.ultimateandroid/ultimateandroid/0.10.1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.marshalchen.ultimateandroid/ultimateandroid/0.10.1/53b0fb48e0f72ae8c2fefb120bdaaa05ba0ad976/ultimateandroid-0.10.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
