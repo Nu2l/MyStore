@@ -83,8 +83,14 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle state) {
         mScannerView = new ZXingScannerView(this.getActivity());
+        mAutoFocus= false;
+        mScannerView.setAutoFocus(mAutoFocus);
         int a,b,c,d,e;
-        //mScannerView.setPaddingRelative(10,0,0,0);
+        mScannerView.setPadding(10,10,10,10);
+        mScannerView.setTouchscreenBlocksFocus(false);
+        mScannerView.setFocusableInTouchMode(true);
+        mScannerView.setFocusable(true);
+        mScannerView.setTouchscreenBlocksFocus(false);
         a= mScannerView.getPaddingBottom();
         b= mScannerView.getPaddingEnd();
         c= mScannerView.getPaddingLeft();
@@ -150,7 +156,8 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                mScannerView.setAutoFocus(!mAutoFocus);
+//                mAutoFocus = !mAutoFocus;
             }
         };
     }
