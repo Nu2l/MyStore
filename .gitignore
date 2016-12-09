@@ -254,6 +254,7 @@ Thumbs.db
 #.idea/workspace.xml - remove # and delete .idea if it better suit your
 needs.
 .gradle
+.gradle/2.14.1
 build/
 
 
@@ -264,3 +265,7 @@ obj/
 ## Other
 #############
 zxingfragmentlib-master
+.gradle/2.14.1/taskArtifacts/cache.properties.lock
+.gradle/2.14.1/taskArtifacts/fileSnapshots.bin
+.idea/misc.xml
+.idea/misc.xml
