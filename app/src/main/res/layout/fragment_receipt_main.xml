@@ -7,12 +7,12 @@
     android:paddingRight="8dp">
 
 
-    <ListView android:id="@id/android:list"
+    <fragment
+        android:id="@+id/fragment1"
+        android:name="com.example.sin.projectone.receipt.list_fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#00FF00"
-        android:layout_weight="1"
-        android:drawSelectorOnTop="false"/>
+        android:layout_height="match_parent" />
+
 
     <TextView android:id="@id/android:empty"
         android:layout_width="match_parent"

@@ -20,7 +20,7 @@ public class MainNav extends MaterialNavigationDrawer {
     @Override
     public void init(Bundle savedInstanceState) {
 //        loadProducts();
-        this.addSection(newSection("Payment", new com.example.sin.projectone.payment.Main()));
+        this.addSection(newSection("Payment", new com.example.sin.projectone.payment.Container()));
         this.addSection(newSection("Receipt", new com.example.sin.projectone.receipt.Main()));
         this.addSection(newSection("Item", new com.example.sin.projectone.item.Main()));
         this.addSection(newSection("Report", new com.example.sin.projectone.report.Main()));
