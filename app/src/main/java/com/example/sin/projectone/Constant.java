@@ -32,7 +32,9 @@ public class Constant {
     public final static String URL_GET_ALL_PRODUCT = URL_SERVER+"/api/product/"+SHOP_ID;
     // Tag Fragment
     public final static String TAG_FRAGMENT_PAYMENT_MAIN = "tag_fragment_main";
-
+    public final static String TAG_FRAGMENT_PAYMENT_END = "tag_fragment_end";
+    // Key Bundle
+    public final static String KEY_BUNDLE_ARRAYLIST_PRODUCT = "array_list_product";
 
     // other
     // path to /data/data/com.example.sin.projectone/app_productImg
