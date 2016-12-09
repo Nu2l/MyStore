@@ -13,29 +13,21 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 
 
-import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.sin.projectone.Constant;
 import com.example.sin.projectone.ImgManager;
 import com.example.sin.projectone.Product;
-import com.example.sin.projectone.ProductAdapter;
 import com.example.sin.projectone.ProductDBHelper;
-import com.example.sin.projectone.R;
 import com.google.zxing.Result;
-import com.google.zxing.client.android.camera.CameraManager;
 
 import java.util.ArrayList;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
-
-import static android.R.attr.bitmap;
 
 /**
  * Created by nanth on 11/29/2016.
@@ -63,7 +55,7 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
             int tryAdd;
             int buyCount=1;
             product.qty = buyCount;
-            tryAdd = main.addProduct(product);
+            tryAdd = main.addProductPayment(product);
             if(tryAdd>0){
                 //setProductImg(ImgManager.getinstance().loadImageFromStorage(product.imgName));
             }
@@ -81,6 +73,8 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle state) {
         mScannerView = new ZXingScannerView(this.getActivity());
         mAutoFocus= true;
+        mFlash = false;
+        mScannerView.setFlash(mFlash);
         mScannerView.setAutoFocus(mAutoFocus);
         int a,b,c,d,e;
         mScannerView.setPadding(10,10,10,10);
@@ -149,13 +143,8 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mScannerView.setAutoFocus(!mAutoFocus);
-                mAutoFocus = !mAutoFocus;
-                String state="OFF";
-                if(mAutoFocus){
-                    state = "NO";
-                }
-                Toast.makeText(getActivity().getApplicationContext(), "Auto Focus: "+state , Toast.LENGTH_SHORT).show();
+                mFlash = !mFlash;
+               mScannerView.setFlash(mFlash);
             }
         };
     }

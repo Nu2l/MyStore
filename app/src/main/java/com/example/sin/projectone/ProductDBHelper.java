@@ -10,6 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by nanth on 11/23/2016.
  */
@@ -106,6 +108,44 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         }
        // values.put();
         db.close();
+
+    }
+
+    public JSONObject getJSONTransaction(ArrayList<Product> products, String detail, float discount, float total){
+        JSONObject transation = new JSONObject();
+        JSONObject obj;
+        JSONArray productList = new JSONArray();
+        if(!products.isEmpty()&& products.size()>0){
+            try {
+                transation.put(Constant.KEY_JSON_USERID,Constant.USER_ID);
+                transation.put(Constant.KEY_JSON_SHOPID,Constant.SHOP_ID);
+                transation.put(Constant.KEY_JSON_DETAIL_DISCOUNT, detail);
+                transation.put(Constant.KEY_JSON_DISCOUNT, discount);
+                transation.put(Constant.KEY_JSON_TOTAL, total);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            for(Product p: products){
+                try {
+                    obj = new JSONObject();
+                    obj.put(Constant.KEY_JSON_PRODUCT_ID, p.id);
+                    obj.put(Constant.KEY_JSON_PRODUCT_QTY, p.qty);
+                    productList.put(obj);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                transation.put(Constant.KEY_JSON_PRODUCTLIST,productList);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String t = transation.toString();
+            return transation;
+        }
+        else{
+            return null;
+        }
 
     }
 

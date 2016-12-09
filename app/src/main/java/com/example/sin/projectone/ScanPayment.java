@@ -39,7 +39,7 @@ public class ScanPayment extends FragmentActivity {
         // set listView
 
         _ProductList = (ListView)findViewById(R.id.product_list);
-        adapter = new ProductAdapter(this,products);
+        adapter = new ProductAdapter(this,products,R.layout.list_item);
         _ProductList.setAdapter(adapter);
 
         //
