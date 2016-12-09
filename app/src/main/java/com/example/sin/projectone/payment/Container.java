@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.sin.projectone.Constant;
 import com.example.sin.projectone.R;
 
 /**
@@ -23,7 +24,7 @@ public class Container extends Fragment {
 
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack if needed
-        transaction.replace(R.id.frame_container_payment, newFragment);
+        transaction.replace(R.id.frame_container_payment, newFragment, Constant.TAG_FRAGMENT_PAYMENT_MAIN);
         //transaction.addToBackStack(null);
 // Commit the transaction
         transaction.commit();
