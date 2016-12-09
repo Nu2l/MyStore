@@ -58,7 +58,6 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     private ImageView _ProductImg;
     @Override
     public void handleResult(Result barCode) {
-        float a = mScannerView.getCameraDistance();
         Product product = ProductDBHelper.getInstance(getActivity().getApplicationContext()).searchProduct(barCode.toString());
         if(product!=null){
             int tryAdd;
@@ -81,7 +80,7 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle state) {
         mScannerView = new ZXingScannerView(this.getActivity());
-        mAutoFocus= false;
+        mAutoFocus= true;
         mScannerView.setAutoFocus(mAutoFocus);
         int a,b,c,d,e;
         mScannerView.setPadding(10,10,10,10);
