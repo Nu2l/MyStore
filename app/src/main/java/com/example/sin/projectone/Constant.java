@@ -30,6 +30,9 @@ public class Constant {
     //url web Service
     public final static String URL_SERVER = "http://188.166.239.218:3001";
     public final static String URL_GET_ALL_PRODUCT = URL_SERVER+"/api/product/"+SHOP_ID;
+    // Tag Fragment
+    public final static String TAG_FRAGMENT_PAYMENT_MAIN = "tag_fragment_main";
+
 
     // other
     // path to /data/data/com.example.sin.projectone/app_productImg

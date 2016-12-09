@@ -6,6 +6,7 @@ import android.app.Activity;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 
 
-
+import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.example.sin.projectone.ProductAdapter;
 import com.example.sin.projectone.ProductDBHelper;
 import com.example.sin.projectone.R;
 import com.google.zxing.Result;
+import com.google.zxing.client.android.camera.CameraManager;
 
 import java.util.ArrayList;
 
@@ -53,30 +55,34 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     private ArrayList<Integer> mSelectedIndices;
     private int mCameraId = -1;
     //
+    private Main main;
     private ImageView _ProductImg;
     @Override
-    public void handleResult(Result result) {
-        Product product = ProductDBHelper.getInstance(getActivity().getApplicationContext()).searchProduct(result.toString());
+    public void handleResult(Result barCode) {
+        float a = mScannerView.getCameraDistance();
+        Product product = ProductDBHelper.getInstance(getActivity().getApplicationContext()).searchProduct(barCode.toString());
         if(product!=null){
-            boolean tryAdd;
+            int tryAdd;
             int buyCount=1;
             product.qty = buyCount;
-            //tryAdd = ((Main)getParentFragment()).addProduct(product);
-            setProductImg(ImgManager.getinstance().loadImageFromStorage(product.imgName));
-//            if(!tryAdd){
-//                Toast.makeText(getActivity().getApplicationContext(), "Scan: item has already!"  , Toast.LENGTH_SHORT).show();
-//            }
+            tryAdd = main.addProduct(product);
+            if(tryAdd>0){
+                //setProductImg(ImgManager.getinstance().loadImageFromStorage(product.imgName));
+            }
+            else{
+                Toast.makeText(getActivity().getApplicationContext(), "Scan: item has already!"  , Toast.LENGTH_SHORT).show();
+            }
         }
         else {
-            Toast.makeText(getActivity().getApplicationContext(), "Scan: not found! "+result.toString()  , Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Scan: not found! "+barCode.toString()  , Toast.LENGTH_SHORT).show();
         }
-        //Toast.makeText(getActivity().getApplicationContext(), result.toString()  , Toast.LENGTH_SHORT).show();
         mScannerView.resumeCameraPreview(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle state) {
         mScannerView = new ZXingScannerView(this.getActivity());
+        main = (Main)getFragmentManager().findFragmentByTag(Constant.TAG_FRAGMENT_PAYMENT_MAIN);
         if(state != null) {
             mFlash = state.getBoolean(FLASH_STATE, false);
             mAutoFocus = state.getBoolean(AUTO_FOCUS_STATE, true);
@@ -130,6 +136,8 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
             startActivityForResult(takePictureIntent, Constant.REQUEST_IMAGE_CAPTURE);
         }
     }
+
+
 
 
 
