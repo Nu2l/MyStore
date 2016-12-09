@@ -89,7 +89,7 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
         c= mScannerView.getPaddingLeft();
         d= mScannerView.getPaddingRight();
         e= mScannerView.getPaddingStart();
-        mScannerView.setPaddingRelative();
+        mScannerView.setPaddingRelative(10,0,0);
          mScannerView.setOnClickListener(onScanerClick());
         main = (Main)getFragmentManager().findFragmentByTag(Constant.TAG_FRAGMENT_PAYMENT_MAIN);
         if(state != null) {
