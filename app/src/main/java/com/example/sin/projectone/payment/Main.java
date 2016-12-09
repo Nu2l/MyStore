@@ -3,7 +3,6 @@ package com.example.sin.projectone.payment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.sin.projectone.ApplicationHelper;
+import com.example.sin.projectone.Constant;
 import com.example.sin.projectone.Product;
 import com.example.sin.projectone.ProductAdapter;
 import com.example.sin.projectone.R;
@@ -32,14 +32,12 @@ public class Main extends Fragment  {
         View view  = inflater.inflate(R.layout.fragment_payment_main, container, false);
         Fragment newFragment = new ScanPayment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack if needed
         transaction.replace(R.id.frame_container_scanner, newFragment);
         //transaction.addToBackStack();
         // Commit the transaction
         transaction.commit();
-
         _btn_next = (Button) view.findViewById(R.id.pay_next);
         _btn_back = (Button) view.findViewById(R.id.pay_back);
         _productList = (ListView) view.findViewById(R.id.product_list);
@@ -55,9 +53,12 @@ public class Main extends Fragment  {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment newFragment = new EndPayment();
+                Bundle product_bundle = new Bundle();
+                product_bundle.putParcelableArrayList(Constant.KEY_BUNDLE_ARRAYLIST_PRODUCT, products);
+                Fragment endPayment = new EndPayment();
+                endPayment.setArguments(product_bundle);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_container_payment, newFragment);
+                transaction.replace(R.id.frame_container_payment, endPayment, Constant.TAG_FRAGMENT_PAYMENT_END);
                 //transaction.addToBackStack(null);
                 transaction.commit();
             }

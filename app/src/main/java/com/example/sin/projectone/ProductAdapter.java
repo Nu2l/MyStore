@@ -29,11 +29,11 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
         // Lookup view for data population
-        TextView productName = (TextView) convertView.findViewById(R.id.product_name);
-        TextView productPrice = (TextView) convertView.findViewById(R.id.product_price);
+        if(product.id!=null && !product.id.isEmpty()){
+            TextView productName = (TextView) convertView.findViewById(R.id.product_name);
+            TextView productPrice = (TextView) convertView.findViewById(R.id.product_price);
+        }
         // Populate the data into the template view using the data object
-        productName.setText(product.name);
-        productPrice.setText(product.price);
         // Return the completed view to render on screen
         return convertView;
     }

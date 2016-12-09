@@ -6,8 +6,6 @@ import android.app.Activity;
 
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -60,7 +58,6 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     private ImageView _ProductImg;
     @Override
     public void handleResult(Result barCode) {
-        float a = mScannerView.getCameraDistance();
         Product product = ProductDBHelper.getInstance(getActivity().getApplicationContext()).searchProduct(barCode.toString());
         if(product!=null){
             int tryAdd;
@@ -83,14 +80,16 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle state) {
         mScannerView = new ZXingScannerView(this.getActivity());
+        mAutoFocus= true;
+        mScannerView.setAutoFocus(mAutoFocus);
         int a,b,c,d,e;
+        mScannerView.setPadding(10,10,10,10);
         a= mScannerView.getPaddingBottom();
         b= mScannerView.getPaddingEnd();
         c= mScannerView.getPaddingLeft();
         d= mScannerView.getPaddingRight();
         e= mScannerView.getPaddingStart();
-        mScannerView.setPaddingRelative(10,0,0,0);
-         mScannerView.setOnClickListener(onScanerClick());
+        mScannerView.setOnClickListener(onScanerClick());
         main = (Main)getFragmentManager().findFragmentByTag(Constant.TAG_FRAGMENT_PAYMENT_MAIN);
         if(state != null) {
             mFlash = state.getBoolean(FLASH_STATE, false);
@@ -150,7 +149,13 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mScannerView.setAutoFocus(!mAutoFocus);
+                mAutoFocus = !mAutoFocus;
+                String state="OFF";
+                if(mAutoFocus){
+                    state = "NO";
+                }
+                Toast.makeText(getActivity().getApplicationContext(), "Auto Focus: "+state , Toast.LENGTH_SHORT).show();
             }
         };
     }
