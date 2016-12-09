@@ -87,16 +87,12 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
         mScannerView.setAutoFocus(mAutoFocus);
         int a,b,c,d,e;
         mScannerView.setPadding(10,10,10,10);
-        mScannerView.setTouchscreenBlocksFocus(false);
-        mScannerView.setFocusableInTouchMode(true);
-        mScannerView.setFocusable(true);
-        mScannerView.setTouchscreenBlocksFocus(false);
         a= mScannerView.getPaddingBottom();
         b= mScannerView.getPaddingEnd();
         c= mScannerView.getPaddingLeft();
         d= mScannerView.getPaddingRight();
         e= mScannerView.getPaddingStart();
-         mScannerView.setOnClickListener(onScanerClick());
+        mScannerView.setOnClickListener(onScanerClick());
         main = (Main)getFragmentManager().findFragmentByTag(Constant.TAG_FRAGMENT_PAYMENT_MAIN);
         if(state != null) {
             mFlash = state.getBoolean(FLASH_STATE, false);
@@ -156,8 +152,13 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mScannerView.setAutoFocus(!mAutoFocus);
-//                mAutoFocus = !mAutoFocus;
+                mScannerView.setAutoFocus(!mAutoFocus);
+                mAutoFocus = !mAutoFocus;
+                String state="OFF";
+                if(mAutoFocus){
+                    state = "NO";
+                }
+                Toast.makeText(getActivity().getApplicationContext(), "Auto Focus: "+state , Toast.LENGTH_SHORT).show();
             }
         };
     }

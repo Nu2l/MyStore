@@ -19,7 +19,7 @@ public class MainNav extends MaterialNavigationDrawer {
 
     @Override
     public void init(Bundle savedInstanceState) {
-//        loadProducts();
+        loadProducts();
         this.addSection(newSection("Payment", new com.example.sin.projectone.payment.Main()));
         this.addSection(newSection("Receipt", new com.example.sin.projectone.receipt.Main()));
         this.addSection(newSection("Item", new com.example.sin.projectone.item.Main()));
@@ -33,28 +33,28 @@ public class MainNav extends MaterialNavigationDrawer {
 
     }
 
-//    private boolean loadProducts(){
-//        this.deleteDatabase(ProductDBHelper.DATABASE_NAME); // debug
-//        WebService.getAllProduct(new JsonHttpResponseHandler(){
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                try {
-//                    if(response.length()>0){
-//                        System.out.println(response);
-//                        //System.out.println(response.getJSONArray("Product"));
-//                        ProductDBHelper.getInstance(MainNav.this.getApplicationContext()).LoadProduct(response.getJSONArray("Products"));
-//                    }
-//                    else if(response.length()==0){
-//                        System.out.println("Empty");
-//                    }
-//                    System.out.println("finish");
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//        return true;
-//    }
+    private boolean loadProducts(){
+        this.deleteDatabase(ProductDBHelper.DATABASE_NAME); // debug
+        WebService.getAllProduct(new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if(response.length()>0){
+                        System.out.println(response);
+                        //System.out.println(response.getJSONArray("Product"));
+                        ProductDBHelper.getInstance(MainNav.this.getApplicationContext()).LoadProduct(response.getJSONArray("Products"));
+                    }
+                    else if(response.length()==0){
+                        System.out.println("Empty");
+                    }
+                    System.out.println("finish");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        return true;
+    }
 
 }
