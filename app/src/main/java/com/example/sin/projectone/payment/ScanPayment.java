@@ -4,12 +4,14 @@ package com.example.sin.projectone.payment;
 
 import android.app.Activity;
 
+
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+
 
 
 import android.view.LayoutInflater;
@@ -51,7 +53,6 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     private ArrayList<Integer> mSelectedIndices;
     private int mCameraId = -1;
     //
-    private Main _MainScanPayment;
     private ImageView _ProductImg;
     @Override
     public void handleResult(Result result) {
@@ -60,11 +61,11 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
             boolean tryAdd;
             int buyCount=1;
             product.qty = buyCount;
-            tryAdd = _MainScanPayment.addProduct(product);
+            //tryAdd = ((Main)getParentFragment()).addProduct(product);
             setProductImg(ImgManager.getinstance().loadImageFromStorage(product.imgName));
-            if(!tryAdd){
-                Toast.makeText(getActivity().getApplicationContext(), "Scan: item has already!"  , Toast.LENGTH_SHORT).show();
-            }
+//            if(!tryAdd){
+//                Toast.makeText(getActivity().getApplicationContext(), "Scan: item has already!"  , Toast.LENGTH_SHORT).show();
+//            }
         }
         else {
             Toast.makeText(getActivity().getApplicationContext(), "Scan: not found! "+result.toString()  , Toast.LENGTH_SHORT).show();
@@ -75,7 +76,7 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle state) {
-        mScannerView = new ZXingScannerView(getActivity());
+        mScannerView = new ZXingScannerView(this.getActivity());
         if(state != null) {
             mFlash = state.getBoolean(FLASH_STATE, false);
             mAutoFocus = state.getBoolean(AUTO_FOCUS_STATE, true);
@@ -87,10 +88,9 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
             mSelectedIndices = null;
             mCameraId = -1;
         }
-        mScannerView.setAutoFocus(false);
-        mScannerView.setOnClickListener(lockFocus());
         return mScannerView;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,37 +108,29 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
         mScannerView.stopCamera();           // Stop camera on pause
     }
 
-    public View.OnClickListener lockFocus(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dispatchTakePictureIntent();
-            }
-        };
-    }
-
-    public void setProductImg(Bitmap bitmap){
+    private void setProductImg(Bitmap bitmap){
+        if(_ProductImg==null){
+           // _ProductImg = (ImageView) getParentFragment().getView().findViewById(R.id.imgProduct);
+        }
         _ProductImg.setImageBitmap(bitmap);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constant.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            _ProductImg = (ImageView)getParentFragment().getView().findViewById(R.id.imgProduct);
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            _ProductImg.setImageBitmap(imageBitmap);
-            String path = ImgManager.getinstance().saveImgToInternalStorage(imageBitmap,"test.png");
+            String path = ImgManager.getinstance().saveImgToInternalStorage(imageBitmap,"1010.png");
             System.out.println("Result :"+path);
-            _ProductImg.setImageBitmap(ImgManager.getinstance().loadImageFromStorage("test.png"));
         }
     }
 
-    public void dispatchTakePictureIntent() {
+    private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, Constant.REQUEST_IMAGE_CAPTURE);
         }
     }
+
 
 
 }
