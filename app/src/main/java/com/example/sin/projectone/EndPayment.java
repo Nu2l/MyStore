@@ -21,7 +21,7 @@ public class EndPayment extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_end_payment);
+//        setContentView(R.layout.activity_end_payment);
         Bundle b = getIntent().getExtras();
         if(!b.isEmpty()){
             products = b.getParcelableArrayList("products");
@@ -29,8 +29,8 @@ public class EndPayment extends AppCompatActivity {
         _ProductList = (ListView)findViewById(R.id.product_list);
         adapter = new ProductAdapter(this,products);
         _ProductList.setAdapter(adapter);
-        _btnBack = (Button)findViewById(R.id.btn_back_endPay);
-        _btnFinish = (Button)findViewById(R.id.btn_fin_endPay);
+//        _btnBack = (Button)findViewById(R.id.btn_back_endPay);
+//        _btnFinish = (Button)findViewById(R.id.btn_fin_endPay);
         _btnBack.setOnClickListener(backPayment());
         _btnFinish.setOnClickListener(finishTransaction());
     }
