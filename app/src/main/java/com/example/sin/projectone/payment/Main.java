@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,7 +31,10 @@ public class Main extends Fragment  {
     private ListView _productList;
     public ArrayList<Product> products = new ArrayList<Product>();
     private ProductAdapter adapter;
+    private boolean flagShowListView = false;
     private SwipeDetector swipeDetector = new SwipeDetector();
+    private LinearLayout layout_listview, layout_scanner;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_payment_main, container, false);
@@ -46,6 +50,9 @@ public class Main extends Fragment  {
         _btn_back = (Button) view.findViewById(R.id.pay_back);
         _btn_next.setOnClickListener(nextBtnClick());
         _btn_back.setOnClickListener(backBtnClick());
+        // get layout
+        layout_listview = (LinearLayout) view.findViewById(R.id.sub_layout_listView);
+        layout_scanner = (LinearLayout) view.findViewById(R.id.sub_layout_scanner);
         // set list view
         _productList = (ListView)view.findViewById(R.id.product_list);
         int a = R.layout.list_item_endpayment;
@@ -98,6 +105,21 @@ public class Main extends Fragment  {
                 if(swipeDetector.swipeDetected()){
                     if(swipeDetector.getAction()== SwipeDetector.Action.LR){
                         adapter.remove(adapter.getItem(position));
+                        if(adapter.getCount()==0){
+                            layout_listview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,0.2f));
+                            layout_scanner.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,0.5f));
+                            flagShowListView = false;
+                        }
+                    }
+                    else if(swipeDetector.getAction()== SwipeDetector.Action.RL){
+                        if(flagShowListView){
+                            layout_listview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,0.2f));
+                            layout_scanner.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,0.5f));
+                        }else{
+                            layout_scanner.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,0.2f));
+                            layout_listview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,0.5f));
+                        }
+                        flagShowListView = !flagShowListView;
                     }
                 }
                 else{
@@ -107,6 +129,7 @@ public class Main extends Fragment  {
             }
         };
     }
+
 
     public int addProductPayment(Product product){
         if(!adapter.addQtyProduct(product.id,1)){
