@@ -251,9 +251,12 @@ Thumbs.db
 # Android Studio
 *.iml
 .idea
-#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+#.idea/workspace.xml - remove # and delete .idea if it better suit your
+needs.
 .gradle
+.gradle/2.14.1
 build/
+
 
 #NDK
 obj/
@@ -262,3 +265,7 @@ obj/
 ## Other
 #############
 zxingfragmentlib-master
+.gradle/2.14.1/taskArtifacts/cache.properties.lock
+.gradle/2.14.1/taskArtifacts/fileSnapshots.bin
+.idea/misc.xml
+.idea/misc.xml
