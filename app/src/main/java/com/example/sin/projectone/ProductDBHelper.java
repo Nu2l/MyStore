@@ -51,6 +51,9 @@ public class ProductDBHelper extends SQLiteOpenHelper {
 
         public static final String TABLE_TRANS_D = "transactionDetail";
         public static final String COLUMN_TRANS_D_ID ="transactionID";
+        public static final String COLUMN_TRANS_D_NAME = "name";
+        public static final String COLUMN_TRANS_D_PRICE = "price";
+        public static final String COLUMN_TRANS_D_COST = "cost";
         public static final String COLUMN_TRANS_D_PRODUCT_ID ="productID";
         public static final String COLUMN_TRANS_D_QTY = "qty";
         public static final String COLUMN_TRANS_D_CREATE_AT = "createAt";
@@ -64,6 +67,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
 
     public static synchronized ProductDBHelper getInstance(Context context){
         if(productDBHelper==null){
+
             productDBHelper = new ProductDBHelper(context.getApplicationContext());
         }
         return productDBHelper;
@@ -99,10 +103,12 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         String CREATE_TABLE_TRANS_D = "CREATE TABLE IF NOT EXISTS "+Table.TABLE_TRANS_D + " ( " +
 //                Table.COLUMN_TRANS_SHOPID+" INTEGER , "+
                 Table.COLUMN_TRANS_D_ID+" INTEGER, " +
-                Table.COLUMN_TRANS_D_PRODUCT_ID+" REAL, " +
-                Table.COLUMN_TRANS_D_QTY+ " REAL, "+
+                Table.COLUMN_TRANS_D_NAME+" TEXT, " +
+                Table.COLUMN_TRANS_D_PRICE+" REAL, " +
+                Table.COLUMN_TRANS_D_COST+" REAL, " +
+                Table.COLUMN_TRANS_D_QTY+ " INTEGER, "+
                 Table.COLUMN_TRANS_D_CREATE_AT + " TEXT, " +
-                "PRIMARY KEY ("+Table.COLUMN_TRANS_D_PRODUCT_ID+", "+Table.COLUMN_TRANS_D_ID+")" +
+                "PRIMARY KEY ("+Table.COLUMN_TRANS_D_NAME+", "+Table.COLUMN_TRANS_D_ID+")" +
                 ")";
 //        db.execSQL(DROP_PRODUCT);
 //        db.execSQL(DROP_TRANS); เอาออกดีกว่า เราลบแค่ครั้งแรกตอนเข้าแอพ , เ method นี้ทำงาน มากกว่า 1 ครั้ง ถ้าไปสั่ง new
@@ -186,14 +192,13 @@ public class ProductDBHelper extends SQLiteOpenHelper {
 
     }
     public void loadTransaction(JSONArray jsonArray){// bug insert null
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db2 = this.getWritableDatabase();
         for(int i=0;i<jsonArray.length();i++){
             try {
                 ContentValues values2 = new ContentValues();
                 JSONObject jsonObj = jsonArray.getJSONObject(i);
 //                Log.d(Table.TAG, jsonObj.toString());
-                String createAt = jsonObj.getString(Table.COLUMN_TRANS_CREATE_AT).replace("T"," ");
-                createAt = createAt.substring(0, createAt.indexOf('.'));
+
                 values2.put(Table.COLUMN_TRANS_ID, jsonObj.getInt(Table.COLUMN_TRANS_ID));
                 values2.put(Table.COLUMN_TRANS_REF_ID, jsonObj.getInt(Table.COLUMN_TRANS_REF_ID));
                 values2.put(Table.COLUMN_TRANS_USERNAME, jsonObj.getString(Table.COLUMN_TRANS_USERNAME));
@@ -201,16 +206,64 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 values2.put(Table.COLUMN_TRANS_DISCOUNT, jsonObj.getDouble(Table.COLUMN_TRANS_DISCOUNT));
                 values2.put(Table.COLUMN_TRANS_DISCOUNT_DETAIL, jsonObj.getString(Table.COLUMN_TRANS_DISCOUNT_DETAIL));
                 values2.put(Table.COLUMN_TRANS_STATUS, jsonObj.getString(Table.COLUMN_TRANS_STATUS));
-                values2.put(Table.COLUMN_TRANS_CREATE_AT, createAt);
-                db.insert(Table.TABLE_TRANS, null, values2);
+                values2.put(Table.COLUMN_TRANS_CREATE_AT, jsonObj.getString(Table.COLUMN_TRANS_CREATE_AT));
+                db2.insert(Table.TABLE_TRANS, null, values2);
                 System.out.println("Insert "+values2.getAsString(Table.COLUMN_TRANS_ID));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         // values.put();
-        db.close();
+        db2.close();
 
+    }
+    public void loadTransactionDetail(JSONArray jsonArray){// bug insert null
+        SQLiteDatabase db2 = this.getWritableDatabase();
+        for(int i=0;i<jsonArray.length();i++){
+            try {
+                ContentValues values2 = new ContentValues();
+                JSONObject jsonObj = jsonArray.getJSONObject(i);
+//                Log.d(Table.TAG, jsonObj.toString());
+
+                values2.put(Table.COLUMN_TRANS_D_ID, jsonObj.getInt(Table.COLUMN_TRANS_D_ID));
+                values2.put(Table.COLUMN_TRANS_D_NAME, jsonObj.getString(Table.COLUMN_TRANS_D_NAME));
+                values2.put(Table.COLUMN_TRANS_D_PRICE, jsonObj.getDouble(Table.COLUMN_TRANS_D_PRICE));
+                values2.put(Table.COLUMN_TRANS_D_COST, jsonObj.getDouble(Table.COLUMN_TRANS_D_COST));
+                values2.put(Table.COLUMN_TRANS_D_QTY, jsonObj.getInt(Table.COLUMN_TRANS_D_QTY));
+                values2.put(Table.COLUMN_TRANS_D_CREATE_AT,jsonObj.getString(Table.COLUMN_TRANS_D_CREATE_AT));
+
+                db2.insert(Table.TABLE_TRANS_D, null, values2);
+                System.out.println("Insert "+values2.getAsString(Table.COLUMN_TRANS_D_ID));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        // values.put();
+        db2.close();
+
+    }
+
+    public JSONArray getTrans(){
+        JSONArray transDetailList = new JSONArray();
+        String sql = "SELECT tt.transactionID,tt.username,tt.total,tt.createAt FROM transaction_table tt";
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        Cursor cursor = db.rawQuery(sql, null);
+        cursor.moveToFirst();
+        for(int i=0;i< cursor.getCount();i++){
+            JSONObject transDetail = new JSONObject();
+            try {
+                transDetail.put(Table.COLUMN_TRANS_ID,cursor.getString(cursor.getColumnIndex(Table.COLUMN_TRANS_ID)));
+                transDetail.put(Table.COLUMN_TRANS_USERNAME,cursor.getString(cursor.getColumnIndex(Table.COLUMN_TRANS_USERNAME)));
+                transDetail.put(Table.COLUMN_TRANS_TOTAL,cursor.getString(cursor.getColumnIndex(Table.COLUMN_TRANS_TOTAL)));
+                transDetail.put(Table.COLUMN_TRANS_CREATE_AT,cursor.getString(cursor.getColumnIndex(Table.COLUMN_TRANS_CREATE_AT)));
+                transDetailList.put(transDetail);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return  transDetailList;
     }
 
     public JSONObject getJSONTransaction(ArrayList<Product> products, String detail, float discount, float total){

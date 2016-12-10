@@ -38,6 +38,7 @@ public class Constant {
     public final static String URL_GET_ALL_PRODUCT = URL_SERVER+"/api/product/"+SHOP_ID;
     public final static String URL_SEND_TRANSACTION =  URL_SERVER+"/api/transaction";
     // Tag Fragment
+    public final static String TAG_FRAGMENT_RECEIPT_MAIN = "tag_receipt_main";
     public final static String TAG_FRAGMENT_PAYMENT_MAIN = "tag_fragment_main";
     public final static String TAG_FRAGMENT_PAYMENT_END = "tag_fragment_end";
     public final static String TAG_FRAGMENT_DIALOG_ALERT = "tag_fragment_dialog_alert";
