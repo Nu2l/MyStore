@@ -14,7 +14,7 @@ import com.example.sin.projectone.R;
  * Created by naki_ on 11/25/2016.
  */
 
-public class Main extends ListFragment {
+public class Main extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_receipt_main, container, false);
