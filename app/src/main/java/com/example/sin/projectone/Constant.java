@@ -23,6 +23,8 @@ public class Constant {
     public final static String KEY_JSON_PRODUCT_img = "imgName";
 
     public final static String KEY_JSON_USERID = "userID";
+
+
     //
     // Permission
     public static final int REQUEST_IMAGE_CAPTURE = 1;

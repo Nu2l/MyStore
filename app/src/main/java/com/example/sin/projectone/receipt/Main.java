@@ -20,6 +20,6 @@ public class Main extends ListFragment {
         View view  = inflater.inflate(R.layout.fragment_receipt_main, container, false);
 
         return view;
-        
+
     }
 }
