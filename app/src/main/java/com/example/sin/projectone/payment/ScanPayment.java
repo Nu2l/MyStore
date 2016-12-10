@@ -50,7 +50,7 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     private ImageView _ProductImg;
     @Override
     public void handleResult(Result barCode) {
-        Product product = ProductDBHelper.getInstance(getActivity().getApplicationContext()).searchProduct(barCode.toString());
+        Product product = ProductDBHelper.getInstance(getActivity().getApplicationContext()).searchProductByBarCode(barCode.toString());
         if(product!=null){
             int tryAdd;
             int buyCount=1;

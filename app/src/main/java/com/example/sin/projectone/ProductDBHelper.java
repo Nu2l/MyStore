@@ -123,13 +123,29 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
-    public Product searchProduct(String bacode){
+    public Product searchProductByBarCode(String bacode){
         String sql = "SELECT * FROM "+Table.TABLE_PRODUCT +
                 " WHERE "+Table.COLUMN_BARCODE +" = '"+bacode+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
         Cursor cursor = db.rawQuery(sql, null);
-        ShowListProduct();
+        if(cursor.moveToFirst()) {
+            db.close();
+            System.out.println(cursor.getString(cursor.getColumnIndex(Table.COLUMN_P_ID)));
+            return Product.CursorToProduct(cursor);
+        }
+        else{
+            db.close();
+            return null;
+        }
+    }
+
+    public Product searchProductByID(String id){
+        String sql = "SELECT * FROM "+Table.TABLE_PRODUCT +
+                " WHERE "+Table.COLUMN_P_ID +" = '"+id+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        Cursor cursor = db.rawQuery(sql, null);
         if(cursor.moveToFirst()) {
             db.close();
             System.out.println(cursor.getString(cursor.getColumnIndex(Table.COLUMN_P_ID)));
@@ -173,7 +189,6 @@ public class ProductDBHelper extends SQLiteOpenHelper {
             }
         }
        // values.put();
-        ShowListProduct();// debug
         db.close();
 
     }
