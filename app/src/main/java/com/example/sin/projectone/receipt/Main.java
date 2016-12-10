@@ -17,7 +17,7 @@ import com.example.sin.projectone.R;
 public class Main extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view  = inflater.inflate(R.layout.fragment_receipt_main, container, false);
+        View view  = inflater.inflate(R.layout.fragment_report_main, container, false);
 
         return view;
 

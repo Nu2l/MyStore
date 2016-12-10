@@ -91,14 +91,15 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 Table.COLUMN_IMG+" TEXT)";
 
         String CREATE_TABLE_TRANS = "CREATE TABLE IF NOT EXISTS "+Table.TABLE_TRANS + " ( " +
-                Table.COLUMN_TRANS_ID+" INTEGER PRIMARY KEY , "+
+                Table.COLUMN_TRANS_ID+" INTEGER  , "+
                 Table.COLUMN_TRANS_REF_ID+" INTEGER , "+
                 Table.COLUMN_TRANS_USERNAME+" TEXT, " +
                 Table.COLUMN_TRANS_TOTAL+" REAL, " +
                 Table.COLUMN_TRANS_DISCOUNT+ " REAL, "+
                 Table.COLUMN_TRANS_DISCOUNT_DETAIL + " TEXT, " +
                 Table.COLUMN_TRANS_CREATE_AT + " TEXT, " +
-                Table.COLUMN_TRANS_STATUS+" INTEGER)";
+                Table.COLUMN_TRANS_STATUS+" INTEGER," +
+                "PRIMARY KEY ("+Table.COLUMN_TRANS_ID+") ON CONFLICT IGNORE)";
 
         String CREATE_TABLE_TRANS_D = "CREATE TABLE IF NOT EXISTS "+Table.TABLE_TRANS_D + " ( " +
 //                Table.COLUMN_TRANS_SHOPID+" INTEGER , "+
@@ -108,7 +109,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 Table.COLUMN_TRANS_D_COST+" REAL, " +
                 Table.COLUMN_TRANS_D_QTY+ " INTEGER, "+
                 Table.COLUMN_TRANS_D_CREATE_AT + " TEXT, " +
-                "PRIMARY KEY ("+Table.COLUMN_TRANS_D_NAME+", "+Table.COLUMN_TRANS_D_ID+")" +
+                "PRIMARY KEY ("+Table.COLUMN_TRANS_D_NAME+", "+Table.COLUMN_TRANS_D_ID+") ON CONFLICT IGNORE" +
                 ")";
 //        db.execSQL(DROP_PRODUCT);
 //        db.execSQL(DROP_TRANS); เอาออกดีกว่า เราลบแค่ครั้งแรกตอนเข้าแอพ , เ method นี้ทำงาน มากกว่า 1 ครั้ง ถ้าไปสั่ง new
