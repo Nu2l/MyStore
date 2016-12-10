@@ -2,6 +2,7 @@ package com.example.sin.projectone.payment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.example.sin.projectone.MessageAlertDialog;
 import com.example.sin.projectone.Product;
 import com.example.sin.projectone.ProductAdapter;
 import com.example.sin.projectone.ProductDetailDialog;
+import com.example.sin.projectone.ProductPaymentDialog;
 import com.example.sin.projectone.R;
 import com.example.sin.projectone.SwipeDetector;
 
@@ -76,7 +78,7 @@ public class Main extends Fragment  {
                     endPayment.setArguments(product_bundle);
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_container_payment, endPayment, Constant.TAG_FRAGMENT_PAYMENT_END);
-                    //transaction.addToBackStack(null);
+                    transaction.addToBackStack(null);
                     transaction.commit();
                 }
                 else{
@@ -92,8 +94,16 @@ public class Main extends Fragment  {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProductDetailDialog detailDialog = new ProductDetailDialog();
-                detailDialog.show(Main.this.getFragmentManager(), Constant.TAG_FRAGMENT_DIALOG_PRODUCT_DETAIL);
+                String tag = Constant.TAG_FRAGMENT_DIALOG_PRODUCT_DETAIL;
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                Fragment prev = getFragmentManager().findFragmentByTag(tag);
+                if(prev!=null){
+                    transaction.remove(prev);
+                }
+                transaction.addToBackStack(null);
+                ProductPaymentDialog detailDialog = ProductPaymentDialog.newInstance(products.get(0));
+                detailDialog.setTargetFragment(Main.this, Constant.REQUEST_CODE_PRODUCT_PAYMENT_DIALOG);
+                detailDialog.show(transaction, tag);
             }
         };
     }
@@ -137,4 +147,17 @@ public class Main extends Fragment  {
         adapter.notifyDataSetChanged();
         return Integer.parseInt(product.id);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constant.REQUEST_CODE_PRODUCT_PAYMENT_DIALOG && resultCode == Constant.RESULT_CODE_PRODUCT_PAYMENT_DIALOG) {
+            Product product = data.getParcelableExtra(Constant.KEY_INTENT_PRODUCT);
+            String n = product.name;
+            int qty = product.qty;
+            String a = product.name;
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+
 }

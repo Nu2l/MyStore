@@ -42,11 +42,16 @@ public class Constant {
     public final static String TAG_FRAGMENT_PAYMENT_END = "tag_fragment_end";
     public final static String TAG_FRAGMENT_DIALOG_ALERT = "tag_fragment_dialog_alert";
     public final static String TAG_FRAGMENT_DIALOG_PRODUCT_DETAIL = "tag_fragment_dialog_alert";
+    // Key Intent
+    public final static String KEY_INTENT_PRODUCT = "key_intent_product";
     // Key Bundle
     public final static String KEY_BUNDLE_ARRAYLIST_PRODUCT = "key_bundle_array_list_product";
     public final static String KEY_BUNDLE_MESSAGE_DIALOG = "key_bundle_message_dialog";
     public final static String KEY_BUNDLE_TITLE_DIALOG = "key_bundle_title_dialog";
-
+    public final static String KEY_BUNDLE_PRODUCT= "key_bundle_product";
+    // Request code
+    public final static int REQUEST_CODE_PRODUCT_PAYMENT_DIALOG = 1000001;
+    public final static int RESULT_CODE_PRODUCT_PAYMENT_DIALOG =  2000001;
     //message
     public final static String MESSAGE_ALERT_PRODUCT_SCAN_FIRST = "Please scan the product first";
 

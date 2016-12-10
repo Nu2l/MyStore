@@ -1,9 +1,6 @@
 package com.example.sin.projectone;
 
-import android.app.Activity;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
@@ -23,7 +20,7 @@ public class ScannerFragment extends BarCodeScannerFragment {
         this.setmCallBack(new IResultCallback() {
             @Override
             public void result(Result lastResult) {
-                Product product = ProductDBHelper.getInstance(ScannerFragment.super.getContext()).searchProduct(lastResult.toString());
+                Product product = ProductDBHelper.getInstance(ScannerFragment.super.getContext()).searchProductByBarCode(lastResult.toString());
                 //Toast.makeText(getActivity(), "Scan: " + lastResult.toString(), Toast.LENGTH_SHORT).show();
                 if(product!=null){
                     boolean tryAdd;
