@@ -19,6 +19,7 @@ public class MainNav extends MaterialNavigationDrawer {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        this.deleteDatabase(ProductDBHelper.DATABASE_NAME); // debug
         loadProducts();
         loadTransaction();
         this.addSection(newSection("Payment", new com.example.sin.projectone.payment.Container()));
@@ -34,7 +35,6 @@ public class MainNav extends MaterialNavigationDrawer {
     }
 
     private boolean loadProducts(){
-//        this.deleteDatabase(ProductDBHelper.DATABASE_NAME); // debug
         WebService.getAllProduct(new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

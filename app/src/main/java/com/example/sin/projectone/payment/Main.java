@@ -11,12 +11,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.sin.projectone.ApplicationHelper;
 import com.example.sin.projectone.Constant;
+import com.example.sin.projectone.MessageAlertDialog;
 import com.example.sin.projectone.Product;
 import com.example.sin.projectone.ProductAdapter;
+import com.example.sin.projectone.ProductDetailDialog;
 import com.example.sin.projectone.R;
 import com.example.sin.projectone.SwipeDetector;
 
@@ -63,6 +64,7 @@ public class Main extends Fragment  {
         _productList.setOnItemClickListener(onItemClickListener());
         return view;
     }
+
     private View.OnClickListener nextBtnClick() {
         return new View.OnClickListener() {
             @Override
@@ -78,7 +80,9 @@ public class Main extends Fragment  {
                     transaction.commit();
                 }
                 else{
-                    Toast.makeText(Main.this.getActivity().getApplicationContext(), "please add products first",Toast.LENGTH_SHORT).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG, Constant.MESSAGE_ALERT_PRODUCT_SCAN_FIRST);
+                    MessageAlertDialog.newInstance(bundle).show(getFragmentManager(), Constant.TAG_FRAGMENT_DIALOG_ALERT);
                 }
             }
         };
@@ -88,12 +92,8 @@ public class Main extends Fragment  {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment newFragment = new EndPayment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_container_scanner, newFragment);
-                //transaction.addToBackStack(null);
-                transaction.commit();
-
+                ProductDetailDialog detailDialog = new ProductDetailDialog();
+                detailDialog.show(Main.this.getFragmentManager(), Constant.TAG_FRAGMENT_DIALOG_PRODUCT_DETAIL);
             }
         };
     }
@@ -129,7 +129,6 @@ public class Main extends Fragment  {
             }
         };
     }
-
 
     public int addProductPayment(Product product){
         if(!adapter.addQtyProduct(product.id,1)){

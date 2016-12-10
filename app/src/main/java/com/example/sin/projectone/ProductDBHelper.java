@@ -66,10 +66,6 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         if(productDBHelper==null){
             productDBHelper = new ProductDBHelper(context.getApplicationContext());
         }
-        else{
-            context.deleteDatabase(ProductDBHelper.DATABASE_NAME);
-            productDBHelper = new ProductDBHelper(context.getApplicationContext());
-        }
         return productDBHelper;
     }
 
@@ -108,9 +104,9 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 Table.COLUMN_TRANS_D_CREATE_AT + " TEXT, " +
                 "PRIMARY KEY ("+Table.COLUMN_TRANS_D_PRODUCT_ID+", "+Table.COLUMN_TRANS_D_ID+")" +
                 ")";
-        db.execSQL(DROP_PRODUCT);
-        db.execSQL(DROP_TRANS);
-        db.execSQL(DROP_TRANS_D);
+//        db.execSQL(DROP_PRODUCT);
+//        db.execSQL(DROP_TRANS); เอาออกดีกว่า เราลบแค่ครั้งแรกตอนเข้าแอพ , เ method นี้ทำงาน มากกว่า 1 ครั้ง ถ้าไปสั่ง new
+//        db.execSQL(DROP_TRANS_D);
         db.execSQL(CREATE_TABLE_PRODUCT);
         db.execSQL(CREATE_TABLE_TRANS);
         db.execSQL(CREATE_TABLE_TRANS_D);
@@ -126,6 +122,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
         Cursor cursor = db.rawQuery(sql, null);
+        ShowListProduct();
         if(cursor.moveToFirst()) {
             db.close();
             System.out.println(cursor.getString(cursor.getColumnIndex(Table.COLUMN_P_ID)));
@@ -136,6 +133,17 @@ public class ProductDBHelper extends SQLiteOpenHelper {
             return null;
         }
 
+    }
+
+    public void ShowListProduct(){
+        String sql = "SELECT * FROM "+Table.TABLE_PRODUCT;
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        Cursor cursor = db.rawQuery(sql, null);
+        cursor.moveToFirst();
+        for(int i=0;i< cursor.getCount();i++){
+            String a = cursor.getString(cursor.getColumnIndex(Table.COLUMN_P_ID));
+        }
     }
 
     public void LoadProduct(JSONArray jsonArray){// bug insert null
@@ -158,6 +166,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
             }
         }
        // values.put();
+        ShowListProduct();// debug
         db.close();
 
     }

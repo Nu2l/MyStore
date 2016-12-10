@@ -40,10 +40,18 @@ public class Constant {
     // Tag Fragment
     public final static String TAG_FRAGMENT_PAYMENT_MAIN = "tag_fragment_main";
     public final static String TAG_FRAGMENT_PAYMENT_END = "tag_fragment_end";
+    public final static String TAG_FRAGMENT_DIALOG_ALERT = "tag_fragment_dialog_alert";
+    public final static String TAG_FRAGMENT_DIALOG_PRODUCT_DETAIL = "tag_fragment_dialog_alert";
     // Key Bundle
-    public final static String KEY_BUNDLE_ARRAYLIST_PRODUCT = "array_list_product";
+    public final static String KEY_BUNDLE_ARRAYLIST_PRODUCT = "key_bundle_array_list_product";
+    public final static String KEY_BUNDLE_MESSAGE_DIALOG = "key_bundle_message_dialog";
+    public final static String KEY_BUNDLE_TITLE_DIALOG = "key_bundle_title_dialog";
+
+    //message
+    public final static String MESSAGE_ALERT_PRODUCT_SCAN_FIRST = "Please scan the product first";
 
     // other
     // path to /data/data/com.example.sin.projectone/app_productImg
     public final static String FOLDER_PHOTO = "productImg";
+
 }
