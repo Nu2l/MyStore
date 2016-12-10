@@ -27,7 +27,7 @@ public class EndPayment extends AppCompatActivity {
             products = b.getParcelableArrayList("products");
         }
         _ProductList = (ListView)findViewById(R.id.product_list);
-        adapter = new ProductAdapter(this,products);
+        adapter = new ProductAdapter(this,products, R.layout.list_item_endpayment);
         _ProductList.setAdapter(adapter);
 //        _btnBack = (Button)findViewById(R.id.btn_back_endPay);
 //        _btnFinish = (Button)findViewById(R.id.btn_fin_endPay);
