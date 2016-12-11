@@ -4,7 +4,9 @@ package com.example.sin.projectone;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 /**
@@ -16,6 +18,7 @@ public class MessageAlertDialog extends DialogFragment {
     private String textBtnOk = "OK";
     private String textBtnCancel = "Cancel";
     private String titel ="Message alert";
+    private boolean hasOkCancelButton = true;
 
     public static MessageAlertDialog newInstance(Bundle bundle){
         MessageAlertDialog dialog = new MessageAlertDialog();
@@ -29,21 +32,34 @@ public class MessageAlertDialog extends DialogFragment {
         if(b!=null){
             message = b.getString(Constant.KEY_BUNDLE_MESSAGE_DIALOG, message);
             titel = b.getString(Constant.KEY_BUNDLE_TITLE_DIALOG, titel);
+            hasOkCancelButton = b.getBoolean(Constant.KEY_BYNDLE_HAS_OK_CANCEL_DIALOG, true);
         }
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(titel);
-        builder.setMessage(message)
-                .setPositiveButton(textBtnOk, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // FIRE ZE MISSILES!
-                    }
-                })
-                .setNegativeButton(textBtnCancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
+        if(hasOkCancelButton){
+            builder.setMessage(message)
+                    .setPositiveButton(textBtnOk, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Fragment target = getTargetFragment();
+                            if(target!=null){
+                                target.onActivityResult(Constant.REQUEST_CODE_OK_CANCEL, Constant.RESULT_CODE_OK, new Intent());
+                            }
+                        }
+                    })
+                    .setNegativeButton(textBtnCancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Fragment target = getTargetFragment();
+                            if(target!=null){
+                                target.onActivityResult(Constant.REQUEST_CODE_OK_CANCEL, Constant.RESULT_CODE_CANCEL, new Intent());
+                            }
+                        }
+                    });
+        }
+        else{
+            builder.setMessage(message);
+        }
+
         // Create the AlertDialog object and return it
         return builder.create();
     }

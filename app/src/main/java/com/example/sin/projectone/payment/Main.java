@@ -1,6 +1,7 @@
 package com.example.sin.projectone.payment;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,15 +38,22 @@ public class Main extends Fragment  {
     private boolean flagShowListView = false;
     private SwipeDetector swipeDetector = new SwipeDetector();
     private LinearLayout layout_listview, layout_scanner;
+    private FragmentManager fragmentManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_payment_main, container, false);
+        fragmentManager = getFragmentManager();
         Fragment newFragment = new ScanPayment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        String tagFragment = Constant.TAG_FRAGMENT_SCAN_PAYMENT;
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment checkFragment = fragmentManager.findFragmentByTag(tagFragment);
+        if(checkFragment!=null){
+            transaction.remove(checkFragment);
+        }
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack if needed
-        transaction.replace(R.id.frame_container_scanner, newFragment);
+        transaction.replace(R.id.frame_container_scanner, newFragment, tagFragment);
         //transaction.addToBackStack();
         // Commit the transaction
         transaction.commit();
@@ -74,9 +82,14 @@ public class Main extends Fragment  {
                 if(!products.isEmpty() && products.size()>0){
                     Bundle product_bundle = new Bundle();
                     product_bundle.putParcelableArrayList(Constant.KEY_BUNDLE_ARRAYLIST_PRODUCT, products);
+                    String tagFragment = Constant.TAG_FRAGMENT_PAYMENT_END;
                     Fragment endPayment = new EndPayment();
                     endPayment.setArguments(product_bundle);
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    Fragment checkFragment = fragmentManager.findFragmentByTag(tagFragment);
+                    if(checkFragment!=null){
+                        transaction.remove(checkFragment);
+                    }
                     transaction.replace(R.id.frame_container_payment, endPayment, Constant.TAG_FRAGMENT_PAYMENT_END);
                     transaction.addToBackStack(null);
                     transaction.commit();
@@ -84,7 +97,7 @@ public class Main extends Fragment  {
                 else{
                     Bundle bundle = new Bundle();
                     bundle.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG, Constant.MESSAGE_ALERT_PRODUCT_SCAN_FIRST);
-                    MessageAlertDialog.newInstance(bundle).show(getFragmentManager(), Constant.TAG_FRAGMENT_DIALOG_ALERT);
+                    MessageAlertDialog.newInstance(bundle).show(fragmentManager, Constant.TAG_FRAGMENT_DIALOG_ALERT);
                 }
             }
         };
@@ -95,12 +108,11 @@ public class Main extends Fragment  {
             @Override
             public void onClick(View v) {
                 String tag = Constant.TAG_FRAGMENT_DIALOG_PRODUCT_DETAIL;
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                Fragment prev = getFragmentManager().findFragmentByTag(tag);
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                Fragment prev = fragmentManager.findFragmentByTag(tag);
                 if(prev!=null){
                     transaction.remove(prev);
                 }
-                transaction.addToBackStack(null);
                 ProductPaymentDialog detailDialog = ProductPaymentDialog.newInstance(products.get(0));
                 detailDialog.setTargetFragment(Main.this, Constant.REQUEST_CODE_PRODUCT_PAYMENT_DIALOG);
                 detailDialog.show(transaction, tag);
@@ -150,13 +162,32 @@ public class Main extends Fragment  {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constant.REQUEST_CODE_PRODUCT_PAYMENT_DIALOG && resultCode == Constant.RESULT_CODE_PRODUCT_PAYMENT_DIALOG) {
-            Product product = data.getParcelableExtra(Constant.KEY_INTENT_PRODUCT);
-            String n = product.name;
-            int qty = product.qty;
-            String a = product.name;
+        if (requestCode == Constant.REQUEST_CODE_PRODUCT_PAYMENT_DIALOG ) {
+            //Product product = data.getParcelableExtra(Constant.KEY_INTENT_PRODUCT);
             adapter.notifyDataSetChanged();
         }
+        if (requestCode==Constant.REQUEST_CODE_OK_CANCEL && resultCode==Constant.RESULT_CODE_CANCEL){
+            reset();
+        }
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        if(products.size()>0){
+            Bundle bundle = new Bundle();
+            bundle.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG, "Continue Scan last product ?");
+            MessageAlertDialog dialog = MessageAlertDialog.newInstance(bundle);
+            dialog.setTargetFragment(Main.this, Constant.REQUEST_CODE_OK_CANCEL);
+            dialog.show(fragmentManager,Constant.TAG_FRAGMENT_DIALOG_ALERT);
+        }
+    }
+
+    public void reset(){
+        flagShowListView = false;
+        products.clear();
+        adapter.clear();
+        adapter.notifyDataSetChanged();
     }
 
 
