@@ -14,6 +14,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.loopj.android.http.AsyncHttpClient.log;
+
 /**
  * Created by nanth on 11/23/2016.
  */
@@ -98,6 +100,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 Table.COLUMN_IMG+" TEXT)";
 
         String CREATE_TABLE_TRANS = "CREATE TABLE IF NOT EXISTS "+Table.TABLE_TRANS + " ( " +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT ,"+
                 Table.COLUMN_TRANS_ID+" INTEGER  , "+
                 Table.COLUMN_TRANS_REF_ID+" INTEGER , "+
                 Table.COLUMN_TRANS_USERNAME+" TEXT, " +
@@ -106,21 +109,23 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 Table.COLUMN_TRANS_DISCOUNT_DETAIL + " TEXT, " +
                 Table.COLUMN_TRANS_CREATE_AT + " TEXT, " +
                 Table.COLUMN_TRANS_STATUS+" INTEGER," +
-                "PRIMARY KEY ("+Table.COLUMN_TRANS_ID+") ON CONFLICT IGNORE)";
+                "UNIQUE ( "+Table.COLUMN_TRANS_D_ID+" ) ON CONFLICT IGNORE)";
 
         String CREATE_TABLE_TRANS_D = "CREATE TABLE IF NOT EXISTS "+Table.TABLE_TRANS_D + " ( " +
 //                Table.COLUMN_TRANS_SHOPID+" INTEGER , "+
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT ,"+
                 Table.COLUMN_TRANS_D_ID+" INTEGER, " +
                 Table.COLUMN_TRANS_D_NAME+" TEXT, " +
                 Table.COLUMN_TRANS_D_PRICE+" REAL, " +
                 Table.COLUMN_TRANS_D_COST+" REAL, " +
                 Table.COLUMN_TRANS_D_QTY+ " INTEGER, "+
                 Table.COLUMN_TRANS_D_CREATE_AT + " TEXT, " +
-                "PRIMARY KEY ("+Table.COLUMN_TRANS_D_NAME+", "+Table.COLUMN_TRANS_D_ID+") ON CONFLICT IGNORE" +
+                "UNIQUE ("+Table.COLUMN_TRANS_D_ID+", "+ Table.COLUMN_TRANS_D_NAME+") ON CONFLICT IGNORE" +
                 ")";
 //        db.execSQL(DROP_PRODUCT);
 //        db.execSQL(DROP_TRANS); เอาออกดีกว่า เราลบแค่ครั้งแรกตอนเข้าแอพ , เ method นี้ทำงาน มากกว่า 1 ครั้ง ถ้าไปสั่ง new
 //        db.execSQL(DROP_TRANS_D);
+        log.d("DB",CREATE_TABLE_TRANS);
         db.execSQL(CREATE_TABLE_PRODUCT);
         db.execSQL(CREATE_TABLE_TRANS);
         db.execSQL(CREATE_TABLE_TRANS_D);
@@ -331,6 +336,18 @@ public class ProductDBHelper extends SQLiteOpenHelper {
             return null;
         }
 
+    }
+    public  Cursor getTransaction(){
+        String sql = "SELECT tt._id, tt.transactionID,tt.total,tt.createAt, tt.username, tt.discount FROM transaction_table tt";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        return  cursor;
+    }
+    public Cursor getTransactionDetail(String whereCol){
+        String sql = "SELECT _id, name, price,qty FROM transactionDetail WHERE transactionID = "+whereCol;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        return  cursor;
     }
 
 
