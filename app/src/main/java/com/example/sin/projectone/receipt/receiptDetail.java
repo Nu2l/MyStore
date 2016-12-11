@@ -6,6 +6,6 @@ import android.app.ListFragment;
  * Created by naki_ on 12/11/2016.
  */
 
-public class ReceiptDetail extends ListFragment {
-
-}
+//public class ReceiptDetail extends ListFragment {
+//
+//}

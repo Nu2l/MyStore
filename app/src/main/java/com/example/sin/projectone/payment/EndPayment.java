@@ -112,19 +112,20 @@ public class EndPayment extends Fragment {
 //                if(products.isEmpty() || products.size()==0){ // block send data more once
 //                    return;
 //                }
-                final String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
-                final FragmentTransaction tran = fragmentManager.beginTransaction();
-                Fragment prev = fragmentManager.findFragmentByTag(tag);
-                if(prev!=null){
-                    tran.remove(prev);
-                }
-                Bundle b = new Bundle();
-                b.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG,"Please Wait..");
-                b.putString(Constant.KEY_BUNDLE_TITLE_DIALOG, "Sending");
-                b.putBoolean(Constant.KEY_BYNDLE_HAS_OK_CANCEL_DIALOG,false);
-                final MessageAlertDialog dialog =  MessageAlertDialog.newInstance(b);
-                dialog.show(fragmentManager, tag);
-
+//                final String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
+//                final FragmentTransaction tran = fragmentManager.beginTransaction();
+//                Fragment prev = fragmentManager.findFragmentByTag(tag);
+//                if(prev!=null){
+//                    tran.remove(prev);
+//                }
+//                Bundle b = new Bundle();
+//                b.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG,"Please Wait..");
+//                b.putString(Constant.KEY_BUNDLE_TITLE_DIALOG, "Sending");
+//                b.putBoolean(Constant.KEY_BYNDLE_HAS_OK_CANCEL_DIALOG,false);
+//                final MessageAlertDialog dialog =  MessageAlertDialog.newInstance(b);
+//                dialog.show(fragmentManager, tag);
+                final ProgressDialog progress = ProgressDialog.show(EndPayment.this.getActivity(), "Loading",
+                        "Please wait ...", true);
 
                 String detail = "";
                 float discount = 0.0f;
@@ -141,7 +142,7 @@ public class EndPayment extends Fragment {
                 WebService.sendTransaction(new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        dialog.dismiss();
+                        progress.dismiss();
                         final String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
                         int tranId = -1;
                         try {
@@ -176,7 +177,7 @@ public class EndPayment extends Fragment {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        dialog.dismiss();
+                        progress.dismiss();
                         ((Main)fragmentManager.findFragmentByTag(Constant.TAG_FRAGMENT_PAYMENT_MAIN)).reset();
                         fragmentManager.popBackStack();
 

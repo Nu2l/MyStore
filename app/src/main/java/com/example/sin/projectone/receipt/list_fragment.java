@@ -1,5 +1,6 @@
 package com.example.sin.projectone.receipt;
 
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.database.Cursor;
@@ -79,8 +80,10 @@ public class list_fragment extends ListFragment implements AdapterView.OnItemCli
         args.putString("total", strTotal);
         args.putString("discount", strDisc);
         args.putString("create", strCreate);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.addToBackStack(null);
         transDetail.setArguments(args);
-        getFragmentManager().beginTransaction().replace(R.id.fragment_receipt_container, transDetail).commit();
+        fragmentTransaction.replace(R.id.fragment_receipt_container, transDetail).commit();
     }
 
     private boolean loadTransaction(){
