@@ -24,16 +24,16 @@ import org.json.JSONArray;
  */
 
 public class Container extends Fragment {
-    static View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        if(view == null){
-             view = inflater.inflate(R.layout.fragment_receipt_container, container, false);
-        }
+
+        View view = inflater.inflate(R.layout.fragment_receipt_container, container, false);
+
         Fragment newFragment = new Main();
-//        JSONArray transList = ProductDBHelper.getInstance(Container.this.getActivity()).getTrans();
-//        System.out.println(transList);
+        JSONArray transList = ProductDBHelper.getInstance(Container.this.getActivity()).getTrans();
+        System.out.println(transList);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack if needed

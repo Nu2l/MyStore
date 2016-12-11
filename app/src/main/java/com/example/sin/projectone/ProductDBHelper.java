@@ -259,6 +259,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 transDetail.put(Table.COLUMN_TRANS_TOTAL,cursor.getString(cursor.getColumnIndex(Table.COLUMN_TRANS_TOTAL)));
                 transDetail.put(Table.COLUMN_TRANS_CREATE_AT,cursor.getString(cursor.getColumnIndex(Table.COLUMN_TRANS_CREATE_AT)));
                 transDetailList.put(transDetail);
+                cursor.moveToNext();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
