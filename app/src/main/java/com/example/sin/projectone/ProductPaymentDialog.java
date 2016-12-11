@@ -1,5 +1,6 @@
 package com.example.sin.projectone;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -54,7 +55,7 @@ public class ProductPaymentDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 try{
-                    product.qty = Integer.parseInt(edt_p_qty.getText().toString());
+                    product.qty = Integer.parseInt(edt_p_qty.getText().toString());// pass reference .qty
                 }
                 catch (NumberFormatException e){
                     product.qty = 0;
@@ -62,7 +63,7 @@ public class ProductPaymentDialog extends DialogFragment {
                 Intent data = new Intent();
                 data.putExtra(Constant.KEY_INTENT_PRODUCT, product);
                 getTargetFragment().onActivityResult(
-                        getTargetRequestCode(),Constant.RESULT_CODE_PRODUCT_PAYMENT_DIALOG, data
+                        getTargetRequestCode(),Constant.RESULT_CODE_PRODUCT_PAYMENT_DIALOG_SUBMIT, data
                 );
                 ProductPaymentDialog.this.dismiss();
             }
@@ -73,9 +74,13 @@ public class ProductPaymentDialog extends DialogFragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getTargetFragment().onActivityResult(
+                        getTargetRequestCode(),Constant.RESULT_CODE_PRODUCT_PAYMENT_DIALOG_CANCEL, null
+                );
                 ProductPaymentDialog.this.dismiss();
             }
         };
     }
+
 
 }

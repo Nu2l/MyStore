@@ -1,8 +1,13 @@
 package com.example.sin.projectone.payment;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +20,11 @@ import android.widget.Toast;
 
 import com.example.sin.projectone.ApplicationHelper;
 import com.example.sin.projectone.Constant;
+import com.example.sin.projectone.MessageAlertDialog;
 import com.example.sin.projectone.Product;
 import com.example.sin.projectone.ProductAdapter;
 import com.example.sin.projectone.ProductDBHelper;
+import com.example.sin.projectone.ProductPaymentDialog;
 import com.example.sin.projectone.R;
 import com.example.sin.projectone.WebService;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -39,9 +46,11 @@ public class EndPayment extends Fragment {
     private TextView text_total;
     private EditText edt_discount;
     private Button btn_back, btn_send;
+    private FragmentManager fragmentManager;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_payment_end, container, false);
+        fragmentManager = getFragmentManager();
         Bundle product_bundle = this.getArguments();
         if(product_bundle!=null){
             products = product_bundle.getParcelableArrayList(Constant.KEY_BUNDLE_ARRAYLIST_PRODUCT);
@@ -57,8 +66,8 @@ public class EndPayment extends Fragment {
         text_total =(TextView) view.findViewById(R.id.text_total);
         edt_discount = (EditText) view.findViewById(R.id.edit_text_discount);
         text_total.setText(String.valueOf(getTotal()));
-
         btn_back.setOnClickListener(onBackClick());
+        btn_send.setOnClickListener(onSendClick());
         //
         return view;
     }
@@ -67,8 +76,16 @@ public class EndPayment extends Fragment {
         return new ListView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Product product = (Product)(parent.getAdapter().getItem(position));
-                Toast.makeText(getActivity().getApplicationContext(), "item :"+ product.id  , Toast.LENGTH_SHORT).show();
+                String tag = Constant.TAG_FRAGMENT_DIALOG_PRODUCT_DETAIL;
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                Fragment prev = fragmentManager.findFragmentByTag(tag);
+                if(prev!=null){
+                    transaction.remove(prev);
+                }
+                Product product = adapter.getItem(position);
+                ProductPaymentDialog productPaymentDialog =  ProductPaymentDialog.newInstance(product);
+                productPaymentDialog.setTargetFragment(EndPayment.this, Constant.REQUEST_CODE_PRODUCT_PAYMENT_DIALOG);
+                productPaymentDialog.show(fragmentManager, tag);
             }
         };
     }
@@ -90,6 +107,23 @@ public class EndPayment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                if(products.isEmpty() || products.size()==0){ // block send data more once
+//                    return;
+//                }
+                String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
+                FragmentTransaction tran = fragmentManager.beginTransaction();
+                Fragment prev = fragmentManager.findFragmentByTag(tag);
+                if(prev!=null){
+                    tran.remove(prev);
+                }
+                Bundle b = new Bundle();
+                b.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG,"Please Wait..");
+                b.putString(Constant.KEY_BUNDLE_TITLE_DIALOG, "Sending");
+                b.putBoolean(Constant.KEY_BYNDLE_HAS_OK_CANCEL_DIALOG,false);
+                final MessageAlertDialog dialog =  MessageAlertDialog.newInstance(b);
+                dialog.show(fragmentManager, tag);
+
+
                 String detail = "";
                 float discount = 0.0f;
                 float total = 0.0f;
@@ -101,17 +135,24 @@ public class EndPayment extends Fragment {
                     return;
                 }
                 JSONObject transaction =  ProductDBHelper.getInstance(ApplicationHelper.getAppContext()).getJSONTransaction(products,detail,discount,total);
+                //products.clear(); //  block send data more once transaction
                 WebService.sendTransaction(new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
+                        dialog.dismiss();
+                        ((Main)fragmentManager.findFragmentByTag(Constant.TAG_FRAGMENT_PAYMENT_MAIN)).reset();
+                        fragmentManager.popBackStack();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        dialog.dismiss();
+                        ((Main)fragmentManager.findFragmentByTag(Constant.TAG_FRAGMENT_PAYMENT_MAIN)).reset();
+                        fragmentManager.popBackStack();
 
                     }
                 },transaction);
+
             }
         };
     }
@@ -120,10 +161,22 @@ public class EndPayment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().popBackStack();
+                fragmentManager.popBackStack();
             }
         };
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==Constant.REQUEST_CODE_PRODUCT_PAYMENT_DIALOG &&
+                resultCode==Constant.RESULT_CODE_PRODUCT_PAYMENT_DIALOG_SUBMIT){
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+
+
+
 
 
 }

@@ -8,7 +8,7 @@ import android.os.Parcelable;
  * Created by nanth on 11/25/2016.
  */
 
-public class Product implements Parcelable {
+public class Product implements Parcelable , Cloneable {
     public String id, name, barcode, price, type, imgName;
     public int qty;
 
@@ -77,6 +77,15 @@ public class Product implements Parcelable {
         dest.writeInt(qty);
     }
 
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            throw new Error("Something impossible just happened");
+        }
+    }
 
 
 }

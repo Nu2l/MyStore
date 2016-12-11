@@ -153,4 +153,5 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
 
 
 
+
 }
