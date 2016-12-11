@@ -64,6 +64,9 @@ public class Constant {
     public final static int RESULT_CODE_PRODUCT_PAYMENT_DIALOG_SUBMIT    = 1000002;
     public final static int RESULT_CODE_PRODUCT_PAYMENT_DIALOG_CANCEL    = 1000003;
 
+    public final static int REQUEST_CODE_PRODUCT_DETAIL_DIALOG           = 3000001;
+
+
     public final static int REQUEST_CODE_OK_CANCEL                       = 2000001;
     public final static int RESULT_CODE_OK                               = 2000002;
     public final static int RESULT_CODE_CANCEL                           = 2000003;
