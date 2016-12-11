@@ -24,9 +24,9 @@ public class MainNav extends MaterialNavigationDrawer {
         this.deleteDatabase(ProductDBHelper.DATABASE_NAME); // debug
         loadProducts();
         loadTransaction();
+        this.addSection(newSection("Item", new com.example.sin.projectone.item.Container()));
         this.addSection(newSection("Payment", new com.example.sin.projectone.payment.Container()));
         this.addSection(newSection("Receipt", new com.example.sin.projectone.receipt.Container()));
-        this.addSection(newSection("Item", new com.example.sin.projectone.item.Main()));
         this.addSection(newSection("Report", new com.example.sin.projectone.report.Main()));
         this.addSubheader("Account");
         this.addSection(newSection("Profile", new com.example.sin.projectone.profile.Main()));
@@ -42,8 +42,6 @@ public class MainNav extends MaterialNavigationDrawer {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     if(response.length()>0){
-                        System.out.println(response);
-                        //System.out.println(response.getJSONArray("Product"));
                         ProductDBHelper.getInstance(MainNav.this.getApplicationContext()).LoadProduct(response.getJSONArray("Products"));
                     }
                     else if(response.length()==0){
@@ -67,8 +65,6 @@ public class MainNav extends MaterialNavigationDrawer {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     if(response.length()>0){
-                        System.out.println(response);
-                        //System.out.println(response.getJSONArray("Product"));
                         ProductDBHelper.getInstance(MainNav.this.getApplicationContext()).loadTransaction(response.getJSONArray("transaction"));
                         for(int i=0;i<response.getJSONArray("transaction").length();i++){
                             System.out.println(response.getJSONArray("transaction").length());

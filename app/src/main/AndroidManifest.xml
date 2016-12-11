@@ -29,8 +29,6 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".ScanPayment" />
-        <activity android:name=".EndPayment"></activity>
     </application>
 
 </manifest>

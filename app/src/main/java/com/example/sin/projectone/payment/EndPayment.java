@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.transition.Transition;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.example.sin.projectone.R;
 import com.example.sin.projectone.WebService;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -110,8 +112,8 @@ public class EndPayment extends Fragment {
 //                if(products.isEmpty() || products.size()==0){ // block send data more once
 //                    return;
 //                }
-                String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
-                FragmentTransaction tran = fragmentManager.beginTransaction();
+                final String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
+                final FragmentTransaction tran = fragmentManager.beginTransaction();
                 Fragment prev = fragmentManager.findFragmentByTag(tag);
                 if(prev!=null){
                     tran.remove(prev);
@@ -140,6 +142,34 @@ public class EndPayment extends Fragment {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         dialog.dismiss();
+                        final String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
+                        int tranId = -1;
+                        try {
+                            JSONObject jsonObject = new JSONObject(new String(responseBody));
+                            tranId = jsonObject.getInt(Constant.KEY_JSON_TRANSACTIONID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        Bundle b = new Bundle();
+                        b.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG,"TrasactionID : "+ String.valueOf(tranId));
+                        b.putString(Constant.KEY_BUNDLE_TITLE_DIALOG, "Finished sending data");
+                        b.putBoolean(Constant.KEY_BYNDLE_HAS_OK_CANCEL_DIALOG,false);
+                        final MessageAlertDialog dialog2 = MessageAlertDialog.newInstance(b);
+                        dialog2.show(fragmentManager,tag);
+                        new CountDownTimer(3000, 1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                // TODO Auto-generated method stub
+                            }
+                            @Override
+                            public void onFinish() {
+                                // TODO Auto-generated method stub
+                                dialog2.dismiss();
+                            }
+                        }.start();
+
+
                         ((Main)fragmentManager.findFragmentByTag(Constant.TAG_FRAGMENT_PAYMENT_MAIN)).reset();
                         fragmentManager.popBackStack();
                     }

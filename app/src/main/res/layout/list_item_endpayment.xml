@@ -16,13 +16,13 @@
             android:text="@string/label_product_name"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:id="@+id/textView11" />
+            android:id="@+id/label_product_name" />
 
         <TextView
             android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/product_name" />
+            android:id="@+id/text_product_name" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -35,13 +35,13 @@
             android:text="@string/label_product_price"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:id="@+id/textView12" />
+            android:id="@+id/label_product_price" />
 
         <TextView
             android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/product_price" />
+            android:id="@+id/text_product_price" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -54,12 +54,12 @@
             android:text="@string/label_product_qty"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:id="@+id/textView13" />
+            android:id="@+id/label_product_qty" />
 
         <TextView
             android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/product_qty" />
+            android:id="@+id/text_product_qty" />
     </LinearLayout>
 </LinearLayout>

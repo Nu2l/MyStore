@@ -10,16 +10,18 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by nanth on 11/25/2016.
+ * Created by nanth on 12/11/2016.
  */
 
-public class ProductAdapter extends ArrayAdapter<Product> {
+public class ProductViewAdapter extends ArrayAdapter<Product> {
     private ArrayList<Product> products;
     private int layout;
-    public ProductAdapter(Context context, ArrayList<Product> products, int layout){
+    private int idText;
+    public ProductViewAdapter(Context context, ArrayList<Product> products, int layout, int idLabel, int idText){
         super(context, 0, products);
         this.products = products;
         this.layout = layout;
+        this.idText = idText;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         Product product = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(ProductAdapter.this.layout, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(ProductViewAdapter.this.layout, parent, false);
         }
         // Lookup view for data population
         if(product.id!=null && !product.id.isEmpty()){
@@ -36,34 +38,11 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 //                    String price, int qty, String type, String imgName,
 //                    String cost, String details, String createAt){
 
-            TextView productName = (TextView) convertView.findViewById(R.id.text_product_name);
-            TextView productBarcode = (TextView) convertView.findViewById(R.id.text_product_barcode);
-            TextView productPrice = (TextView) convertView.findViewById(R.id.text_product_price);
-            TextView productQty = (TextView) convertView.findViewById(R.id.text_product_qty);
-            TextView productType = (TextView) convertView.findViewById(R.id.text_product_type);
-            TextView productCost = (TextView) convertView.findViewById(R.id.text_product_cost);
-            TextView productdetail = (TextView) convertView.findViewById(R.id.text_product_details);
+            TextView productName = (TextView) convertView.findViewById(idText);
             if(productName!=null){
                 productName.setText(product.name);
             }
-            if(productBarcode!=null){
-                productBarcode.setText(product.barcode);
-            }
-            if(productPrice!=null){
-                productPrice.setText(product.price);
-            }
-            if(productQty!=null){
-                productQty.setText(Integer.toString(product.qty));
-            }
-            if(productType!=null){
-                productType.setText(product.type);
-            }
-            if(productCost!=null){
-                productCost.setText(product.cost);
-            }
-            if(productdetail!=null){
-                productdetail.setText(product.details);
-            }
+
 
         }
         // Populate the data into the template view using the data object
@@ -91,3 +70,4 @@ public class ProductAdapter extends ArrayAdapter<Product> {
     }
 
 }
+
