@@ -37,7 +37,9 @@ public class TransListCursor extends CursorAdapter {
         // Extract properties from cursor
         String tranValue = cursor.getString(cursor.getColumnIndexOrThrow("transactionID"));
         Double totalValue = cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+        Double discValue = cursor.getDouble(cursor.getColumnIndexOrThrow("discount"));
         String createValue = cursor.getString(cursor.getColumnIndexOrThrow("createAt"));
+        totalValue = totalValue- discValue;
         // Populate fields with extracted properties
         transID.setText(tranValue);
         total.setText(String.valueOf(totalValue));

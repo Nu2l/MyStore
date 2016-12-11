@@ -15,22 +15,27 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".SignInActivity">
+        <activity android:name=".SignInActivity"
+            android:screenOrientation="portrait">
 
 
         </activity>
-        <activity android:name=".RegisterStoreActivity">
+        <activity android:name=".RegisterStoreActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".MainNav">
+        <activity android:name=".MainNav"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
         </activity>
-        <activity android:name=".ScanPayment" />
-        <activity android:name=".EndPayment"></activity>
+        <activity android:name=".ScanPayment"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EndPayment"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

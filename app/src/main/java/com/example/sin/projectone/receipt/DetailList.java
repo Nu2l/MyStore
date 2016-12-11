@@ -72,7 +72,6 @@ public class DetailList extends ListFragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT).show();
         Cursor cursor = (Cursor) parent.getItemAtPosition(position);
         String str = cursor.getString(cursor.getColumnIndex("transactionID"));
         Log.d("listView", str);
