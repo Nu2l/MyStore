@@ -21,10 +21,14 @@ public class Constant {
     public final static String KEY_JSON_PRODUCT_type = "type";
     public final static String KEY_JSON_PRODUCT_PRICE = "price";
     public final static String KEY_JSON_PRODUCT_img = "imgName";
+    public final static String KEY_JSON_PRODUCT_COST = "cost";
+    public final static String KEY_JSON_PRODUCT_DETAILS = "details";
+    public final static String KEY_JSON_PRODUCT_CREATE_AT = "createAt";
     public final static String KEY_JSON_SHOPID = "shopID";
     public final static String KEY_JSON_DETAIL_DISCOUNT = "discountDetatil";
     public final static String KEY_JSON_DISCOUNT = "discount";
     public final static String KEY_JSON_TOTAL = "total";
+    public final static String KEY_JSON_TRANSACTIONID = "transactionID";
 
     public final static String KEY_JSON_USERID = "userID";
 
@@ -38,9 +42,12 @@ public class Constant {
     public final static String URL_GET_ALL_PRODUCT = URL_SERVER+"/api/product/"+SHOP_ID;
     public final static String URL_SEND_TRANSACTION =  URL_SERVER+"/api/transaction";
     // Tag Fragment
+    public final static String TAG_FRAGMENT_ITEM_ADD = "tag_fragment_item_add";
+    public final static String TAG_FRAGMENT_ITEM_VIEW = "tag_fragment_item_view";
     public final static String TAG_FRAGMENT_RECEIPT_MAIN = "tag_receipt_main";
-    public final static String TAG_FRAGMENT_PAYMENT_MAIN = "tag_fragment_main";
-    public final static String TAG_FRAGMENT_PAYMENT_END = "tag_fragment_end";
+    public final static String TAG_FRAGMENT_PAYMENT_MAIN = "tag_fragment_payment_main";
+    public final static String TAG_FRAGMENT_PAYMENT_END = "tag_fragment_payment_end";
+    public final static String TAG_FRAGMENT_ITEM_MAIN = "tag_fragment_item_main";
     public final static String TAG_FRAGMENT_SCAN_PAYMENT = "tag_fragment_scanpayment";
     public final static String TAG_FRAGMENT_DIALOG_ALERT = "tag_fragment_dialog_alert";
     public final static String TAG_FRAGMENT_DIALOG_PRODUCT_DETAIL = "tag_fragment_dialog_alert";

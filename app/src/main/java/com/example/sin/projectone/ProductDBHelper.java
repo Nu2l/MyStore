@@ -5,7 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +24,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     private static ProductDBHelper productDBHelper;
     public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "pgms.db";
+    private static ArrayList<Product> products = new ArrayList();
 
     public class Table{
         public static final String TABLE_PRODUCT = "product";
@@ -34,9 +36,11 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         public static final String COLUMN_TYPE = "type";
         public static final String COLUMN_QTY = "qty";
         public static final String COLUMN_IMG = "imgName";
+        public static final String COLUMN_COST = "cost";
+        public static final String COLUMN_DETAILS = "details";
+        public static final String COLUMN_CREATE_AT = "createAt";
 
         public static final String COLUMN_S_ID = "shopID"; // dabasbase
-        public static final String COLUMN_DETAIL = "detail";// unUse
         public static final String COLUMN_USER_ID = "userID";
 
         public static final String TABLE_TRANS = "transaction_table";
@@ -90,6 +94,9 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 Table.COLUMN_PRICE+" TEXT,"+
                 Table.COLUMN_TYPE+" TEXT, " +
                 Table.COLUMN_QTY+" INTEGER, "+
+                Table.COLUMN_COST+" TEXT, "+
+                Table.COLUMN_DETAILS +" TEXT, "+
+                Table.COLUMN_CREATE_AT+" TEXT, "+
                 Table.COLUMN_IMG+" TEXT)";
 
         String CREATE_TABLE_TRANS = "CREATE TABLE IF NOT EXISTS "+Table.TABLE_TRANS + " ( " +
@@ -128,6 +135,8 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
+
+
     public Product searchProductByBarCode(String bacode){
         String sql = "SELECT * FROM "+Table.TABLE_PRODUCT +
                 " WHERE "+Table.COLUMN_BARCODE +" = '"+bacode+"'";
@@ -145,18 +154,32 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<Product> getAllProductFromDB(){
+        if(products.size()==0||products.isEmpty()){
+            String sql = "SELECT * FROM "+Table.TABLE_PRODUCT;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sql, null);
+            products = Product.CursorToProductArrayList(cursor);
+            cursor.close();
+            db.close();
+        }
+        return products;
+    }
+
     public Product searchProductByID(String id){
+        Product p;
         String sql = "SELECT * FROM "+Table.TABLE_PRODUCT +
                 " WHERE "+Table.COLUMN_P_ID +" = '"+id+"'";
         SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues values = new ContentValues();
         Cursor cursor = db.rawQuery(sql, null);
         if(cursor.moveToFirst()) {
+            p = Product.CursorToProduct(cursor);
             db.close();
-            System.out.println(cursor.getString(cursor.getColumnIndex(Table.COLUMN_P_ID)));
-            return Product.CursorToProduct(cursor);
+            cursor.close();
+            return p;
         }
         else{
+            cursor.close();
             db.close();
             return null;
         }
@@ -187,8 +210,10 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 values.put(Table.COLUMN_TYPE, jsonObj.getString(Constant.KEY_JSON_PRODUCT_type));
                 values.put(Table.COLUMN_PRICE, jsonObj.getString(Constant.KEY_JSON_PRODUCT_PRICE));
                 values.put(Table.COLUMN_IMG, jsonObj.getString(Constant.KEY_JSON_PRODUCT_img));
+                values.put(Table.COLUMN_COST, jsonObj.getString(Constant.KEY_JSON_PRODUCT_COST));
+                values.put(Table.COLUMN_DETAILS, jsonObj.getString(Constant.KEY_JSON_PRODUCT_DETAILS));
+                values.put(Table.COLUMN_CREATE_AT, jsonObj.getString(Constant.KEY_JSON_PRODUCT_CREATE_AT));
                 db.insert(Table.TABLE_PRODUCT, null, values);
-                System.out.println("Insert "+values.getAsString(Table.COLUMN_P_ID));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -197,6 +222,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         db.close();
 
     }
+
     public void loadTransaction(JSONArray jsonArray){// bug insert null
         SQLiteDatabase db2 = this.getWritableDatabase();
         for(int i=0;i<jsonArray.length();i++){
@@ -223,6 +249,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         db2.close();
 
     }
+
     public void loadTransactionDetail(JSONArray jsonArray){// bug insert null
         SQLiteDatabase db2 = this.getWritableDatabase();
         for(int i=0;i<jsonArray.length();i++){

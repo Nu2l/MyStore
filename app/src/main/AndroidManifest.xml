@@ -32,10 +32,6 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".ScanPayment"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".EndPayment"
-            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

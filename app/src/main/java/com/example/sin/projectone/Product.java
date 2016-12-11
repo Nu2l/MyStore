@@ -4,15 +4,19 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by nanth on 11/25/2016.
  */
 
 public class Product implements Parcelable , Cloneable {
-    public String id, name, barcode, price, type, imgName;
+    public String id, name, barcode, price, type, imgName, cost, details, createAt;
     public int qty;
 
-    public Product(String id, String name, String barcode, String price, int qty, String type, String imgName){
+    public Product(String id, String name, String barcode,
+                   String price, int qty, String type, String imgName,
+                   String cost, String details, String createAt){
         this.id = id;
         this.name = name;
         this.barcode = barcode;
@@ -20,6 +24,9 @@ public class Product implements Parcelable , Cloneable {
         this.qty = qty;
         this.type = type;
         this.imgName = imgName;
+        this.cost = cost;
+        this.details =details;
+        this.createAt = createAt;
     }
 
     protected Product(Parcel in) {
@@ -30,6 +37,9 @@ public class Product implements Parcelable , Cloneable {
         type = in.readString();
         imgName = in.readString();
         qty = in.readInt();
+        cost = in.readString();
+        details = in.readString();
+        createAt = in.readString();
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -45,20 +55,51 @@ public class Product implements Parcelable , Cloneable {
     };
 
     public static Product CursorToProduct(Cursor cursor){
-        System.out.println(cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_P_ID)));
-        if(cursor.moveToFirst()){
-            Product p =new Product(//id name bacode price
-                    cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_P_ID)),
-                    cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_BARCODE)),
-                    cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_PRICE)),
-                    cursor.getInt(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_QTY)),
-                    cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_TYPE)),
-                    cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_IMG)
-                    ));
-            return  p;
+        try{
+            if(cursor.moveToFirst()){
+                Product p =new Product(//id name bacode price
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_P_ID)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_NAME)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_BARCODE)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_PRICE)),
+                        cursor.getInt(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_QTY)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_TYPE)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_IMG)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_COST)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_DETAILS)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_CREATE_AT))
+                        );
+                return  p;
+            }
+        }finally {
+            cursor.close();
         }
         return null;
+    }
+
+    public static ArrayList<Product> CursorToProductArrayList(Cursor cursor){
+        ArrayList<Product> products = new ArrayList();
+        try{
+            while(cursor.moveToNext()){
+                Product p =new Product(//id name bacode price
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_P_ID)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_NAME)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_BARCODE)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_PRICE)),
+                        cursor.getInt(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_QTY)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_TYPE)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_IMG)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_COST)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_DETAILS)),
+                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_CREATE_AT)
+                        ));
+                products.add(p);
+
+            }
+            return products;
+        }finally {
+            cursor.close();
+        }
     }
 
     @Override
@@ -75,6 +116,9 @@ public class Product implements Parcelable , Cloneable {
         dest.writeString(type);
         dest.writeString(imgName);
         dest.writeInt(qty);
+        dest.writeString(cost);
+        dest.writeString(details);
+        dest.writeString(createAt);
     }
 
     @Override
