@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
-import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.sin.projectone.ApplicationHelper;
 import com.example.sin.projectone.Constant;
@@ -192,6 +190,8 @@ public class EndPayment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.remove(EndPayment.this).commit();
                 fragmentManager.popBackStack();
             }
         };

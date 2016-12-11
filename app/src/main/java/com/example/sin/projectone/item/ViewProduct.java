@@ -43,6 +43,7 @@ public class ViewProduct extends Fragment {
     private ListView listProduct;
     private Spinner spinner;
     private ProductDetailDialog productDetailDialog;
+    private Product targetProduct;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class ViewProduct extends Fragment {
                 if(prev!=null){
                     fragmentTransaction.remove(prev);
                 }
-                productDetailDialog.setTargetFragment(ViewProduct.this, Constant.REQUEST_CODE_PRODUCT_DETAIL_DIALOG);
+                ViewProduct.this.targetProduct = product;
                 productDetailDialog.show(fragmentManager,tag);
 
 
@@ -97,6 +98,14 @@ public class ViewProduct extends Fragment {
             @Override
             public void onClick(View v) {
                 productDetailDialog.dismiss();
+                String tag = Constant.TAG_FRAGMENT_ITEM_EDIT;
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Fragment editProduct = new EditProduct();
+                Bundle productBundle = new Bundle();
+                productBundle.putParcelable(Constant.KEY_BUNDLE_PRODUCT, ViewProduct.this.targetProduct);
+                editProduct.setArguments(productBundle);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.replace(R.id.frame_container_item, editProduct, tag).commit();
             }
         };
     }

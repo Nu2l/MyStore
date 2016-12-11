@@ -21,11 +21,11 @@
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:maxHeight="300dp"
-                app:srcCompat="@drawable/ic_menu_gallery"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="20dp"
-                android:id="@+id/imageView3" />
+                android:id="@+id/imageView3"
+                app:srcCompat="@drawable/ic_menu_camera" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -33,7 +33,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5">
+        android:layout_weight="0.6">
 
 
         <LinearLayout
@@ -51,12 +51,14 @@
                 android:layout_margin="10dp"/>
 
             <EditText
-                android:text="TextView"
                 android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:id="@+id/edt_text_product_name"
-                android:layout_weight="0.7"
-                android:layout_margin="10dp"/>
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Name"
+                android:ems="10"
+                android:layout_weight="0.3"
+                android:id="@+id/edt_text_product_name" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -74,12 +76,14 @@
                 android:layout_margin="10dp"/>
 
             <EditText
-                android:text="TextView"
                 android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:id="@+id/edt_text_product_barcode"
-                android:layout_weight="0.7"
-                android:layout_margin="10dp"/>
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Name"
+                android:ems="10"
+                android:id="@+id/editText3"
+                android:layout_weight="0.3" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -97,12 +101,13 @@
                 android:layout_margin="10dp"/>
 
             <EditText
-                android:text="TextView"
                 android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:id="@+id/edt_text_product_price"
-                android:layout_weight="0.7"
-                android:layout_margin="10dp"/>
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/edt_num_product_price"
+                android:layout_weight="0.3" />
+
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -119,12 +124,13 @@
                 android:layout_margin="10dp"/>
 
             <EditText
-                android:text="TextView"
                 android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:id="@+id/edt_text_product_qty"
-                android:layout_weight="0.7"
-                android:layout_margin="10dp"/>
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/edt_num_product_qty"
+                android:layout_weight="0.3" />
+
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -163,12 +169,13 @@
                 android:layout_margin="10dp"/>
 
             <EditText
-                android:text="TextView"
                 android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:id="@+id/edt_text_product_cost"
-                android:layout_weight="0.7"
-                android:layout_margin="10dp"/>
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/editText9"
+                android:layout_weight="0.7" />
+
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -185,12 +192,14 @@
                 android:layout_margin="10dp"/>
 
             <EditText
-                android:text="TextView"
                 android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:id="@+id/edt_text_product_details"
-                android:layout_weight="0.7"
-                android:layout_margin="10dp"/>
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Name"
+                android:ems="10"
+                android:id="@+id/editText8"
+                android:layout_weight="0.7" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -202,27 +211,30 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:minHeight="60dp">
+
+            <Button
+                android:text="@android:string/cancel"
+                android:layout_width="wrap_content"
+                android:id="@+id/btn_cancel"
+
+                android:layout_alignBaseline="@+id/btn_back"
+                android:layout_alignBottom="@+id/btn_back"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="56dp"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:text="@android:string/ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="23dp"
-                android:id="@+id/btn_back"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="46dp" />
 
-            <Button
-                android:text="@android:string/cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_cancel"
-                android:layout_alignBaseline="@+id/btn_back"
-                android:layout_alignBottom="@+id/btn_back"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="60dp" />
+                android:id="@+id/btn_back"
+                android:layout_marginTop="12dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="57dp" />
         </RelativeLayout>
     </LinearLayout>
 
