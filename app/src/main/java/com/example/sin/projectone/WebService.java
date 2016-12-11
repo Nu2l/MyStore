@@ -38,6 +38,18 @@ public class WebService {
         _Client.post(ApplicationHelper.getAppContext(),url,entity,"application/json",handler);
     }
 
+    public static void sendAddOrUpdateProduct(AsyncHttpResponseHandler handler, JSONObject product){
+        String url = Constant.SEND_ADD_OR_UPDATE_PRODUCT;
+        String data = product.toString();
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(data);
+            entity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch(Exception e) {
+        }
+        _Client.post(ApplicationHelper.getAppContext(),url,entity,"application/json",handler);
+    }
+
     public static void postABC(AsyncHttpResponseHandler handler,String url){
         _Client.post(url,handler);
     }

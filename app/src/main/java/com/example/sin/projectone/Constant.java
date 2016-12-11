@@ -18,9 +18,9 @@ public class Constant {
     public final static String KEY_JSON_PRODUCT_BARCODE = "barcode";
     public final static String KEY_JSON_PRODUCT_QTY = "qty";
     public final static String KEY_JSON_PRODUCT_NAME = "name";
-    public final static String KEY_JSON_PRODUCT_type = "type";
+    public final static String KEY_JSON_PRODUCT_TYPE = "type";
     public final static String KEY_JSON_PRODUCT_PRICE = "price";
-    public final static String KEY_JSON_PRODUCT_img = "imgName";
+    public final static String KEY_JSON_PRODUCT_IMG = "imgName";
     public final static String KEY_JSON_PRODUCT_COST = "cost";
     public final static String KEY_JSON_PRODUCT_DETAILS = "details";
     public final static String KEY_JSON_PRODUCT_CREATE_AT = "createAt";
@@ -38,9 +38,10 @@ public class Constant {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     //
     //url web Service
-    public final static String URL_SERVER = "http://188.166.239.218:3001";
-    public final static String URL_GET_ALL_PRODUCT = URL_SERVER+"/api/product/"+SHOP_ID;
-    public final static String URL_SEND_TRANSACTION =  URL_SERVER+"/api/transaction";
+    public final static String URL_SERVER                   = "http://188.166.239.218:3001";
+    public final static String URL_GET_ALL_PRODUCT          = URL_SERVER+"/api/product/"+SHOP_ID;
+    public final static String URL_SEND_TRANSACTION         = URL_SERVER+"/api/transaction";
+    public final static String SEND_ADD_OR_UPDATE_PRODUCT   = URL_SERVER+"/api/product";
     // Tag Fragment
     public final static String TAG_FRAGMENT_ITEM_EDIT = "tag_fragment_item_edit";
     public final static String TAG_FRAGMENT_ITEM_ADD = "tag_fragment_item_add";

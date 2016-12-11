@@ -4,6 +4,9 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -130,6 +133,39 @@ public class Product implements Parcelable , Cloneable {
             throw new Error("Something impossible just happened");
         }
     }
+
+    public static boolean isEquals(Product a, Product b){
+        if((a.id.equals(b.id))&&(a.name.equals(b.name))&&(a.barcode.equals(b.barcode))&&
+                (a.price.equals(b.price))&&(a.type.equals(b.type))&&(a.imgName.equals(b.imgName))&&
+                (a.qty==b.qty)&&(a.cost.equals(b.cost))&&(a.details.equals(b.details))
+                &&(a.createAt.equals(b.createAt))){
+            return true;
+        }
+        return false;
+    }
+
+    public JSONObject toJSONObject(){
+        JSONObject jsProduct = new JSONObject();
+
+        try {
+            jsProduct.put(Constant.KEY_JSON_PRODUCT_ID, this.id);
+            jsProduct.put(Constant.KEY_JSON_PRODUCT_BARCODE, this.name);
+            jsProduct.put(Constant.KEY_JSON_PRODUCT_BARCODE, this.barcode);
+            jsProduct.put(Constant.KEY_JSON_PRODUCT_PRICE, this.price);
+            jsProduct.put(Constant.KEY_JSON_PRODUCT_TYPE, this.type);
+            jsProduct.put(Constant.KEY_JSON_PRODUCT_IMG, this.imgName);
+            jsProduct.put(Constant.KEY_JSON_PRODUCT_QTY, this.qty);
+            jsProduct.put(Constant.KEY_JSON_PRODUCT_COST, this.cost);
+            jsProduct.put(Constant.KEY_JSON_PRODUCT_DETAILS, this.details);
+            jsProduct.put(Constant.KEY_JSON_PRODUCT_CREATE_AT, this.createAt);
+            return jsProduct;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 
 
 }

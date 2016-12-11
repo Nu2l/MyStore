@@ -3,8 +3,9 @@ package com.example.sin.projectone.item;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.Color;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,15 @@ import android.widget.TextView;
 import com.example.sin.projectone.Constant;
 import com.example.sin.projectone.MessageAlertDialog;
 import com.example.sin.projectone.Product;
+import com.example.sin.projectone.ProductDBHelper;
 import com.example.sin.projectone.R;
+import com.example.sin.projectone.WebService;
+import com.example.sin.projectone.payment.EndPayment;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import cz.msebera.android.httpclient.Consts;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 
 /**
@@ -88,7 +95,73 @@ public class EditProduct extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String p_id, p_name, p_barcode, p_price, p_type, p_imgName, p_cost, p_detail, p_createAt;
+                int p_qty;
+                try{
+                    p_id = saveProduct.id;
+                    p_name = EditProduct.this.edt_p_name.getText().toString();
+                    p_barcode = EditProduct.this.edt_p_barcode.getText().toString();
+                    p_price = EditProduct.this.edt_p_price.getText().toString();
+                    p_qty = Integer.parseInt(EditProduct.this.edt_p_qty.getText().toString());
+                    p_type = saveProduct.type; // can't edit
+                    p_imgName = saveProduct.imgName; //debug;
+                    p_cost = EditProduct.this.edt_p_cost.getText().toString();
+                    p_detail = EditProduct.this.edt_p_detail.getText().toString();
+                    p_createAt = saveProduct.createAt; // debug
+                    Product tragetProduct = new Product(p_id, p_name, p_barcode, p_price, p_qty,
+                            p_type, p_imgName, p_cost, p_detail, p_createAt);
+                    if(Product.isEquals(tragetProduct,saveProduct)){
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.remove(EditProduct.this).commit();
+                        fragmentManager.popBackStack();
+                        return;
+                    }
+                    else{
+                        final ProgressDialog progress = ProgressDialog.show(EditProduct.this.getActivity(), "Loading",
+                                "Please wait ...", true);
 
+                        JSONObject JSProduct = tragetProduct.toJSONObject();
+                        if(JSProduct!=null){
+                            WebService.sendAddOrUpdateProduct(new AsyncHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                    progress.dismiss();
+                                    final String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
+                                    Bundle b = new Bundle();
+                                    b.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG,"Update Product Finish");
+                                    b.putString(Constant.KEY_BUNDLE_TITLE_DIALOG, "Finished sending data");
+                                    b.putBoolean(Constant.KEY_BYNDLE_HAS_OK_CANCEL_DIALOG,false);
+                                    final MessageAlertDialog dialog2 = MessageAlertDialog.newInstance(b);
+                                    dialog2.show(fragmentManager,tag);
+                                    new CountDownTimer(3000, 1000) {
+                                        @Override
+                                        public void onTick(long millisUntilFinished) {
+                                            // TODO Auto-generated method stub
+                                        }
+                                        @Override
+                                        public void onFinish() {
+                                            // TODO Auto-generated method stub
+                                            dialog2.dismiss();
+                                        }
+                                    }.start();
+                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    fragmentTransaction.remove(EditProduct.this).commit();
+                                    fragmentManager.popBackStack();
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                    progress.dismiss();
+                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    fragmentTransaction.remove(EditProduct.this).commit();
+                                    fragmentManager.popBackStack();
+                                }
+                            },JSProduct);
+                        }
+                    }
+                }catch (Exception e){
+                    return;
+                }
             }
         };
     }
@@ -97,4 +170,6 @@ public class EditProduct extends Fragment {
     public void onStart(){
         super.onStart();
     }
+
+
 }

@@ -191,7 +191,7 @@ public class EndPayment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.remove(EndPayment.this).commit();
+                fragmentTransaction.remove(EndPayment.this);
                 fragmentManager.popBackStack();
             }
         };
