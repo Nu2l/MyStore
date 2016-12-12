@@ -67,6 +67,7 @@ public class ViewProduct extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Product product = productAdapter.getItem(position);
+                String a = product.imgName;
                 Bundle bundle = new Bundle();
                 String tag = Constant.TAG_FRAGMENT_DIALOG_PRODUCT_DETAIL;
                 bundle.putParcelable(Constant.KEY_BUNDLE_PRODUCT, product);

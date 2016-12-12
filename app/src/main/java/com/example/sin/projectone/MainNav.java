@@ -28,7 +28,9 @@ public class MainNav extends MaterialNavigationDrawer {
     public void init(Bundle savedInstanceState) {
         fragmentManager = getFragmentManager();
         this.deleteDatabase(ProductDBHelper.DATABASE_NAME); // debug
+        int a = Constant.SHOP_ID;
         loadProducts();
+
         loadTransaction();
         this.addSection(newSection("Item", new com.example.sin.projectone.item.Container()));
         this.addSection(newSection("Payment", new com.example.sin.projectone.payment.Container()));
@@ -114,6 +116,7 @@ public class MainNav extends MaterialNavigationDrawer {
             return;
         }
         backPressCount ++;
+        flagCountDownExit = true;
         Toast.makeText(getApplicationContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
         new CountDownTimer(3000, 1000) {
             @Override

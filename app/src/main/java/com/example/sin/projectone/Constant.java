@@ -9,8 +9,11 @@ public class Constant {
 
     }
 
-    public static int SHOP_ID = 34;
-    public static int USER_ID = 35; // debug test
+//    public static int SHOP_ID = 34;
+//    public static int USER_ID = 35; // debug test
+
+    public static int SHOP_ID;
+    public static int USER_ID; // debug test
 
     //Key json
     public final static String KEY_JSON_PRODUCTLIST = "productList";
@@ -40,7 +43,7 @@ public class Constant {
     //
     //url web Service
     public final static String URL_SERVER                   = "http://188.166.239.218:3001";
-    public final static String URL_GET_ALL_PRODUCT          = URL_SERVER+"/api/product/"+SHOP_ID;
+    public final static String URL_GET_ALL_PRODUCT          = URL_SERVER+"/api/product/";
     public final static String URL_SEND_TRANSACTION         = URL_SERVER+"/api/transaction";
     public final static String URL_SEND_UPDATE_PRODUCT      = URL_SERVER+"/api/product";
     public final static String URL_SEND_ADD_PRODUCT         = URL_SERVER+"/api/product2";

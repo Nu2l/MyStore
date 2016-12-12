@@ -24,7 +24,7 @@ public class WebService {
 
     private static AsyncHttpClient _Client = new AsyncHttpClient();
     public static void getAllProduct(JsonHttpResponseHandler handler){
-        String url = Constant.URL_GET_ALL_PRODUCT;
+        String url = Constant.URL_GET_ALL_PRODUCT+Constant.SHOP_ID;
         _Client.get(url,null, handler);
     }
 
