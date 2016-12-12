@@ -83,20 +83,22 @@ public class AddProduct extends Fragment {
             public void onClick(View v) {
                 String p_id, p_name, p_barcode, p_price, p_type, p_imgName, p_cost, p_detail, p_createAt;
                 int p_qty;
+                JSONObject JsonProduct;
                 try{
-
-                    p_id =  String.valueOf(Constant.PRODUCT_ID_INSERT);
+                    // get data from edit text
+                    p_id =  String.valueOf(Constant.PRODUCT_ID_INSERT_TEMP); // 0 temp data send
                     p_name = AddProduct.this.edt_p_name.getText().toString();
                     p_barcode = AddProduct.this.edt_p_barcode.getText().toString();
                     p_price = AddProduct.this.edt_p_price.getText().toString();
                     p_qty = Integer.parseInt(AddProduct.this.edt_p_qty.getText().toString());
                     p_type = AddProduct.this.edt_p_type.getText().toString();
-                    p_imgName = Constant.PATH_NAME_IMG+p_id;
+                    p_imgName = Constant.IMG_NAME_TEMP; // temp data send
                     p_cost = AddProduct.this.edt_p_cost.getText().toString();
                     p_detail = AddProduct.this.edt_p_detail.getText().toString();
-                    p_createAt = Constant.CREATE_AT_TEMP; // debug
+                    p_createAt = Constant.CREATE_AT_TEMP; // temp data send;
+                    //  Bad Input -> return
                     if(p_name.isEmpty()|| p_barcode.isEmpty() || p_price.isEmpty() ||
-                            p_qty<0 || p_cost.isEmpty() ){
+                            p_qty<0 || p_cost.isEmpty() || targetImg ==null){
                         Bundle bundle = new Bundle();
                         bundle.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG, "Input not complete");
                         bundle.putBoolean(Constant.KEY_BYNDLE_HAS_OK_DIALOG, true);
@@ -104,12 +106,14 @@ public class AddProduct extends Fragment {
                         messageAlert.show(fragmentManager, Constant.TAG_FRAGMENT_DIALOG_ALERT);
                         return;
                     }
+                    // make obj product
                     targetProduct = new Product(p_id, p_name, p_barcode, p_price, p_qty,
                             p_type, p_imgName, p_cost, p_detail, p_createAt);
-                    JSONObject JsonProduct = targetProduct.toJSONObject();
+                    // make Json Product add send
+                    JsonProduct = targetProduct.toJSONObject();
                     JsonProduct.put(Constant.KEY_JSON_SHOPID, Constant.SHOP_ID); // add shop id
-                    String imgName = p_imgName+".png";
-                    File imgProduct = imgManager.saveImgToInternalStorage(targetImg, imgName);
+                    //
+                    File imgProduct = imgManager.saveImgToInternalStorage(targetImg, Constant.IMG_NAME_TEMP);
 
                     final ProgressDialog progress = ProgressDialog.show(AddProduct.this.getActivity(), "Loading",
                             "Please wait ...", true);
@@ -117,9 +121,13 @@ public class AddProduct extends Fragment {
                     WebService.sendAddProduct(new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            try {//new StringEntity(data, "UTF-8");
+                            try { // insert data , save img
                                 JSONObject jsonObject = new JSONObject(new String(responseBody));
                                 ProductDBHelper.getInstance(getActivity()).insertProduct(jsonObject); // insert db
+                                String imgName = Constant.HEAD_NAME_IMG+jsonObject.getString(Constant.KEY_JSON_PRODUCT_IMG);
+                                imgManager.saveImgToInternalStorage(targetImg, imgName);
+                                targetImg =null;
+                                targetProduct= null;
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

@@ -90,9 +90,11 @@ public class Constant {
     // other
     // path to /data/data/com.example.sin.projectone/app_productImg
     public final static String FOLDER_PHOTO = "productImg";
-    public final static int PRODUCT_ID_INSERT = 0;
-    public final static String PATH_NAME_IMG = "img_";
+    public final static int PRODUCT_ID_INSERT_TEMP = 0;
+    public final static String HEAD_NAME_IMG = "img_";
     public final static String CREATE_AT_TEMP = "createAt_temp";
+    public final static String IMG_NAME_TEMP = Constant.HEAD_NAME_IMG+"temp.png";
+
 
 
 
