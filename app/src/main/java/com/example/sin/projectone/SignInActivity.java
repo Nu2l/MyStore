@@ -128,10 +128,8 @@ public class SignInActivity extends AppCompatActivity {
                             System.out.println(shopID);
                             Log.d("userID", userID);
                             Log.d("shopID", shopID);
-                            String resUser = (String) response.get("userID");
-                            String resShop = (String) response.get("shopID");
-                            Constant.SHOP_ID = Integer.valueOf(resShop);
-                            Constant.USER_ID = Integer.valueOf(resUser);
+                            Constant.SHOP_ID = Integer.valueOf(shopID);
+                            Constant.USER_ID = Integer.valueOf(userID);
                             navigateToMainActivity(user);
                             CharSequence text = res;
                             Constant.SHOP_ID = Integer.valueOf(shopID);
