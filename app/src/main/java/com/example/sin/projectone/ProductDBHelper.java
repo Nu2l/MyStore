@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -435,14 +436,15 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getDailyEmployee(String createAt){
-        String sql = "SELECT username, SUM(tt.total) AS total, SUM(tt.discount) AS discount FROM transaction_table tt  WHERE createAt like '"+createAt+"%' GROUP BY username";
+        String sql = "SELECT _id,username, SUM(tt.total) AS total, SUM(tt.discount) AS discount FROM transaction_table tt  WHERE createAt like '"+createAt+"%' GROUP BY username";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         return  cursor;
     }
 
     public Cursor getDailyProduct(String createAt){
-        String sql = "SELECT td.name,SUM(td.qty) AS qty FROM transactionDetail td WHERE createAt like '"+createAt+"%' GROUP BY name ORDER BY name";
+        String sql = "SELECT _id,td.name,SUM(td.qty) AS qty FROM transactionDetail td WHERE createAt like '"+createAt+"%' GROUP BY name ORDER BY name";
+        Log.d("sql", sql);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         return  cursor;

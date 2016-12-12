@@ -2,6 +2,7 @@ package com.example.sin.projectone.report;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class DailyProductCursor extends CursorAdapter {
         TextView textQty = (TextView) view.findViewById(R.id.report_daily_list_product_qty);
         // Extract properties from cursor
         String nameValue = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+        Log.d("nameValue", nameValue);
         String qtyValue = cursor.getString(cursor.getColumnIndexOrThrow("qty"));
         // Populate fields with extracted properties
         productNam.setText(nameValue);
