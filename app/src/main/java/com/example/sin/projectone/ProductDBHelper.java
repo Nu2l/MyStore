@@ -470,6 +470,46 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         return  cursor;
     }
 
+    public Cursor getTopCursor(String type){
+        String sql= "";
+        if(type.equals("week")){
+            sql = "SELECT _id,td.name,SUM(td.qty) AS qty FROM transactionDetail td  WHERE createAt BETWEEN datetime('now', '-6 days') AND datetime('now', 'localtime') GROUP BY name  ORDER BY qty DESC LIMIT 10";
+        }
+        else{
+             sql = "SELECT _id,td.name,SUM(td.qty) AS qty FROM transactionDetail td  WHERE createAt BETWEEN datetime('now', 'start of month') AND datetime('now', 'localtime') GROUP BY name  ORDER BY qty DESC LIMIT 10";
+        }
+        Log.d("sql", sql);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        return  cursor;
+    }
+    public JSONArray getTopDetail(String type){
+        String sql= "";
+        JSONArray transDetailList = new JSONArray();
+        if(type.equals("week")){
+            sql = "SELECT _id,td.name,SUM(td.qty) AS qty FROM transactionDetail td  WHERE createAt BETWEEN datetime('now', '-6 days') AND datetime('now', 'localtime') GROUP BY name  ORDER BY qty DESC LIMIT 10";
+        }
+        else{
+            sql = "SELECT _id,td.name,SUM(td.qty) AS qty FROM transactionDetail td  WHERE createAt BETWEEN datetime('now', 'start of month') AND datetime('now', 'localtime') GROUP BY name  ORDER BY qty DESC LIMIT 10";
+        }
+        Log.d("sql", sql);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        cursor.moveToFirst();
+        for(int i=0;i< cursor.getCount();i++){
+            JSONObject transDetail = new JSONObject();
+            try {
+                transDetail.put("name",cursor.getString(cursor.getColumnIndex("name")));
+                transDetail.put("qty",cursor.getString(cursor.getColumnIndex("qty")));
+                transDetailList.put(transDetail);
+                cursor.moveToNext();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return  transDetailList;
+    }
+
 
 
 

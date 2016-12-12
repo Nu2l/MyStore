@@ -44,7 +44,7 @@ public class Main extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("check BTOON CLICK", "onClick: ");
-                Fragment newFragment = new Daily();
+                Fragment newFragment = new TopSeller();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.replace(R.id.fragment_report_container, newFragment).commit();

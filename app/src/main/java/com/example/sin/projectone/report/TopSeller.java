@@ -1,9 +1,9 @@
 package com.example.sin.projectone.report;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +22,10 @@ public class TopSeller extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_report_topseller, container, false);
 
+        Fragment newFragment = new TopSellerPieChart();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(R.id.fragment_report_container, newFragment).commit();
         return view;
     }
 }

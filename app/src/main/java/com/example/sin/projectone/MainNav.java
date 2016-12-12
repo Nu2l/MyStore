@@ -36,11 +36,11 @@ public class MainNav extends MaterialNavigationDrawer {
         this.addSection(newSection("Payment", new com.example.sin.projectone.payment.Container()));
         this.addSection(newSection("Receipt", new com.example.sin.projectone.receipt.Container()));
         this.addSection(newSection("Report", new com.example.sin.projectone.report.Container()));
-        this.addSubheader("Account");
-        this.addSection(newSection("Profile", new com.example.sin.projectone.profile.Main()));
-        this.addDivisor();
-        this.addSection(newSection("Help & Feedback", new com.example.sin.projectone.help.Main()));
-        this.addSection(newSection("Credit", new com.example.sin.projectone.credit.Main()));
+//        this.addSubheader("Account");
+//        this.addSection(newSection("Profile", new com.example.sin.projectone.profile.Main()));
+//        this.addDivisor();
+//        this.addSection(newSection("Help & Feedback", new com.example.sin.projectone.help.Main()));
+//        this.addSection(newSection("Credit", new com.example.sin.projectone.credit.Main()));
 
     }
 
