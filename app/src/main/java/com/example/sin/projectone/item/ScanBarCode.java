@@ -39,21 +39,33 @@ public class ScanBarCode  extends Fragment implements ZXingScannerView.ResultHan
     public void handleResult(Result result) {
         Intent barCode = new Intent();
         barCode.putExtra(Constant.KEY_INTENT_BARCODE, result.toString());
-        Fragment addProduct = fragmentManager.findFragmentByTag(Constant.TAG_FRAGMENT_ITEM_ADD);
+        int a = fragmentManager.getBackStackEntryCount();
+        AddProduct addProduct = (AddProduct) fragmentManager.findFragmentByTag(Constant.TAG_FRAGMENT_ITEM_ADD);
         addProduct.onActivityResult(this.getTargetRequestCode(), Constant.RESULT_CODE_BARCODE, barCode);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(this).commit();
         fragmentManager.popBackStack();
     }
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle state) {
+        fragmentManager = getFragmentManager();
         mScannerView = new ZXingScannerView(this.getActivity());
         mAutoFocus = true;
         mFlash = false;
         mScannerView.setFlash(mFlash);
         mScannerView.setAutoFocus(mAutoFocus);
         mScannerView.setOnClickListener(onScannerClick());
-
-        return  mScannerView;
+        if(state != null) {
+            mFlash = state.getBoolean(FLASH_STATE, false);
+            mAutoFocus = state.getBoolean(AUTO_FOCUS_STATE, true);
+            mSelectedIndices = state.getIntegerArrayList(SELECTED_FORMATS);
+            mCameraId = state.getInt(CAMERA_ID, -1);
+        } else {
+            mFlash = false;
+            mAutoFocus = true;
+            mSelectedIndices = null;
+            mCameraId = -1;
+        }
+        return mScannerView;
     }
 
     private View.OnClickListener onScannerClick(){
@@ -64,5 +76,22 @@ public class ScanBarCode  extends Fragment implements ZXingScannerView.ResultHan
                 mScannerView.setFlash(mFlash);
             }
         };
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mScannerView.setResultHandler((ZXingScannerView.ResultHandler)this); // Register ourselves as a handler for scan results.
+        mScannerView.startCamera();          // Start camera on resume
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mScannerView.stopCamera();           // Stop camera on pause
     }
 }

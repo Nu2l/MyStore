@@ -2,12 +2,14 @@ package com.example.sin.projectone;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -19,6 +21,7 @@ public class ProductPaymentDialog extends DialogFragment {
     private EditText edt_p_qty;
     private TextView text_p_name, text_p_price;
     private Button btn_cancel, btn_submit;
+    private ImageView img_product;
 
     public static ProductPaymentDialog newInstance(Product product){
         ProductPaymentDialog dialog = new ProductPaymentDialog();
@@ -30,8 +33,9 @@ public class ProductPaymentDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.product_detail_payment, container, false);
+        img_product = (ImageView) v.findViewById(R.id.img_product);
         edt_p_qty = (EditText) v.findViewById(R.id.edt_text_product_qty);
-        btn_submit = (Button) v.findViewById(R.id.btn_cancel);
+        btn_submit = (Button) v.findViewById(R.id.btn_submit);
         btn_cancel = (Button) v.findViewById(R.id.btn_cancel);
         text_p_name = (TextView) v.findViewById(R.id.text_product_name);
         text_p_price = (TextView) v.findViewById(R.id.text_product_price);
@@ -39,6 +43,10 @@ public class ProductPaymentDialog extends DialogFragment {
         text_p_name.setText(product.name);
         text_p_price.setText(product.price);
         edt_p_qty.setText(String.valueOf(product.qty));
+        Bitmap img = ImgManager.getinstance().loadImageFromStorage(product.imgName);
+        if(img!=null){
+            img_product.setImageBitmap(img);
+        }
         btn_submit.setOnClickListener(onSubmit());
         btn_cancel.setOnClickListener(onCancel());
         return v;

@@ -1,19 +1,20 @@
 package com.example.sin.projectone.payment;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -22,7 +23,6 @@ import com.example.sin.projectone.Constant;
 import com.example.sin.projectone.MessageAlertDialog;
 import com.example.sin.projectone.Product;
 import com.example.sin.projectone.ProductAdapter;
-import com.example.sin.projectone.ProductDetailDialog;
 import com.example.sin.projectone.ProductPaymentDialog;
 import com.example.sin.projectone.R;
 import com.example.sin.projectone.SwipeDetector;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 public class Main extends Fragment  {
     private ProgressDialog progress;
-    Button _btn_next, _btn_back;
+    Button _btn_next, btn_last_scan;
     private ListView _productList;
     public ArrayList<Product> products = new ArrayList<Product>();
     private ProductAdapter adapter;
@@ -43,11 +43,14 @@ public class Main extends Fragment  {
     private SwipeDetector swipeDetector = new SwipeDetector();
     private LinearLayout layout_listview, layout_scanner;
     private FragmentManager fragmentManager;
+    public String lastBarcodeScan="-1";
+    public ImageView imgProduct;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_payment_main, container, false);
         fragmentManager = getFragmentManager();
+        imgProduct = (ImageView) view.findViewById(R.id.imgProduct);
         Fragment newFragment = new ScanPayment();
         String tagFragment = Constant.TAG_FRAGMENT_SCAN_PAYMENT;
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -62,9 +65,9 @@ public class Main extends Fragment  {
         // Commit the transaction
         transaction.commit();
         _btn_next = (Button) view.findViewById(R.id.pay_next);
-        _btn_back = (Button) view.findViewById(R.id.pay_back);
+        btn_last_scan = (Button) view.findViewById(R.id.btn_last_scan);
         _btn_next.setOnClickListener(nextBtnClick());
-        _btn_back.setOnClickListener(backBtnClick());
+        btn_last_scan.setOnClickListener(onLastScanClick());
         // get layout
         layout_listview = (LinearLayout) view.findViewById(R.id.sub_layout_listView);
         layout_scanner = (LinearLayout) view.findViewById(R.id.sub_layout_scanner);
@@ -107,7 +110,7 @@ public class Main extends Fragment  {
         };
     }
 
-    private View.OnClickListener backBtnClick() {
+    private View.OnClickListener onLastScanClick() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,9 +120,33 @@ public class Main extends Fragment  {
                 if(prev!=null){
                     transaction.remove(prev);
                 }
-                ProductPaymentDialog detailDialog = ProductPaymentDialog.newInstance(products.get(0));
-                detailDialog.setTargetFragment(Main.this, Constant.REQUEST_CODE_PRODUCT_PAYMENT_DIALOG);
-                detailDialog.show(transaction, tag);
+                String s = lastBarcodeScan;
+                int index = adapter.searchIndexProduct(lastBarcodeScan);
+                if(index>=0){
+                    Product p = adapter.getItem(index);
+                    ProductPaymentDialog detailDialog = ProductPaymentDialog.newInstance(p);
+                    detailDialog.setTargetFragment(Main.this, Constant.REQUEST_CODE_PRODUCT_PAYMENT_DIALOG);
+                    detailDialog.show(transaction, tag);
+                }
+                else{
+                    String tagAlert = Constant.TAG_FRAGMENT_DIALOG_ALERT;
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG, "Scan Product first");
+                    bundle.putBoolean(Constant.KEY_BYNDLE_HAS_OK_CANCEL_DIALOG, false);
+                    final MessageAlertDialog alertDialog = MessageAlertDialog.newInstance(bundle);
+                    alertDialog.show(fragmentManager, tagAlert);
+                    new CountDownTimer(2000, 1000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            // TODO Auto-generated method stub
+                        }
+                        @Override
+                        public void onFinish() {
+                            // TODO Auto-generated method stub
+                            alertDialog.dismiss();
+                        }
+                    }.start();
+                }
             }
         };
     }

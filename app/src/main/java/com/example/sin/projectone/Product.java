@@ -84,20 +84,30 @@ public class Product implements Parcelable , Cloneable {
         ArrayList<Product> products = new ArrayList();
         try{
             while(cursor.moveToNext()){
-                Product p =new Product(//id name bacode price
-                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_P_ID)),
-                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_NAME)),
-                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_BARCODE)),
-                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_PRICE)),
-                        cursor.getInt(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_QTY)),
-                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_TYPE)),
-                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_IMG)),
-                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_COST)),
-                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_DETAILS)),
-                        cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_CREATE_AT)
-                        ));
-                products.add(p);
+                Product p = null;
+                try{
+                    String a = cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_P_ID));
+                    p =new Product(//id name bacode price
+                            cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_P_ID)),
+                            cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_NAME)),
+                            cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_BARCODE)),
+                            cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_PRICE)),
+                            cursor.getInt(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_QTY)),
+                            cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_TYPE)),
+                            cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_IMG)),
+                            cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_COST)),
+                            cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_DETAILS)),
+                            cursor.getString(cursor.getColumnIndex(ProductDBHelper.Table.COLUMN_CREATE_AT)
+                            ));
+                }
+                catch (Exception e){
+                    String a =e.toString();
+                    System.out.println(e);
 
+                }
+                if(p!=null){
+                    products.add(p);
+                }
             }
             return products;
         }finally {

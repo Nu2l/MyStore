@@ -51,6 +51,7 @@ public class AddProduct extends Fragment {
     private Button btn_back, btn_add;
     private ImgManager imgManager;
     private ImageButton btn_scan;
+    private String lastBarcodeResult="";
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_add, container, false);
@@ -71,7 +72,7 @@ public class AddProduct extends Fragment {
 
         btn_add.setOnClickListener(onAddClick());
         btn_back.setOnClickListener(onBackClick());
-        //btn_scan.setOnClickListener();
+        btn_scan.setOnClickListener(onBtnScanClick());
         imgProduct.setOnClickListener(onImgClick());
         return view;
     }
@@ -106,6 +107,7 @@ public class AddProduct extends Fragment {
                     targetProduct = new Product(p_id, p_name, p_barcode, p_price, p_qty,
                             p_type, p_imgName, p_cost, p_detail, p_createAt);
                     JSONObject JsonProduct = targetProduct.toJSONObject();
+                    JsonProduct.put(Constant.KEY_JSON_SHOPID, Constant.SHOP_ID); // add shop id
                     String imgName = p_imgName+".png";
                     File imgProduct = imgManager.saveImgToInternalStorage(targetImg, imgName);
 
@@ -183,7 +185,13 @@ public class AddProduct extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                String tag = Constant.TAG_FRAGMENT_SCAN_BARCODE;
+                Fragment scanBarcode = new ScanBarCode();
+                scanBarcode.setTargetFragment(AddProduct.this, Constant.REQUEST_CODE_BARCODE);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.replace(R.id.frame_container_item, scanBarcode, tag);
+                fragmentTransaction.commit();
             }
         };
     }
@@ -203,6 +211,9 @@ public class AddProduct extends Fragment {
             targetImg = (Bitmap) extras.get("data");
             //String path = imgManager.saveImgToInternalStorage(imageBitmap, imgName);
             imgProduct.setImageBitmap(targetImg);
+        }
+        if(requestCode == Constant.REQUEST_CODE_BARCODE && resultCode == Constant.RESULT_CODE_BARCODE){
+            lastBarcodeResult = data.getCharSequenceExtra(Constant.KEY_INTENT_BARCODE).toString();
         }
     }
 
@@ -224,6 +235,11 @@ public class AddProduct extends Fragment {
 //        Bitmap icon = BitmapFactory.decodeResource(getActivity().getResources(),
 //                R.drawable.ic_menu_gallery);
 //        imgProduct.setImageBitmap(icon);
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        edt_p_barcode.setText(lastBarcodeResult);
     }
 
 }

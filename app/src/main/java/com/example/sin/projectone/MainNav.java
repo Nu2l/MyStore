@@ -49,6 +49,7 @@ public class MainNav extends MaterialNavigationDrawer {
                     }
                     loadTransaction();
                     System.out.println("finish");
+                    //ProductDBHelper.getInstance(getApplicationContext()).ShowListProduct();
 
                 } catch (Exception e) {
                     e.printStackTrace();
