@@ -28,7 +28,9 @@ public class MainNav extends MaterialNavigationDrawer {
     public void init(Bundle savedInstanceState) {
         fragmentManager = getFragmentManager();
         this.deleteDatabase(ProductDBHelper.DATABASE_NAME); // debug
+        int a = Constant.SHOP_ID;
         loadProducts();
+
         loadTransaction();
         this.addSection(newSection("Item", new com.example.sin.projectone.item.Container()));
         this.addSection(newSection("Payment", new com.example.sin.projectone.payment.Container()));
@@ -109,27 +111,28 @@ public class MainNav extends MaterialNavigationDrawer {
 
     @Override
     public void onBackPressed(){
-        if(fragmentManager.getBackStackEntryCount()>0){
-            super.onBackPressed();
-            return;
-        }
-        backPressCount ++;
-        Toast.makeText(getApplicationContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-        new CountDownTimer(3000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                // TODO Auto-generated method stub
-            }
-            @Override
-            public void onFinish() {
-                // TODO Auto-generated method stub
-                flagCountDownExit = false;
-            }
-        }.start();
-        if(flagCountDownExit && backPressCount==2){
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(1);
-        }
+//        if(fragmentManager.getBackStackEntryCount()>0){
+//            super.onBackPressed();
+//            return;
+//        }
+//        backPressCount ++;
+//        flagCountDownExit = true;
+//        Toast.makeText(getApplicationContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+//        new CountDownTimer(3000, 1000) {
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//                // TODO Auto-generated method stub
+//            }
+//            @Override
+//            public void onFinish() {
+//                // TODO Auto-generated method stub
+//                flagCountDownExit = false;
+//            }
+//        }.start();
+//        if(flagCountDownExit && backPressCount==2){
+//            android.os.Process.killProcess(android.os.Process.myPid());
+//            System.exit(1);
+//        }
 
     }
 

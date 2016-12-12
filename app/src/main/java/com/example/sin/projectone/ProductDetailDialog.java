@@ -2,11 +2,13 @@ package com.example.sin.projectone;
 
 
 import android.app.DialogFragment;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -20,6 +22,7 @@ public class ProductDetailDialog extends DialogFragment {
     private TextView text_name, text_barcode, text_price, text_qty,
             text_type, text_cost, text_detail;
     private Button btn_back, btn_edit;
+    private ImageView img_product;
     private View.OnClickListener onBackClick, onEditClick;
     public static ProductDetailDialog newInstance(Bundle data){
         ProductDetailDialog dialog = new ProductDetailDialog();
@@ -39,6 +42,7 @@ public class ProductDetailDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.product_detail, container, false);
+        img_product = (ImageView) view.findViewById(R.id.img_product);
         text_name = (TextView) view.findViewById(R.id.text_product_name);
         text_barcode = (TextView) view.findViewById(R.id.text_product_barcode);
         text_price = (TextView) view.findViewById(R.id.text_product_price);
@@ -48,6 +52,7 @@ public class ProductDetailDialog extends DialogFragment {
         text_detail = (TextView) view.findViewById(R.id.text_product_details);
         btn_back = (Button) view.findViewById(R.id.btn_cancel);
         btn_edit = (Button) view.findViewById(R.id.btn_edit);
+
 
         btn_back.setOnClickListener(onBackClick);
         btn_edit.setOnClickListener(onEditClick);
@@ -59,6 +64,12 @@ public class ProductDetailDialog extends DialogFragment {
         text_type.setText(product.type);
         text_cost.setText(product.cost);
         text_detail.setText(product.details);
+
+        String fileName = product.imgName;
+        Bitmap img =  ImgManager.getinstance().loadImageFromStorage(fileName);
+        if(img!=null){
+            img_product.setImageBitmap(img);
+        }
 
         return view;
     }

@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -12,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sin.projectone.Constant;
+import com.example.sin.projectone.ImgManager;
 import com.example.sin.projectone.MessageAlertDialog;
 import com.example.sin.projectone.Product;
 import com.example.sin.projectone.ProductDBHelper;
@@ -40,6 +43,7 @@ public class EditProduct extends Fragment {
     private FragmentManager fragmentManager;
     private Button btn_back, btn_submit;
     private TextView text_product_type;
+    private ImageView img_product;
     private EditText edt_p_name, edt_p_barcode, edt_p_qty, edt_p_price, edt_p_cost, edt_p_detail;
     private MessageAlertDialog alertDialog;
 
@@ -51,6 +55,7 @@ public class EditProduct extends Fragment {
             products =  productBundle.getParcelable(Constant.KEY_BUNDLE_PRODUCT);
             saveProduct = (Product) products.clone();
         }
+        img_product = (ImageView) view.findViewById(R.id.img_product);
 
         btn_back = (Button) view.findViewById(R.id.btn_cancel);
         btn_submit = (Button) view.findViewById(R.id.btn_submit);
@@ -71,7 +76,10 @@ public class EditProduct extends Fragment {
         edt_p_detail.setText(products.details);
         text_product_type.setText(products.type);
 
-
+        Bitmap img = ImgManager.getinstance().loadImageFromStorage(products.imgName);
+        if(img!=null){
+            img_product.setImageBitmap(img);
+        }
 
         btn_submit = (Button) view.findViewById(R.id.btn_submit);
         btn_back = (Button) view.findViewById(R.id.btn_cancel);

@@ -43,6 +43,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class AddProduct extends Fragment {
 
+    private boolean flagReset = true;
     private Product targetProduct;
     private Bitmap targetImg;
     private ImageView imgProduct;
@@ -124,7 +125,7 @@ public class AddProduct extends Fragment {
                             try { // insert data , save img
                                 JSONObject jsonObject = new JSONObject(new String(responseBody));
                                 ProductDBHelper.getInstance(getActivity()).insertProduct(jsonObject); // insert db
-                                String imgName = Constant.HEAD_NAME_IMG+jsonObject.getString(Constant.KEY_JSON_PRODUCT_IMG);
+                                String imgName = jsonObject.getString(Constant.KEY_JSON_PRODUCT_IMG);
                                 imgManager.saveImgToInternalStorage(targetImg, imgName);
                                 targetImg =null;
                                 targetProduct= null;
@@ -226,20 +227,22 @@ public class AddProduct extends Fragment {
     }
 
     private void reset(){
-          FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-          fragmentTransaction.remove(this);
-          String tag = Constant.TAG_FRAGMENT_ITEM_ADD;
-          Fragment addProduct = new AddProduct();
-          fragmentTransaction.replace(R.id.frame_container_item, addProduct, tag );
-          fragmentTransaction.commit();
-//        targetProduct = null;
-//        edt_p_name.setText("");
-//        edt_p_barcode.setText("");
-//        edt_p_qty.setText("");
-//        edt_p_price.setText("");
-//        edt_p_cost.setText("");
-//        edt_p_detail.setText("");
-//        edt_p_type.setText("");
+
+//          FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//          fragmentTransaction.remove(this);
+//          String tag = Constant.TAG_FRAGMENT_ITEM_ADD;
+//          Fragment addProduct = new AddProduct();
+//          fragmentTransaction.replace(R.id.frame_container_item, addProduct, tag );
+//          fragmentTransaction.commit();
+        targetProduct = null;
+        targetImg = null;
+        edt_p_name.setText("");
+        edt_p_barcode.setText("");
+        edt_p_qty.setText("");
+        edt_p_price.setText("");
+        edt_p_cost.setText("");
+        edt_p_detail.setText("");
+        edt_p_type.setText("");
 //        Bitmap icon = BitmapFactory.decodeResource(getActivity().getResources(),
 //                R.drawable.ic_menu_gallery);
 //        imgProduct.setImageBitmap(icon);
