@@ -398,6 +398,17 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         }
 
     }
+    public boolean getDailyReoprt(String date){
+        String sql = "SELECT td.name, td.qty FROM transactionDetail td WHERE createAt like '"+date+"%' ORDER BY name";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if(cursor.getCount()>0) {
+            return true;
+        }
+        else{
+            return false ;
+            }
+    }
     public  Cursor getTransaction(){
         String sql = "SELECT tt._id, tt.transactionID,tt.total,tt.createAt, tt.username, tt.discount FROM transaction_table tt";
         SQLiteDatabase db = this.getReadableDatabase();
