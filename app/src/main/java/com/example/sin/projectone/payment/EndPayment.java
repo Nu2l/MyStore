@@ -132,6 +132,7 @@ public class EndPayment extends Fragment {
                         Product updateP;
                         ProductDBHelper dbHelper = ProductDBHelper.getInstance(getActivity());
                         for(Product p : products){
+                            int a = p.qty;
                             updateP = (Product) p.clone();
                             updateP.qty = dbHelper.searchProductByID(p.id).qty - p.qty;
                             dbHelper.UpdateProduct(updateP);
