@@ -95,13 +95,17 @@ public class Daily extends Fragment {
         if(!dateEdit.getText().toString().equals("")){
             if(ProductDBHelper.getInstance(Daily.this.getActivity()).getDailyReoprt(dateEdit.getText().toString())){
                 Log.d("read", "rady to go: ");
+                Bundle args = new Bundle();
+                args.putString("createAt", dateEdit.getText().toString());
+                Fragment newFragment = new DailyDetail();
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.addToBackStack(null);
+                newFragment.setArguments(args);
+                fragmentTransaction.replace(R.id.fragment_report_container, newFragment).commit();
             }
             Log.d("read", "nnot readt to go: ");
 
         }
-        Fragment newFragment = new Main();
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.replace(R.id.fragment_report_container, newFragment).commit();
+
     }
 }
