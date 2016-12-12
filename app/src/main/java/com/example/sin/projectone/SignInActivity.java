@@ -114,6 +114,10 @@ public class SignInActivity extends AppCompatActivity {
                     else if(res.equals("Welcome Back !")){
                         if(response.get("shopName").equals("null")){
                             navigateToRegisterStore(user);
+                            String resUser = (String) response.get("userID");
+                            String resShop = (String) response.get("shopID");
+                            Constant.SHOP_ID = Integer.valueOf(resShop);
+                            Constant.USER_ID = Integer.valueOf(resUser);
                             CharSequence text = "Please create your shop or join in !";
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();

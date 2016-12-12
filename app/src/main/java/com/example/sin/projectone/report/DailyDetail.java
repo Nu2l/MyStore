@@ -2,6 +2,7 @@ package com.example.sin.projectone.report;
 
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -11,8 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 
+import com.example.sin.projectone.ProductDBHelper;
 import com.example.sin.projectone.R;
+import com.example.sin.projectone.receipt.TransDetailListCursor;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,52 +34,16 @@ public class DailyDetail extends Fragment {
     TextInputLayout layoutText;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view  = inflater.inflate(R.layout.fragment_report_daily, container, false);
-        dateEdit = (EditText) view.findViewById(R.id.report_daily_edit_pick_date) ;
-//        layoutText =(TextInputLayout) view.findViewById(R.id.report_daily_layout_pick_date) ;
-        myCalendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
-            }
-
-        };
-        dateEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    new DatePickerDialog(DailyDetail.this.getActivity(), date, myCalendar
-                            .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                            myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                }else {
-                }
-            }
-        });
-        dateEdit.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                new DatePickerDialog(DailyDetail.this.getActivity(), date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-
-
-    return view;
+        View view  = inflater.inflate(R.layout.fragment_report_daily_detail, container, false);
+        String createAt = getArguments().getString("createAt");
+        ListView listProduct = (ListView)view.findViewById(R.id.report_daily_list_product);
+        ListView listEmployee = (ListView)view.findViewById(R.id.report_daily_list_employee);
+        Cursor todoCursor = ProductDBHelper.getInstance(this.getActivity()).getDailyEmployee(createAt);
+        Cursor todoCursor2 = ProductDBHelper.getInstance(this.getActivity()).getDailyProduct(createAt);
+        TransDetailListCursor todoAdapter = new TransDetailListCursor(this.getActivity(), todoCursor);
+        listProduct.setAdapter(todoAdapter);
+        listProduct.setDivider(null);
+        return view;
     }
-    private void updateLabel() {
 
-        String myFormat = "MM/dd/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        dateEdit.setText(sdf.format(myCalendar.getTime()));
-    }
 }

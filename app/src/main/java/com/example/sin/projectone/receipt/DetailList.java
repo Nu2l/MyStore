@@ -46,13 +46,6 @@ public class DetailList extends ListFragment implements AdapterView.OnItemClickL
         textDisc.setText(receiDisc);
         textDate.setText(receiDate);
         textSubTotal.setText(dSubTotal.toString());
-//        Cursor todoCursor = ProductDBHelper.getInstance(this.getActivity()).getTransactionDetail();
-//        System.out.println(todoCursor.getColumnName(0));
-//        System.out.println(transList);
-//        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(),
-//                R.array.Planets, android.R.layout.simple_list_item_1)
-//        lvItems.setAdapter(todoAdapter);
-//        getListView().setOnItemClickListener(this);
         return view;
 
     }

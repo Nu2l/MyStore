@@ -420,6 +420,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
             return false ;
             }
     }
+
     public  Cursor getTransaction(){
         String sql = "SELECT tt._id, tt.transactionID,tt.total,tt.createAt, tt.username, tt.discount FROM transaction_table tt";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -428,6 +429,20 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     }
     public Cursor getTransactionDetail(String whereCol){
         String sql = "SELECT _id, name, price,qty FROM transactionDetail WHERE transactionID = "+whereCol;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        return  cursor;
+    }
+
+    public Cursor getDailyEmployee(String createAt){
+        String sql = "SELECT username, SUM(tt.total) AS total, SUM(tt.discount) AS discount FROM transaction_table tt  WHERE createAt like '"+createAt+"%' GROUP BY username";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        return  cursor;
+    }
+
+    public Cursor getDailyProduct(String createAt){
+        String sql = "SELECT td.name,SUM(td.qty) AS qty FROM transactionDetail td WHERE createAt like '"+createAt+"%' GROUP BY name ORDER BY name";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         return  cursor;
