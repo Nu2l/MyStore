@@ -92,7 +92,7 @@ public class EndPayment extends Fragment {
 
     private float getTotal(){
         float total = 0;
-        for(Product p : products){
+        for(Product p : adapter.getAllItem()){
             float price = 0;
             try{
                 price = Integer.parseInt(p.price);
@@ -107,21 +107,7 @@ public class EndPayment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(products.isEmpty() || products.size()==0){ // block send data more once
-//                    return;
-//                }
-//                final String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
-//                final FragmentTransaction tran = fragmentManager.beginTransaction();
-//                Fragment prev = fragmentManager.findFragmentByTag(tag);
-//                if(prev!=null){
-//                    tran.remove(prev);
-//                }
-//                Bundle b = new Bundle();
-//                b.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG,"Please Wait..");
-//                b.putString(Constant.KEY_BUNDLE_TITLE_DIALOG, "Sending");
-//                b.putBoolean(Constant.KEY_BYNDLE_HAS_OK_CANCEL_DIALOG,false);
-//                final MessageAlertDialog dialog =  MessageAlertDialog.newInstance(b);
-//                dialog.show(fragmentManager, tag);
+
                 final ProgressDialog progress = ProgressDialog.show(EndPayment.this.getActivity(), "Loading",
                         "Please wait ...", true);
 
@@ -201,6 +187,7 @@ public class EndPayment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==Constant.REQUEST_CODE_PRODUCT_PAYMENT_DIALOG &&
                 resultCode==Constant.RESULT_CODE_PRODUCT_PAYMENT_DIALOG_SUBMIT){
+            text_total.setText(String.valueOf(getTotal()));
             adapter.notifyDataSetChanged();
         }
     }
