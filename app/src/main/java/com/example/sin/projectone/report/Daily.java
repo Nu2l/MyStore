@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.example.sin.projectone.MainNav;
 import com.example.sin.projectone.ProductDBHelper;
 import com.example.sin.projectone.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,7 +59,14 @@ public class Daily extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("CLick", "onClick:GOO ");
-                processDetail();
+                if(dateEdit.getText().toString().equals("")){
+                    Toast toast = Toast.makeText(Daily.this.getActivity(), "Plase choose date", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else{
+                    processDetail();
+                }
+
             }
         });
         dateEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -93,17 +102,28 @@ public class Daily extends Fragment {
     }
     private void processDetail(){
         if(!dateEdit.getText().toString().equals("")){
-            if(ProductDBHelper.getInstance(Daily.this.getActivity()).getDailyReoprt(dateEdit.getText().toString())){
+            if(ProductDBHelper.getInstance(Daily.this.getActivity()).getDailyReport(dateEdit.getText().toString())){
                 Log.d("read", "rady to go: ");
+                JSONArray temp = ProductDBHelper.getInstance(Daily.this.getActivity()).getDailyDetail(dateEdit.getText().toString());
                 Bundle args = new Bundle();
                 args.putString("createAt", dateEdit.getText().toString());
+                try {
+                    args.putString("json", temp.getString(0));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 Fragment newFragment = new DailyDetail();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.addToBackStack(null);
                 newFragment.setArguments(args);
                 fragmentTransaction.replace(R.id.fragment_report_container, newFragment).commit();
             }
-            Log.d("read", "nnot readt to go: ");
+            else{
+                Toast toast = Toast.makeText(this.getActivity(), "No data found", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
 
         }
 
