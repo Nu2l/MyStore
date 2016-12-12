@@ -17,12 +17,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.sin.projectone.ApplicationHelper;
 import com.example.sin.projectone.Constant;
 import com.example.sin.projectone.MessageAlertDialog;
 import com.example.sin.projectone.Product;
 import com.example.sin.projectone.ProductAdapter;
+import com.example.sin.projectone.ProductDBHelper;
 import com.example.sin.projectone.ProductPaymentDialog;
 import com.example.sin.projectone.R;
 import com.example.sin.projectone.SwipeDetector;
@@ -176,6 +178,12 @@ public class Main extends Fragment  {
                     }
                 }
                 else{
+                    Product pCheck = adapter.getItem(position);
+                    int qty_check = ProductDBHelper.getInstance(getActivity()).searchProductByID(pCheck.id).qty;
+                    if(pCheck.qty>qty_check){
+                        Toast.makeText(Main.this.getActivity(), "Product must be less than"+(qty_check+1), Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     adapter.addQtyProduct(adapter.getItem(position).id,1);
                 }
                 adapter.notifyDataSetChanged();

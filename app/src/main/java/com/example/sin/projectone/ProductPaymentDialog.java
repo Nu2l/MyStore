@@ -11,12 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by nanth on 12/10/2016.
  */
 
 public class ProductPaymentDialog extends DialogFragment {
+    private Product saveProduct;
     private Product product;
     private EditText edt_p_qty;
     private TextView text_p_name, text_p_price;
@@ -26,6 +28,7 @@ public class ProductPaymentDialog extends DialogFragment {
     public static ProductPaymentDialog newInstance(Product product){
         ProductPaymentDialog dialog = new ProductPaymentDialog();
         dialog.product = product;
+        dialog.saveProduct = (Product) product.clone();
         return  dialog;
     }
 
@@ -56,6 +59,14 @@ public class ProductPaymentDialog extends DialogFragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int qty_check = ProductDBHelper.getInstance(getActivity()).searchProductByID(saveProduct.id).qty;
+                int qtyInput = Integer.parseInt(edt_p_qty.getText().toString());
+                if(qtyInput>qty_check){
+                    Toast.makeText(ProductPaymentDialog.this.getActivity(), "Product must be less than"+(qty_check+1), Toast.LENGTH_LONG).show();
+                    product.qty = saveProduct.qty;
+                    edt_p_qty.setText(String.valueOf(product.qty));
+                    return;
+                }
                 try{
                     product.qty = Integer.parseInt(edt_p_qty.getText().toString());// pass reference .qty
                 }

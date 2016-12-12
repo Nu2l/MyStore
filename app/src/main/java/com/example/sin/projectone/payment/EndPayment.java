@@ -1,5 +1,6 @@
 package com.example.sin.projectone.payment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -47,6 +48,7 @@ public class EndPayment extends Fragment {
     private EditText edt_discount;
     private Button btn_back, btn_send;
     private FragmentManager fragmentManager;
+    private Product productMaster;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_payment_end, container, false);
@@ -92,7 +94,7 @@ public class EndPayment extends Fragment {
 
     private float getTotal(){
         float total = 0;
-        for(Product p : products){
+        for(Product p : adapter.getAllItem()){
             float price = 0;
             try{
                 price = Integer.parseInt(p.price);
@@ -107,21 +109,7 @@ public class EndPayment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(products.isEmpty() || products.size()==0){ // block send data more once
-//                    return;
-//                }
-//                final String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
-//                final FragmentTransaction tran = fragmentManager.beginTransaction();
-//                Fragment prev = fragmentManager.findFragmentByTag(tag);
-//                if(prev!=null){
-//                    tran.remove(prev);
-//                }
-//                Bundle b = new Bundle();
-//                b.putString(Constant.KEY_BUNDLE_MESSAGE_DIALOG,"Please Wait..");
-//                b.putString(Constant.KEY_BUNDLE_TITLE_DIALOG, "Sending");
-//                b.putBoolean(Constant.KEY_BYNDLE_HAS_OK_CANCEL_DIALOG,false);
-//                final MessageAlertDialog dialog =  MessageAlertDialog.newInstance(b);
-//                dialog.show(fragmentManager, tag);
+
                 final ProgressDialog progress = ProgressDialog.show(EndPayment.this.getActivity(), "Loading",
                         "Please wait ...", true);
 
@@ -140,6 +128,15 @@ public class EndPayment extends Fragment {
                 WebService.sendTransaction(new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        // Update DB
+                        Product updateP;
+                        ProductDBHelper dbHelper = ProductDBHelper.getInstance(getActivity());
+                        for(Product p : products){
+                            int a = p.qty;
+                            updateP = (Product) p.clone();
+                            updateP.qty = dbHelper.searchProductByID(p.id).qty - p.qty;
+                            dbHelper.UpdateProduct(updateP);
+                        }
                         progress.dismiss();
                         final String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
                         int tranId = -1;
@@ -201,6 +198,7 @@ public class EndPayment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==Constant.REQUEST_CODE_PRODUCT_PAYMENT_DIALOG &&
                 resultCode==Constant.RESULT_CODE_PRODUCT_PAYMENT_DIALOG_SUBMIT){
+            text_total.setText(String.valueOf(getTotal()));
             adapter.notifyDataSetChanged();
         }
     }
