@@ -3,6 +3,7 @@ package com.example.sin.projectone;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,6 +24,9 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 
 public class RegisterStoreActivity extends AppCompatActivity {
+
+    private static boolean flagCountDownExit = false;
+    private static int backPressCount = 0;
     private EditText shopNameText;
     private EditText shopPassText;
     private Button regisStoreButt;
@@ -152,5 +156,28 @@ public class RegisterStoreActivity extends AppCompatActivity {
 //            }
 //        });
 
+    }
+
+    @Override
+    public void onBackPressed(){
+        flagCountDownExit = true;
+        backPressCount ++;
+        Toast.makeText(getApplicationContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        new CountDownTimer(3000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onFinish() {
+                // TODO Auto-generated method stub
+                flagCountDownExit = false;
+                backPressCount = 0;
+            }
+        }.start();
+        if(flagCountDownExit && backPressCount==2){
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
+        }
     }
 }
