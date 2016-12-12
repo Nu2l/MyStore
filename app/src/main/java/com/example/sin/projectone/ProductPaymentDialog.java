@@ -31,7 +31,7 @@ public class ProductPaymentDialog extends DialogFragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.product_detail_payment, container, false);
         edt_p_qty = (EditText) v.findViewById(R.id.edt_text_product_qty);
-        btn_submit = (Button) v.findViewById(R.id.btn_back);
+        btn_submit = (Button) v.findViewById(R.id.btn_cancel);
         btn_cancel = (Button) v.findViewById(R.id.btn_cancel);
         text_p_name = (TextView) v.findViewById(R.id.text_product_name);
         text_p_price = (TextView) v.findViewById(R.id.text_product_price);

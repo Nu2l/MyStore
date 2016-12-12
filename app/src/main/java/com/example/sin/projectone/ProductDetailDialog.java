@@ -46,7 +46,7 @@ public class ProductDetailDialog extends DialogFragment {
         text_type = (TextView) view.findViewById(R.id.text_product_type);
         text_cost = (TextView) view.findViewById(R.id.text_product_cost);
         text_detail = (TextView) view.findViewById(R.id.text_product_details);
-        btn_back = (Button) view.findViewById(R.id.btn_back);
+        btn_back = (Button) view.findViewById(R.id.btn_cancel);
         btn_edit = (Button) view.findViewById(R.id.btn_edit);
 
         btn_back.setOnClickListener(onBackClick);

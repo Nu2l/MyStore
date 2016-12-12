@@ -30,6 +30,7 @@ public class Constant {
     public final static String KEY_JSON_TOTAL = "total";
     public final static String KEY_JSON_TRANSACTIONID = "transactionID";
 
+
     public final static String KEY_JSON_USERID = "userID";
 
 
@@ -41,7 +42,7 @@ public class Constant {
     public final static String URL_SERVER                   = "http://188.166.239.218:3001";
     public final static String URL_GET_ALL_PRODUCT          = URL_SERVER+"/api/product/"+SHOP_ID;
     public final static String URL_SEND_TRANSACTION         = URL_SERVER+"/api/transaction";
-    public final static String SEND_ADD_OR_UPDATE_PRODUCT   = URL_SERVER+"/api/product";
+    public final static String SEND_ADD_OR_UPDATE_PRODUCT   = URL_SERVER+"/api/fileupload";
     // Tag Fragment
     public final static String TAG_FRAGMENT_ITEM_EDIT = "tag_fragment_item_edit";
     public final static String TAG_FRAGMENT_ITEM_ADD = "tag_fragment_item_add";
@@ -55,11 +56,13 @@ public class Constant {
     public final static String TAG_FRAGMENT_DIALOG_PRODUCT_DETAIL = "tag_fragment_dialog_alert";
     // Key Intent
     public final static String KEY_INTENT_PRODUCT = "key_intent_product";
+    public final static String KEY_INTENT_BARCODE = "key_intetn_barcode";
     // Key Bundle
     public final static String KEY_BUNDLE_ARRAYLIST_PRODUCT = "key_bundle_array_list_product";
     public final static String KEY_BUNDLE_MESSAGE_DIALOG = "key_bundle_message_dialog";
     public final static String KEY_BUNDLE_TITLE_DIALOG = "key_bundle_title_dialog";
-    public final static String KEY_BYNDLE_HAS_OK_CANCEL_DIALOG = "key_bundle_ok_cancel";
+    public final static String KEY_BYNDLE_HAS_OK_CANCEL_DIALOG = "key_bundle_ok_cancel_dialog";
+    public final static String KEY_BYNDLE_HAS_OK_DIALOG = "key_bundle_ok_dialog";
     public final static String KEY_BUNDLE_PRODUCT= "key_bundle_product";
     // Request code
     public final static int REQUEST_CODE_PRODUCT_PAYMENT_DIALOG          = 1000001;
@@ -72,11 +75,23 @@ public class Constant {
     public final static int REQUEST_CODE_OK_CANCEL                       = 2000001;
     public final static int RESULT_CODE_OK                               = 2000002;
     public final static int RESULT_CODE_CANCEL                           = 2000003;
+
+    public final static int REQUEST_CODE_BARCODE                         = 4000001;
+    public final static int RESULT_CODE_BARCODE                          = 4000002;
     //message
     public final static String MESSAGE_ALERT_PRODUCT_SCAN_FIRST = "Please scan the product first";
+
+    // Key param
+    public final static String KEY_REQUEST_PAREMS_PRODUCT_ADD = "key_request_param_product_add";
+    public final static String KEY_REQUEST_PAREMS_PRODUCT_IMG_FILE = "key_request_param_img_product";
 
     // other
     // path to /data/data/com.example.sin.projectone/app_productImg
     public final static String FOLDER_PHOTO = "productImg";
+    public final static int PRODUCT_ID_INSERT = 0;
+    public final static String PATH_NAME_IMG = "img_";
+    public final static String CREATE_AT_TEMP = "createAt_temp";
+
+
 
 }

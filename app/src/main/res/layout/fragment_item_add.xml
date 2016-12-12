@@ -25,7 +25,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="20dp"
-                android:id="@+id/imageView3" />
+                android:id="@+id/img_product" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -57,7 +57,6 @@
                     android:layout_margin="10dp"/>
 
                 <EditText
-                    android:text="TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/edt_text_product_name"
@@ -81,13 +80,19 @@
                     android:layout_margin="10dp"/>
 
                 <EditText
-                    android:text="TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/edt_text_product_barcode"
-                    android:layout_weight="0.7"
+                    android:layout_weight="0.5"
                     android:layout_margin="10dp"
                     android:inputType="text" />
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/launcher_icon"
+                    android:id="@+id/btn_scan"
+                    android:layout_weight="0.2" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -105,7 +110,6 @@
                     android:layout_margin="10dp"/>
 
                 <EditText
-                    android:text="TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
@@ -129,7 +133,6 @@
                     android:layout_margin="10dp"/>
 
                 <EditText
-                    android:text="TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/edt_num_product_qty"
@@ -151,13 +154,14 @@
                     android:layout_weight="0.3"
                     android:layout_margin="10dp"/>
 
-                <TextView
-                    android:text="TextView"
+                <EditText
                     android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/text_product_type"
-                    android:layout_weight="0.7"
-                    android:layout_margin="10dp"/>
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/edt_text_product_type"
+                    android:layout_weight="0.3" />
+
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -174,7 +178,6 @@
                     android:layout_margin="10dp"/>
 
                 <EditText
-                    android:text="TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/edt_num_product_cost"
@@ -197,7 +200,6 @@
                     android:layout_margin="10dp"/>
 
                 <EditText
-                    android:text="TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/edt_text_product_details"
@@ -230,14 +232,15 @@
                 android:layout_marginBottom="30dp"/>
 
             <Button
-                android:text="@string/btn_submit"
+                android:text="@string/btn_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn_cancel"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/btn_submit"
+                android:id="@+id/btn_add"
                 android:layout_marginRight="50dp"
-                android:layout_marginBottom="30dp"/>
+                android:layout_alignBaseline="@+id/btn_cancel"
+                android:layout_alignBottom="@+id/btn_cancel"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="50dp" />
         </RelativeLayout>
     </LinearLayout>
 

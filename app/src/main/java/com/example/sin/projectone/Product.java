@@ -149,7 +149,7 @@ public class Product implements Parcelable , Cloneable {
 
         try {
             jsProduct.put(Constant.KEY_JSON_PRODUCT_ID, this.id);
-            jsProduct.put(Constant.KEY_JSON_PRODUCT_BARCODE, this.name);
+            jsProduct.put(Constant.KEY_JSON_PRODUCT_NAME, this.name);
             jsProduct.put(Constant.KEY_JSON_PRODUCT_BARCODE, this.barcode);
             jsProduct.put(Constant.KEY_JSON_PRODUCT_PRICE, this.price);
             jsProduct.put(Constant.KEY_JSON_PRODUCT_TYPE, this.type);

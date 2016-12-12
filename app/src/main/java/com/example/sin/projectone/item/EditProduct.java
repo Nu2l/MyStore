@@ -20,9 +20,9 @@ import com.example.sin.projectone.Product;
 import com.example.sin.projectone.ProductDBHelper;
 import com.example.sin.projectone.R;
 import com.example.sin.projectone.WebService;
-import com.example.sin.projectone.payment.EndPayment;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
@@ -35,6 +35,7 @@ import cz.msebera.android.httpclient.Header;
 public class EditProduct extends Fragment {
 
     private Product products;
+    private Product targetProduct;
     private Product saveProduct;
     private FragmentManager fragmentManager;
     private Button btn_back, btn_submit;
@@ -51,7 +52,7 @@ public class EditProduct extends Fragment {
             saveProduct = (Product) products.clone();
         }
 
-        btn_back = (Button) view.findViewById(R.id.btn_back);
+        btn_back = (Button) view.findViewById(R.id.btn_cancel);
         btn_submit = (Button) view.findViewById(R.id.btn_submit);
 
         edt_p_name = (EditText) view.findViewById(R.id.edt_text_product_name);
@@ -73,7 +74,7 @@ public class EditProduct extends Fragment {
 
 
         btn_submit = (Button) view.findViewById(R.id.btn_submit);
-        btn_back = (Button) view.findViewById(R.id.btn_back);
+        btn_back = (Button) view.findViewById(R.id.btn_cancel);
         btn_submit.setOnClickListener(onSubmitClick());
         btn_back.setOnClickListener(onBackClick());
 
@@ -108,9 +109,9 @@ public class EditProduct extends Fragment {
                     p_cost = EditProduct.this.edt_p_cost.getText().toString();
                     p_detail = EditProduct.this.edt_p_detail.getText().toString();
                     p_createAt = saveProduct.createAt; // debug
-                    Product tragetProduct = new Product(p_id, p_name, p_barcode, p_price, p_qty,
+                    targetProduct = new Product(p_id, p_name, p_barcode, p_price, p_qty,
                             p_type, p_imgName, p_cost, p_detail, p_createAt);
-                    if(Product.isEquals(tragetProduct,saveProduct)){
+                    if(Product.isEquals(targetProduct,saveProduct)){
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.remove(EditProduct.this).commit();
                         fragmentManager.popBackStack();
@@ -120,11 +121,19 @@ public class EditProduct extends Fragment {
                         final ProgressDialog progress = ProgressDialog.show(EditProduct.this.getActivity(), "Loading",
                                 "Please wait ...", true);
 
-                        JSONObject JSProduct = tragetProduct.toJSONObject();
+                        JSONObject JSProduct = targetProduct.toJSONObject();
                         if(JSProduct!=null){
-                            WebService.sendAddOrUpdateProduct(new AsyncHttpResponseHandler() {
+                            WebService.sendUpdateProduct(new AsyncHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                    try {//new StringEntity(data, "UTF-8");
+                                        JSONObject jsonObject = new JSONObject(new String(responseBody));
+                                        ProductDBHelper.getInstance(getActivity()).UpdateProduct(jsonObject); // update db
+                                        ((ViewProduct)fragmentManager.findFragmentByTag(Constant.TAG_FRAGMENT_ITEM_VIEW)).RefreshProduct();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    ProductDBHelper.getInstance(getActivity()).UpdateProduct(EditProduct.this.targetProduct);
                                     progress.dismiss();
                                     final String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
                                     Bundle b = new Bundle();

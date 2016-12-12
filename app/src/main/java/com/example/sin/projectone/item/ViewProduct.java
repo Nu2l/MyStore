@@ -109,4 +109,10 @@ public class ViewProduct extends Fragment {
             }
         };
     }
+
+    public void RefreshProduct(){
+        this.products = ProductDBHelper.getInstance(getActivity().getApplicationContext()).getAllProductFromDB();
+        productAdapter = new ProductAdapter(getActivity(), products, R.layout.list_product_view);
+        listProduct.setAdapter(productAdapter);
+    }
 }

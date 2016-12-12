@@ -19,6 +19,7 @@ public class MessageAlertDialog extends DialogFragment {
     private String textBtnCancel = "Cancel";
     private String titel ="Message alert";
     private boolean hasOkCancelButton = true;
+    private boolean hasOkButton = false;
 
     public static MessageAlertDialog newInstance(Bundle bundle){
         MessageAlertDialog dialog = new MessageAlertDialog();
@@ -33,11 +34,12 @@ public class MessageAlertDialog extends DialogFragment {
             message = b.getString(Constant.KEY_BUNDLE_MESSAGE_DIALOG, message);
             titel = b.getString(Constant.KEY_BUNDLE_TITLE_DIALOG, titel);
             hasOkCancelButton = b.getBoolean(Constant.KEY_BYNDLE_HAS_OK_CANCEL_DIALOG, true);
+            hasOkButton = b.getBoolean(Constant.KEY_BYNDLE_HAS_OK_DIALOG, false);
         }
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(titel);
-        if(hasOkCancelButton){
+        if(hasOkCancelButton && !hasOkButton){
             builder.setMessage(message)
                     .setPositiveButton(textBtnOk, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -52,6 +54,17 @@ public class MessageAlertDialog extends DialogFragment {
                             Fragment target = getTargetFragment();
                             if(target!=null){
                                 target.onActivityResult(Constant.REQUEST_CODE_OK_CANCEL, Constant.RESULT_CODE_CANCEL, new Intent());
+                            }
+                        }
+                    });
+        }
+        else if(hasOkButton){
+            builder.setMessage(message)
+                    .setPositiveButton(textBtnOk, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Fragment target = getTargetFragment();
+                            if(target!=null){
+                                target.onActivityResult(Constant.REQUEST_CODE_OK_CANCEL, Constant.RESULT_CODE_OK, new Intent());
                             }
                         }
                     });

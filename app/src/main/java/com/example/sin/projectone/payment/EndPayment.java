@@ -61,7 +61,7 @@ public class EndPayment extends Fragment {
         _productList.setAdapter(adapter);
         _productList.setOnItemClickListener(onItemClickListener());
         //
-        btn_back = (Button) view.findViewById(R.id.btn_back);
+        btn_back = (Button) view.findViewById(R.id.btn_cancel);
         btn_send = (Button) view.findViewById(R.id.btn_send);
         text_total =(TextView) view.findViewById(R.id.text_total);
         edt_discount = (EditText) view.findViewById(R.id.edit_text_discount);

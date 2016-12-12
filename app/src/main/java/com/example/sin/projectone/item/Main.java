@@ -38,7 +38,15 @@ public class Main extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String tag = Constant.TAG_FRAGMENT_ITEM_ADD;
+                FragmentTransaction tran = fragmentManager.beginTransaction();
+                Fragment addFragment = new AddProduct();
+                Fragment prevFragment = fragmentManager.findFragmentByTag(tag);
+                if(prevFragment!=null){
+                    tran.remove(prevFragment);
+                }
+                tran.addToBackStack(null);
+                tran.replace(R.id.frame_container_item, addFragment, tag).commit();
             }
         };
     }
