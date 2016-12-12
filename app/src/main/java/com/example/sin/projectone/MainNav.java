@@ -111,6 +111,7 @@ public class MainNav extends MaterialNavigationDrawer {
 
     @Override
     public void onBackPressed(){
+        super.onBackPressed();
 //        if(fragmentManager.getBackStackEntryCount()>0){
 //            super.onBackPressed();
 //            return;
