@@ -1,5 +1,6 @@
 package com.example.sin.projectone.payment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -47,6 +48,7 @@ public class EndPayment extends Fragment {
     private EditText edt_discount;
     private Button btn_back, btn_send;
     private FragmentManager fragmentManager;
+    private Product productMaster;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_payment_end, container, false);
@@ -126,6 +128,14 @@ public class EndPayment extends Fragment {
                 WebService.sendTransaction(new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        // Update DB
+                        Product updateP;
+                        ProductDBHelper dbHelper = ProductDBHelper.getInstance(getActivity());
+                        for(Product p : products){
+                            updateP = (Product) p.clone();
+                            updateP.qty = dbHelper.searchProductByID(p.id).qty - p.qty;
+                            dbHelper.UpdateProduct(updateP);
+                        }
                         progress.dismiss();
                         final String tag = Constant.TAG_FRAGMENT_DIALOG_ALERT;
                         int tranId = -1;
