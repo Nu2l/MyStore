@@ -49,9 +49,6 @@ public class ViewProduct extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_item_view, container, false);
         fragmentManager = getFragmentManager();
-
-        spinerAdapter = ArrayAdapter.createFromResource(getActivity(),R.array.titles, R.layout.spiner_item);
-        spinner.setAdapter(spinerAdapter);
         //set View
         listProduct = (ListView) view.findViewById(R.id.list_view_item);
         products = ProductDBHelper.getInstance(getActivity().getApplicationContext()).getAllProductFromDB();
