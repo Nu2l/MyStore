@@ -38,7 +38,8 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/register_store_radio">
 
         <RadioButton
             android:text="@string/register_store_radio_owner"
@@ -63,7 +64,7 @@
         android:text="@string/register_store_button_register_store"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:id="@+id/button"
+        android:id="@+id/register_store_store_button"
         android:textSize="14sp"
         android:fontFamily="sans-serif-medium" />
 

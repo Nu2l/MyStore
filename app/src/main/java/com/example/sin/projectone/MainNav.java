@@ -27,7 +27,7 @@ public class MainNav extends MaterialNavigationDrawer {
         this.addSection(newSection("Item", new com.example.sin.projectone.item.Container()));
         this.addSection(newSection("Payment", new com.example.sin.projectone.payment.Container()));
         this.addSection(newSection("Receipt", new com.example.sin.projectone.receipt.Container()));
-        this.addSection(newSection("Report", new com.example.sin.projectone.report.Main()));
+        this.addSection(newSection("Report", new com.example.sin.projectone.report.Container()));
         this.addSubheader("Account");
         this.addSection(newSection("Profile", new com.example.sin.projectone.profile.Main()));
         this.addDivisor();
@@ -60,7 +60,7 @@ public class MainNav extends MaterialNavigationDrawer {
 
     private boolean loadTransaction(){
         // debug
-        HttpUtilsAsync.get("http://188.166.239.218:3001/api/transaction/2", null, new JsonHttpResponseHandler() {
+        HttpUtilsAsync.get("http://188.166.239.218:3001/api/transaction/"+Constant.SHOP_ID, null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {

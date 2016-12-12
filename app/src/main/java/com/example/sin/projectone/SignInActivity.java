@@ -1,5 +1,6 @@
 package com.example.sin.projectone;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,8 @@ public class SignInActivity extends AppCompatActivity {
     private EditText emailText;
     private EditText passText;
     private Button signInButton;
+    ProgressDialog progress;
+    final int duration = Toast.LENGTH_SHORT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +68,7 @@ public class SignInActivity extends AppCompatActivity {
         if(!passwordValid(pass)){
             passText.setError(getString(R.string.sign_in_error_invalid_password));
             formValid = false;
+
             System.out.println("password invalid");
         }
         if(formValid){
@@ -72,19 +76,23 @@ public class SignInActivity extends AppCompatActivity {
             signInProcess(email,pass);
         }
         else{
+            Toast toast = Toast.makeText(this, "Please fill all fields", duration);
+            toast.show();
             System.out.println("form is invalid");
         }
     }
     private boolean passwordValid(String password){
         int passLen = password.length();
         System.out.println(passLen);
-        return passLen>6 && passLen<17;
+        return passLen>5 && passLen<17;
     }
     private boolean emailValid(String email){
         System.out.println(email.contains("@"));
         return email.contains("@");
     }
     private void signInProcess(final String user, String pass){
+        progress = ProgressDialog.show(this, "Loading",
+                "Please wait ...", true);
         RequestParams params = new RequestParams();
         params.put("user",user);
         params.put("pass",pass);
@@ -94,25 +102,34 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
+
                 try {
                     String res = (String) response.get("Message");
                     if(res.equals("Welcome new user !")){
                         navigateToRegisterStore(user);
-
                         CharSequence text = res;
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
                     }
                     else if(res.equals("Welcome Back !")){
-                        if(response.get("ShopName").equals("null")){
+                        if(response.get("shopName").equals("null")){
                             navigateToRegisterStore(user);
                             CharSequence text = "Please create your shop or join in !";
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
                         }
                         else {
+                            String userID = response.get("userID").toString();
+                            String shopID = response.get("shopID").toString();
+                            System.out.println(userID);
+                            System.out.println("======================================");
+                            System.out.println(shopID);
+                            Log.d("userID", userID);
+                            Log.d("shopID", shopID);
                             navigateToMainActivity(user);
                             CharSequence text = res;
+                            Constant.SHOP_ID = Integer.valueOf(shopID);
+                            Constant.USER_ID = Integer.valueOf(userID);
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
                         }
@@ -125,6 +142,7 @@ public class SignInActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                progress.dismiss();
 
             }
 

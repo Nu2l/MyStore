@@ -11,8 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sin.projectone.Constant;
 import com.example.sin.projectone.HttpUtilsAsync;
 import com.example.sin.projectone.MainNav;
 import com.example.sin.projectone.ProductDBHelper;
@@ -30,6 +34,8 @@ import cz.msebera.android.httpclient.Header;
 
 public class list_fragment extends ListFragment implements AdapterView.OnItemClickListener {
     ProgressDialog progress;
+    ListView lv;
+    TextView empTxt;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_receipt_list_fragment, container, false);
@@ -44,7 +50,8 @@ public class list_fragment extends ListFragment implements AdapterView.OnItemCli
 //        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(),
 //                R.array.Planets, android.R.layout.simple_list_item_1);
         TransListCursor todoAdapter = new TransListCursor(this.getActivity(), todoCursor);
-
+        lv = (ListView)view.findViewById(android.R.id.list);
+        empTxt = (TextView) view.findViewById(android.R.id.empty);
         return view;
 
     }
@@ -58,6 +65,7 @@ public class list_fragment extends ListFragment implements AdapterView.OnItemCli
 //        TransListCursor todoAdapter = new TransListCursor(this.getActivity(), todoCursor);
 //        setListAdapter(todoAdapter);
 //        getListView().setOnItemClickListener(this);
+
     }
 
     @Override
@@ -88,11 +96,12 @@ public class list_fragment extends ListFragment implements AdapterView.OnItemCli
 
     private boolean loadTransaction(){
         // debug
-        HttpUtilsAsync.get("http://188.166.239.218:3001/api/transaction/2", null, new JsonHttpResponseHandler() {
+        HttpUtilsAsync.get("http://188.166.239.218:3001/api/transaction/"+ Constant.SHOP_ID, null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    if(response.length()>0){
+                    Log.d("Response", String.valueOf(response.getJSONArray("transaction").length()));
+                    if(response.getJSONArray("transaction").length()>0){
                         System.out.println(response);
                         ProductDBHelper.getInstance(list_fragment.this.getActivity()).loadTransaction(response.getJSONArray("transaction"));
                         for(int i=0;i<response.getJSONArray("transaction").length();i++){
@@ -121,7 +130,9 @@ public class list_fragment extends ListFragment implements AdapterView.OnItemCli
                             });
                         }
                     }
-                    else if(response.length()==0){
+                    else {
+                        progress.dismiss();
+//                        lv.setEmptyView(empTxt);
                         System.out.println("Empty");
                     }
                     System.out.println("finish");

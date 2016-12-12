@@ -31,7 +31,7 @@ public class WebService {
         String data = transaction.toString();
         StringEntity entity = null;
         try {
-            entity = new StringEntity(data);
+            entity = new StringEntity(data, "UTF-8");
             entity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
         } catch(Exception e) {
         }

@@ -38,7 +38,6 @@ public class Container extends Fragment {
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack if needed
         transaction.replace(R.id.fragment_receipt_container, newFragment,Constant.TAG_FRAGMENT_RECEIPT_MAIN);
-        transaction.addToBackStack(null);
 // Commit the transaction
         transaction.commit();
         return view;
