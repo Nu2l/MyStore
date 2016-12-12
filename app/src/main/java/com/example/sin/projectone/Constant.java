@@ -52,6 +52,7 @@ public class Constant {
     public final static String TAG_FRAGMENT_PAYMENT_END = "tag_fragment_payment_end";
     public final static String TAG_FRAGMENT_ITEM_MAIN = "tag_fragment_item_main";
     public final static String TAG_FRAGMENT_SCAN_PAYMENT = "tag_fragment_scanpayment";
+    public final static String TAG_FRAGMENT_SCAN_BARCODE = "tag_fragment_scan_barcode";
     public final static String TAG_FRAGMENT_DIALOG_ALERT = "tag_fragment_dialog_alert";
     public final static String TAG_FRAGMENT_DIALOG_PRODUCT_DETAIL = "tag_fragment_dialog_alert";
     // Key Intent
