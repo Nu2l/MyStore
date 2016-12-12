@@ -3,9 +3,13 @@ package com.example.sin.projectone;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 
 import cz.msebera.android.httpclient.Header;
@@ -36,6 +40,37 @@ public class WebService {
         } catch(Exception e) {
         }
         _Client.post(ApplicationHelper.getAppContext(),url,entity,"application/json",handler);
+    }
+
+    public static void sendUpdateProduct(AsyncHttpResponseHandler handler, JSONObject product){
+        String url = Constant.SEND_ADD_OR_UPDATE_PRODUCT;
+        String data = product.toString();
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(data);
+            entity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch(Exception e) {
+        }
+        _Client.put(ApplicationHelper.getAppContext(),url,entity,"application/json",handler);
+    }
+
+    public static void sendAddProduct(AsyncHttpResponseHandler handler, JSONObject product, File file){
+        //File myFile = new File("/path/to/file.png");
+        RequestParams params = new RequestParams();
+        try {
+            params.put(Constant.KEY_REQUEST_PAREMS_PRODUCT_IMG_FILE, file, "image/jpg");
+            params.put(Constant.KEY_REQUEST_PAREMS_PRODUCT_ADD, product);
+        } catch(FileNotFoundException e) {}
+        String url = Constant.SEND_ADD_OR_UPDATE_PRODUCT;
+        String data = product.toString();
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(data);
+            entity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch(Exception e) {
+        }
+
+        _Client.post(ApplicationHelper.getAppContext(),url,params,handler);
     }
 
     public static void postABC(AsyncHttpResponseHandler handler,String url){

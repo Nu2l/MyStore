@@ -49,16 +49,15 @@ public class ImgManager {
         }
     }
 
-    public String saveImgToInternalStorage(Bitmap bitmapImage,String imgName){
+    public File saveImgToInternalStorage(Bitmap bitmapImage,String imgName){
         ContextWrapper cw = new ContextWrapper(ApplicationHelper.getAppContext());
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir(Constant.FOLDER_PHOTO, Context.MODE_PRIVATE);
         // Create imageDir
-        File mypath =new File(directory,imgName);
-
+        File imgFile = new File(directory,imgName);
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(mypath);
+            fos = new FileOutputStream(imgFile);
             // Use the compress method on the BitMap object to write image to the OutputStream
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
         } catch (Exception e) {
@@ -70,9 +69,11 @@ public class ImgManager {
                 e.printStackTrace();
             }
         }
-        System.out.println("Save path: "+directory.getAbsolutePath());
-        return directory.getAbsolutePath();
+        //return directory.getAbsolutePath();
+        return imgFile;
     }
+
+
 
 //    public void dispatchTakePictureIntent(Fragment fragment) {
 //        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

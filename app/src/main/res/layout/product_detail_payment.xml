@@ -122,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="23dp"
-                android:id="@+id/btn_submit"
+                android:id="@+id/btn_cancel"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="46dp" />
@@ -132,8 +132,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_cancel"
-                android:layout_alignBaseline="@+id/btn_submit"
-                android:layout_alignBottom="@+id/btn_submit"
+                android:layout_alignBaseline="@+id/btn_cancel"
+                android:layout_alignBottom="@+id/btn_cancel"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="60dp" />
         </RelativeLayout>

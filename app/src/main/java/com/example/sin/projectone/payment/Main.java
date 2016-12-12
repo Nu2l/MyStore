@@ -1,8 +1,11 @@
 package com.example.sin.projectone.payment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,6 +34,7 @@ import java.util.ArrayList;
  */
 
 public class Main extends Fragment  {
+    private ProgressDialog progress;
     Button _btn_next, _btn_back;
     private ListView _productList;
     public ArrayList<Product> products = new ArrayList<Product>();
@@ -189,6 +193,21 @@ public class Main extends Fragment  {
         adapter.clear();
         adapter.notifyDataSetChanged();
     }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
 }

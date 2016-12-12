@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.google.gson.JsonObject;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -155,14 +153,13 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Product> getAllProductFromDB(){
-        if(products.size()==0||products.isEmpty()){
+        ArrayList<Product> products;
             String sql = "SELECT * FROM "+Table.TABLE_PRODUCT;
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery(sql, null);
             products = Product.CursorToProductArrayList(cursor);
             cursor.close();
             db.close();
-        }
         return products;
     }
 
@@ -207,9 +204,9 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 values.put(Table.COLUMN_BARCODE, jsonObj.getString(Constant.KEY_JSON_PRODUCT_BARCODE));
                 values.put(Table.COLUMN_QTY,jsonObj.getInt(Constant.KEY_JSON_PRODUCT_QTY));
                 values.put(Table.COLUMN_NAME, jsonObj.getString(Constant.KEY_JSON_PRODUCT_NAME));
-                values.put(Table.COLUMN_TYPE, jsonObj.getString(Constant.KEY_JSON_PRODUCT_type));
+                values.put(Table.COLUMN_TYPE, jsonObj.getString(Constant.KEY_JSON_PRODUCT_TYPE));
                 values.put(Table.COLUMN_PRICE, jsonObj.getString(Constant.KEY_JSON_PRODUCT_PRICE));
-                values.put(Table.COLUMN_IMG, jsonObj.getString(Constant.KEY_JSON_PRODUCT_img));
+                values.put(Table.COLUMN_IMG, jsonObj.getString(Constant.KEY_JSON_PRODUCT_IMG));
                 values.put(Table.COLUMN_COST, jsonObj.getString(Constant.KEY_JSON_PRODUCT_COST));
                 values.put(Table.COLUMN_DETAILS, jsonObj.getString(Constant.KEY_JSON_PRODUCT_DETAILS));
                 values.put(Table.COLUMN_CREATE_AT, jsonObj.getString(Constant.KEY_JSON_PRODUCT_CREATE_AT));
@@ -300,6 +297,71 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         return  transDetailList;
     }
 
+    public void UpdateProduct(JSONObject jsonObject){
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(Table.COLUMN_P_ID, jsonObject.getInt(Constant.KEY_JSON_PRODUCT_ID));
+            values.put(Table.COLUMN_BARCODE, jsonObject.getString(Constant.KEY_JSON_PRODUCT_BARCODE));
+            values.put(Table.COLUMN_QTY,jsonObject.getInt(Constant.KEY_JSON_PRODUCT_QTY));
+            values.put(Table.COLUMN_NAME, jsonObject.getString(Constant.KEY_JSON_PRODUCT_NAME));
+            values.put(Table.COLUMN_TYPE, jsonObject.getString(Constant.KEY_JSON_PRODUCT_TYPE));
+            values.put(Table.COLUMN_PRICE, jsonObject.getString(Constant.KEY_JSON_PRODUCT_PRICE));
+            values.put(Table.COLUMN_IMG, jsonObject.getString(Constant.KEY_JSON_PRODUCT_IMG));
+            values.put(Table.COLUMN_COST, jsonObject.getString(Constant.KEY_JSON_PRODUCT_COST));
+            values.put(Table.COLUMN_DETAILS, jsonObject.getString(Constant.KEY_JSON_PRODUCT_DETAILS));
+            values.put(Table.COLUMN_CREATE_AT, jsonObject.getString(Constant.KEY_JSON_PRODUCT_CREATE_AT));
+            db.update(Table.TABLE_PRODUCT, values, Table.COLUMN_P_ID+ " = "
+                    +jsonObject.getInt(Constant.KEY_JSON_PRODUCT_ID),null );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        db.close();
+    }
+
+    public void insertProduct(JSONObject jsonObject){
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(Table.COLUMN_P_ID, jsonObject.getInt(Constant.KEY_JSON_PRODUCT_ID));
+            values.put(Table.COLUMN_BARCODE, jsonObject.getString(Constant.KEY_JSON_PRODUCT_BARCODE));
+            values.put(Table.COLUMN_QTY,jsonObject.getInt(Constant.KEY_JSON_PRODUCT_QTY));
+            values.put(Table.COLUMN_NAME, jsonObject.getString(Constant.KEY_JSON_PRODUCT_NAME));
+            values.put(Table.COLUMN_TYPE, jsonObject.getString(Constant.KEY_JSON_PRODUCT_TYPE));
+            values.put(Table.COLUMN_PRICE, jsonObject.getString(Constant.KEY_JSON_PRODUCT_PRICE));
+            values.put(Table.COLUMN_IMG, jsonObject.getString(Constant.KEY_JSON_PRODUCT_IMG));
+            values.put(Table.COLUMN_COST, jsonObject.getString(Constant.KEY_JSON_PRODUCT_COST));
+            values.put(Table.COLUMN_DETAILS, jsonObject.getString(Constant.KEY_JSON_PRODUCT_DETAILS));
+            values.put(Table.COLUMN_CREATE_AT, jsonObject.getString(Constant.KEY_JSON_PRODUCT_CREATE_AT));
+            db.insert(Table.TABLE_PRODUCT, null, values );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        db.close();
+    }
+
+    public void UpdateProduct(Product product){
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(Table.COLUMN_P_ID, product.id);
+            values.put(Table.COLUMN_BARCODE, product.barcode);
+            values.put(Table.COLUMN_QTY,product.qty);
+            values.put(Table.COLUMN_NAME, product.name);
+            values.put(Table.COLUMN_TYPE, product.type);
+            values.put(Table.COLUMN_PRICE, product.id);
+            values.put(Table.COLUMN_IMG, product.imgName);
+            values.put(Table.COLUMN_COST, product.cost);
+            values.put(Table.COLUMN_DETAILS, product.details);
+            values.put(Table.COLUMN_CREATE_AT, product.createAt);
+            db.update(Table.TABLE_PRODUCT, values, Table.COLUMN_P_ID+ " = "
+                    +product.id,null );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+    }
+
     public JSONObject getJSONTransaction(ArrayList<Product> products, String detail, float discount, float total){
         JSONObject transation = new JSONObject();
         JSONObject obj;
@@ -329,7 +391,6 @@ public class ProductDBHelper extends SQLiteOpenHelper {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            String t = transation.toString();
             return transation;
         }
         else{

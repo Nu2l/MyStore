@@ -127,7 +127,7 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
         if (requestCode == Constant.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            String path = ImgManager.getinstance().saveImgToInternalStorage(imageBitmap,"1010.png");
+            String path = (ImgManager.getinstance().saveImgToInternalStorage(imageBitmap,"1010.png")).getAbsolutePath();
             System.out.println("Result :"+path);
         }
     }
@@ -143,7 +143,7 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFlash = !mFlash;
+               mFlash = !mFlash;
                mScannerView.setFlash(mFlash);
             }
         };

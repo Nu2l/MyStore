@@ -86,8 +86,16 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         return false;
     }
 
-    public ArrayList<Product> getAllProducts(){
+    public ArrayList<Product> getAllItem(){
         return products;
     }
+
+    public void UpdateItems(ArrayList<Product> products){
+        this.products = products;
+        return;
+    }
+
+
+
 
 }
