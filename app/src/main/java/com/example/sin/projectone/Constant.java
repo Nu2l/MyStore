@@ -9,8 +9,8 @@ public class Constant {
 
     }
 
-    public static int SHOP_ID = 2;
-    public static int USER_ID = 3; // debug test
+    public static int SHOP_ID = 34;
+    public static int USER_ID = 35; // debug test
 
     //Key json
     public final static String KEY_JSON_PRODUCTLIST = "productList";

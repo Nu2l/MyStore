@@ -1,6 +1,7 @@
 package com.example.sin.projectone;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
@@ -20,10 +21,12 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
  */
 
 public class MainNav extends MaterialNavigationDrawer {
+    FragmentManager fragmentManager;
     private static Boolean flagCountDownExit = false;
     private static int backPressCount = 0;
     @Override
     public void init(Bundle savedInstanceState) {
+        fragmentManager = getFragmentManager();
         this.deleteDatabase(ProductDBHelper.DATABASE_NAME); // debug
         loadProducts();
         loadTransaction();
@@ -106,7 +109,10 @@ public class MainNav extends MaterialNavigationDrawer {
 
     @Override
     public void onBackPressed(){
-        flagCountDownExit = true;
+        if(fragmentManager.getBackStackEntryCount()>0){
+            super.onBackPressed();
+            return;
+        }
         backPressCount ++;
         Toast.makeText(getApplicationContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
         new CountDownTimer(3000, 1000) {
