@@ -52,12 +52,16 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     public void handleResult(Result barCode) {
         Product product = ProductDBHelper.getInstance(getActivity().getApplicationContext()).searchProductByBarCode(barCode.toString());
         if(product!=null){
+            main.lastBarcodeScan = barCode.toString();
             int tryAdd;
             int buyCount=1;
             product.qty = buyCount;
             tryAdd = main.addProductPayment(product);
             if(tryAdd>0){
-                //setProductImg(ImgManager.getinstance().loadImageFromStorage(product.imgName));
+                Bitmap img = ImgManager.getinstance().loadImageFromStorage(product.imgName);
+                if(img!=null){
+                    setProductImg(img);
+                }
             }
             else{
                 Toast.makeText(getActivity().getApplicationContext(), "Scan: item has already!"  , Toast.LENGTH_SHORT).show();
@@ -85,6 +89,7 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
         e= mScannerView.getPaddingStart();
         mScannerView.setOnClickListener(onScanerClick());
         main = (Main)getFragmentManager().findFragmentByTag(Constant.TAG_FRAGMENT_PAYMENT_MAIN);
+        _ProductImg = main.imgProduct;
         if(state != null) {
             mFlash = state.getBoolean(FLASH_STATE, false);
             mAutoFocus = state.getBoolean(AUTO_FOCUS_STATE, true);
@@ -117,9 +122,6 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     }
 
     private void setProductImg(Bitmap bitmap){
-        if(_ProductImg==null){
-           // _ProductImg = (ImageView) getParentFragment().getView().findViewById(R.id.imgProduct);
-        }
         _ProductImg.setImageBitmap(bitmap);
     }
 
@@ -129,13 +131,6 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             String path = (ImgManager.getinstance().saveImgToInternalStorage(imageBitmap,"1010.png")).getAbsolutePath();
             System.out.println("Result :"+path);
-        }
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, Constant.REQUEST_IMAGE_CAPTURE);
         }
     }
 

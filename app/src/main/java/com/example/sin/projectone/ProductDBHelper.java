@@ -191,11 +191,16 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         for(int i=0;i< cursor.getCount();i++){
             String a = cursor.getString(cursor.getColumnIndex(Table.COLUMN_P_ID));
+            System.out.println(a);
+            cursor.moveToNext();
         }
+        return;
     }
 
     public void LoadProduct(JSONArray jsonArray){// bug insert null
         SQLiteDatabase db = this.getWritableDatabase();
+        int numberErrorInsert = 0;
+        long errorCheck;
         for(int i=0;i<jsonArray.length();i++){
             try {
                 ContentValues values = new ContentValues();
@@ -210,11 +215,17 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 values.put(Table.COLUMN_COST, jsonObj.getString(Constant.KEY_JSON_PRODUCT_COST));
                 values.put(Table.COLUMN_DETAILS, jsonObj.getString(Constant.KEY_JSON_PRODUCT_DETAILS));
                 values.put(Table.COLUMN_CREATE_AT, jsonObj.getString(Constant.KEY_JSON_PRODUCT_CREATE_AT));
-                db.insert(Table.TABLE_PRODUCT, null, values);
+                errorCheck = db.insert(Table.TABLE_PRODUCT, null, values);
+                if(errorCheck<0){
+                    numberErrorInsert++;
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
+                numberErrorInsert++;
+                continue;
             }
         }
+        int showDebugError = numberErrorInsert;
        // values.put();
         db.close();
 

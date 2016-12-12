@@ -42,7 +42,8 @@ public class Constant {
     public final static String URL_SERVER                   = "http://188.166.239.218:3001";
     public final static String URL_GET_ALL_PRODUCT          = URL_SERVER+"/api/product/"+SHOP_ID;
     public final static String URL_SEND_TRANSACTION         = URL_SERVER+"/api/transaction";
-    public final static String SEND_ADD_OR_UPDATE_PRODUCT   = URL_SERVER+"/api/fileupload";
+    public final static String URL_SEND_UPDATE_PRODUCT      = URL_SERVER+"/api/product";
+    public final static String URL_SEND_ADD_PRODUCT         = URL_SERVER+"/api/product2";
     // Tag Fragment
     public final static String TAG_FRAGMENT_ITEM_EDIT = "tag_fragment_item_edit";
     public final static String TAG_FRAGMENT_ITEM_ADD = "tag_fragment_item_add";

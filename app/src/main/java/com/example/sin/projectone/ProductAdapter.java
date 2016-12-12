@@ -95,6 +95,17 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         return;
     }
 
+    public int searchIndexProduct(String barCode){
+        Product p;
+        for(int i=0;i<products.size();i++){
+            p = products.get(i);
+            if(p.barcode.equals(barCode)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
 
 

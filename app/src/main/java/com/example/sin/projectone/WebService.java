@@ -10,9 +10,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 
-import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
@@ -43,7 +41,7 @@ public class WebService {
     }
 
     public static void sendUpdateProduct(AsyncHttpResponseHandler handler, JSONObject product){
-        String url = Constant.SEND_ADD_OR_UPDATE_PRODUCT;
+        String url = Constant.URL_SEND_UPDATE_PRODUCT;
         String data = product.toString();
         StringEntity entity = null;
         try {
@@ -61,7 +59,7 @@ public class WebService {
             params.put(Constant.KEY_REQUEST_PAREMS_PRODUCT_IMG_FILE, file, "image/jpg");
             params.put(Constant.KEY_REQUEST_PAREMS_PRODUCT_ADD, product);
         } catch(FileNotFoundException e) {}
-        String url = Constant.SEND_ADD_OR_UPDATE_PRODUCT;
+        String url = Constant.URL_SEND_ADD_PRODUCT;
         String data = product.toString();
         StringEntity entity = null;
         try {
