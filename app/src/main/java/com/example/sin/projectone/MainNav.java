@@ -2,7 +2,9 @@ package com.example.sin.projectone;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import com.example.sin.projectone.payment.Main;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -18,7 +20,8 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
  */
 
 public class MainNav extends MaterialNavigationDrawer {
-
+    private static Boolean flagCountDownExit = false;
+    private static int backPressCount = 0;
     @Override
     public void init(Bundle savedInstanceState) {
         this.deleteDatabase(ProductDBHelper.DATABASE_NAME); // debug
@@ -99,6 +102,29 @@ public class MainNav extends MaterialNavigationDrawer {
             }
         });
         return true;
+    }
+
+    @Override
+    public void onBackPressed(){
+        flagCountDownExit = true;
+        backPressCount ++;
+        Toast.makeText(getApplicationContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        new CountDownTimer(3000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onFinish() {
+                // TODO Auto-generated method stub
+                flagCountDownExit = false;
+            }
+        }.start();
+        if(flagCountDownExit && backPressCount==2){
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
+        }
+
     }
 
 }
