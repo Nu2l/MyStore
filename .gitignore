@@ -264,7 +264,7 @@ obj/
 #############
 ## Other
 #############
-zxingfragmentlib-master
+# zxingfragmentlib-master
 .gradle/2.14.1/taskArtifacts/cache.properties.lock
 .gradle/2.14.1/taskArtifacts/fileSnapshots.bin
 .idea/misc.xml
