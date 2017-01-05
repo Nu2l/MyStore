@@ -9,7 +9,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 
 
@@ -23,10 +22,9 @@ import com.example.sin.projectone.Constant;
 import com.example.sin.projectone.ImgManager;
 import com.example.sin.projectone.Product;
 import com.example.sin.projectone.ProductDBHelper;
-import com.google.zxing.Result;
-
 import java.util.ArrayList;
 
+import com.google.zxing.Result;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 /**
@@ -34,7 +32,6 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  */
 
 public class ScanPayment extends Fragment implements ZXingScannerView.ResultHandler {
-
     // variable bacode scan
     private static final String FLASH_STATE = "FLASH_STATE";
     private static final String AUTO_FOCUS_STATE = "AUTO_FOCUS_STATE";
@@ -48,30 +45,6 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     //
     private Main main;
     private ImageView _ProductImg;
-    @Override
-    public void handleResult(Result barCode) {
-        Product product = ProductDBHelper.getInstance(getActivity().getApplicationContext()).searchProductByBarCode(barCode.toString());
-        if(product!=null){
-            main.lastBarcodeScan = barCode.toString();
-            int tryAdd;
-            int buyCount=1;
-            product.qty = buyCount;
-            tryAdd = main.addProductPayment(product);
-            if(tryAdd>0){
-                Bitmap img = ImgManager.getinstance().loadImageFromStorage(product.imgName);
-                if(img!=null){
-                    setProductImg(img);
-                }
-            }
-            else{
-                Toast.makeText(getActivity().getApplicationContext(), "Scan: item has already!"  , Toast.LENGTH_SHORT).show();
-            }
-        }
-        else {
-            Toast.makeText(getActivity().getApplicationContext(), "Scan: not found! "+barCode.toString()  , Toast.LENGTH_SHORT).show();
-        }
-        mScannerView.resumeCameraPreview(this);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle state) {
@@ -107,11 +80,12 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
     @Override
     public void onResume() {
         super.onResume();
-        mScannerView.setResultHandler((ZXingScannerView.ResultHandler)this); // Register ourselves as a handler for scan results.
+        mScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
         mScannerView.startCamera();          // Start camera on resume
     }
 
@@ -145,8 +119,28 @@ public class ScanPayment extends Fragment implements ZXingScannerView.ResultHand
     }
 
 
-
-
-
-
+    @Override
+    public void handleResult(Result barCode) {
+        Product product = ProductDBHelper.getInstance(getActivity().getApplicationContext()).searchProductByBarCode(barCode.toString());
+        if(product!=null){
+            main.lastBarcodeScan = barCode.toString();
+            int tryAdd;
+            int buyCount=1;
+            product.qty = buyCount;
+            tryAdd = main.addProductPayment(product);
+            if(tryAdd>0){
+                Bitmap img = ImgManager.getinstance().loadImageFromStorage(product.imgName);
+                if(img!=null){
+                    setProductImg(img);
+                }
+            }
+            else{
+                Toast.makeText(getActivity().getApplicationContext(), "Scan: item has already!"  , Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            Toast.makeText(getActivity().getApplicationContext(), "Scan: not found! "+barCode.toString()  , Toast.LENGTH_SHORT).show();
+        }
+        mScannerView.resumeCameraPreview(this);
+    }
 }

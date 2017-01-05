@@ -96,7 +96,7 @@ public class RegisterStoreActivity extends AppCompatActivity {
         Log.d("params", params.toString());
         final Context context = getApplicationContext();
         final int duration = Toast.LENGTH_SHORT;
-        HttpUtilsAsync.post("http://188.166.239.218:3001/api/shop/", params, new JsonHttpResponseHandler() {
+        HttpUtilsAsync.post(Constant.URL_SERVER+"/api/shop/", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 progress.dismiss();

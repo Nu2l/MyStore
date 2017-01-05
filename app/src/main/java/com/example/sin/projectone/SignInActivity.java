@@ -100,11 +100,10 @@ public class SignInActivity extends AppCompatActivity {
         params.put("pass",pass);
         final Context context = getApplicationContext();
         final int duration = Toast.LENGTH_SHORT;
-        HttpUtilsAsync.post("http://188.166.239.218:3001/api/user/", params, new JsonHttpResponseHandler() {
+        HttpUtilsAsync.setTimeout(2);
+        HttpUtilsAsync.post(Constant.URL_SERVER+"/api/user/", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
-
                 try {
                     String res = (String) response.get("Message");
                     if(res.equals("Welcome new user !")){
@@ -159,6 +158,14 @@ public class SignInActivity extends AppCompatActivity {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 System.out.println("Failed: "+ ""+statusCode);
                 Log.d("Error : ", "" + throwable);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if(progress.isShowing()){
+                    progress.dismiss();
+                }
             }
         });
 //        HttpUtilsAsync.post("http://188.166.239.218:3001/api/user/", new JsonHttpResponseHandler() {
