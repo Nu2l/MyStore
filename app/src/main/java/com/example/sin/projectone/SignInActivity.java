@@ -152,12 +152,18 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 System.out.println(errorResponse + " " + statusCode);
+                CharSequence text = "Failed to connect with server";
+                Toast toast = Toast.makeText(context.getApplicationContext(), text, Toast.LENGTH_SHORT);
+                toast.show();
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 System.out.println("Failed: "+ ""+statusCode);
                 Log.d("Error : ", "" + throwable);
+                CharSequence text = "Failed to connect with server";
+                Toast toast = Toast.makeText(context.getApplicationContext(), text, Toast.LENGTH_SHORT);
+                toast.show();
             }
 
             @Override

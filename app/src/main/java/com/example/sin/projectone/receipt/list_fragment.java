@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sin.projectone.Constant;
 import com.example.sin.projectone.HttpUtilsAsync;
@@ -93,7 +94,8 @@ public class list_fragment extends ListFragment implements AdapterView.OnItemCli
 
     private boolean loadTransaction(){
         // debug
-        HttpUtilsAsync.get("http://188.166.239.218:3001/api/transaction/"+ Constant.SHOP_ID, null, new JsonHttpResponseHandler() {
+        HttpUtilsAsync.setTimeout(2);
+        HttpUtilsAsync.get(Constant.URL_SEND_TRANSACTION+ Constant.SHOP_ID, null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
@@ -109,7 +111,7 @@ public class list_fragment extends ListFragment implements AdapterView.OnItemCli
                             createDate = createDate.replace(' ','T');
                             System.out.println(jsonObj.getString("transactionID"));
                             System.out.println(jsonObj.getString("createAt"));
-                            HttpUtilsAsync.get("http://188.166.239.218:3001/api/transactionDetail/"+jsonObj.getString("transactionID")+"/"+createDate, null, new JsonHttpResponseHandler(){
+                            HttpUtilsAsync.get(Constant.URL_GET_TRANSACTION_DETAIL+jsonObj.getString("transactionID")+"/"+createDate, null, new JsonHttpResponseHandler(){
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                     System.out.println(response);
@@ -136,6 +138,28 @@ public class list_fragment extends ListFragment implements AdapterView.OnItemCli
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                System.out.println(errorResponse + " " + statusCode);
+                CharSequence text = "Failed to connect with server";
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                System.out.println("Failed: "+ ""+statusCode);
+                CharSequence text = "Failed to connect with server";
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT);
+                toast.show();
+                Log.d("Error : ", "" + throwable);
+            }
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if(progress.isShowing()){
+                    progress.dismiss();
                 }
             }
         });

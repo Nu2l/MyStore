@@ -70,7 +70,7 @@ public class MainNav extends MaterialNavigationDrawer {
 
     private boolean loadTransaction(){
         // debug
-        HttpUtilsAsync.get("http://188.166.239.218:3001/api/transaction/"+Constant.SHOP_ID, null, new JsonHttpResponseHandler() {
+        HttpUtilsAsync.get(Constant.URL_SEND_TRANSACTION+Constant.SHOP_ID, null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
@@ -84,7 +84,7 @@ public class MainNav extends MaterialNavigationDrawer {
                             createDate = createDate.replace(' ','T');
                             System.out.println(jsonObj.getString("transactionID"));
                             System.out.println(jsonObj.getString("createAt"));
-                            HttpUtilsAsync.get("http://188.166.239.218:3001/api/transactionDetail/"+jsonObj.getString("transactionID")+"/"+createDate, null, new JsonHttpResponseHandler(){
+                            HttpUtilsAsync.get(Constant.URL_GET_TRANSACTION_DETAIL+jsonObj.getString("transactionID")+"/"+createDate, null, new JsonHttpResponseHandler(){
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                     System.out.println(response);
