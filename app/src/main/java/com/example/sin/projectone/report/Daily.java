@@ -29,8 +29,6 @@ import java.util.Locale;
  */
 
 public class Daily extends Fragment {
-    private Button dailyReport;
-    private Button topSell;
     private Button goDetail;
     private Calendar myCalendar;
     private EditText dateEdit;

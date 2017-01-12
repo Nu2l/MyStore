@@ -52,7 +52,6 @@
                     android:text="@string/label_product_name"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:id="@+id/textView26"
                     android:layout_weight="0.3"
                     android:layout_margin="10dp"/>
 
@@ -76,7 +75,6 @@
                     android:text="@string/label_product_barcode"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:id="@+id/label_product_barcode"
                     android:layout_weight="0.3"
                     android:layout_margin="10dp"/>
 
@@ -100,7 +98,6 @@
                     android:text="@string/label_product_price"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:id="@+id/label_product_price"
                     android:layout_weight="0.3"
                     android:layout_margin="10dp"/>
 
@@ -124,7 +121,6 @@
                     android:text="@string/label_product_qty"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:id="@+id/label_product_qty"
                     android:layout_weight="0.3"
                     android:layout_margin="10dp"/>
 
@@ -147,7 +143,6 @@
                     android:text="@string/label_product_type"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:id="@+id/label_product_type"
                     android:layout_weight="0.3"
                     android:layout_margin="10dp"/>
 
@@ -169,7 +164,6 @@
                     android:text="@string/label_product_cost"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:id="@+id/label_product_cost"
                     android:layout_weight="0.3"
                     android:layout_margin="10dp"/>
 
@@ -192,7 +186,6 @@
                     android:text="@string/label_product_details"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:id="@+id/label_product_details"
                     android:layout_weight="0.3"
                     android:layout_margin="10dp"/>
 

@@ -414,12 +414,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         String sql = "SELECT td.name, td.qty FROM transactionDetail td WHERE createAt like '"+date+"%' ORDER BY name";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
-        if(cursor.getCount()>0) {
-            return true;
-        }
-        else{
-            return false ;
-            }
+        return cursor.getCount() > 0;
     }
     public JSONArray getDailyDetail(String date){
         JSONArray transDetailList = new JSONArray();

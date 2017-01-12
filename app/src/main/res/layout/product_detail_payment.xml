@@ -69,7 +69,6 @@
                 android:text="@string/label_product_price"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
-                android:id="@+id/label_product_price"
                 android:layout_weight="0.3"
                 android:layout_margin="10dp"/>
 
@@ -91,7 +90,6 @@
                 android:text="@string/label_product_qty"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
-                android:id="@+id/label_product_qty"
                 android:layout_weight="0.3"
                 android:layout_margin="10dp"/>
 

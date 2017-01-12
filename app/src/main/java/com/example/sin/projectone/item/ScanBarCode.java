@@ -85,7 +85,7 @@ public class ScanBarCode  extends Fragment implements ZXingScannerView.ResultHan
     @Override
     public void onResume() {
         super.onResume();
-        mScannerView.setResultHandler((ZXingScannerView.ResultHandler)this); // Register ourselves as a handler for scan results.
+        mScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
         mScannerView.startCamera();          // Start camera on resume
     }
 

@@ -16,8 +16,6 @@ import com.example.sin.projectone.R;
  */
 
 public class TopSeller extends Fragment {
-    private Button dailyReport;
-    private Button topSell;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_report_topseller, container, false);

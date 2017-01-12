@@ -11,14 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.sin.projectone.Constant;
 import com.example.sin.projectone.HttpUtilsAsync;
-import com.example.sin.projectone.MainNav;
 import com.example.sin.projectone.ProductDBHelper;
 import com.example.sin.projectone.R;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -49,7 +46,7 @@ public class list_fragment extends ListFragment implements AdapterView.OnItemCli
 //        System.out.println(transList);
 //        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(),
 //                R.array.Planets, android.R.layout.simple_list_item_1);
-        TransListCursor todoAdapter = new TransListCursor(this.getActivity(), todoCursor);
+
         lv = (ListView)view.findViewById(android.R.id.list);
         empTxt = (TextView) view.findViewById(android.R.id.empty);
         return view;

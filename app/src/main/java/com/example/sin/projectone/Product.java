@@ -145,13 +145,10 @@ public class Product implements Parcelable , Cloneable {
     }
 
     public static boolean isEquals(Product a, Product b){
-        if((a.id.equals(b.id))&&(a.name.equals(b.name))&&(a.barcode.equals(b.barcode))&&
-                (a.price.equals(b.price))&&(a.type.equals(b.type))&&(a.imgName.equals(b.imgName))&&
-                (a.qty==b.qty)&&(a.cost.equals(b.cost))&&(a.details.equals(b.details))
-                &&(a.createAt.equals(b.createAt))){
-            return true;
-        }
-        return false;
+        return (a.id.equals(b.id)) && (a.name.equals(b.name)) && (a.barcode.equals(b.barcode)) &&
+                (a.price.equals(b.price)) && (a.type.equals(b.type)) && (a.imgName.equals(b.imgName)) &&
+                (a.qty == b.qty) && (a.cost.equals(b.cost)) && (a.details.equals(b.details))
+                && (a.createAt.equals(b.createAt));
     }
 
     public JSONObject toJSONObject(){

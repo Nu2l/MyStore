@@ -4,18 +4,14 @@ import android.app.ListFragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.sin.projectone.ProductDBHelper;
 import com.example.sin.projectone.R;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by naki_ on 11/25/2016.

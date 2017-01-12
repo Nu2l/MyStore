@@ -10,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.sin.projectone.Constant;
 import com.example.sin.projectone.R;
-import com.example.sin.projectone.receipt.list_fragment;
 
 /**
  * Created by nanth on 12/8/2016.

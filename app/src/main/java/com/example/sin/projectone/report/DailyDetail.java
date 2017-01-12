@@ -1,31 +1,21 @@
 package com.example.sin.projectone.report;
 
-import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.sin.projectone.ProductDBHelper;
 import com.example.sin.projectone.R;
-import com.example.sin.projectone.receipt.TransDetailListCursor;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * Created by naki_ on 11/25/2016.

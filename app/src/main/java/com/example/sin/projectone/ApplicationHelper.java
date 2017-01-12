@@ -1,6 +1,6 @@
 package com.example.sin.projectone;
 
-;import android.app.Application;
+import android.app.Application;
 import android.content.Context;
 
 /**
