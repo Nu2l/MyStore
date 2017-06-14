@@ -269,3 +269,6 @@ obj/
 .gradle/2.14.1/taskArtifacts/fileSnapshots.bin
 .idea/misc.xml
 .idea/misc.xml
+build.gradle
+app/build.gradle
+gradle/wrapper/gradle-wrapper.properties
